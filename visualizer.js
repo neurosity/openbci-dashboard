@@ -26,14 +26,21 @@ http.listen(3030, function () {
 });
 
 // OpenBCI
-var board = new OpenBCIBoard.OpenBCIBoard();
+var board = new OpenBCIBoard.OpenBCIBoard({
+    verbose: true
+});
 
 board.autoFindOpenBCIBoard()
-    .then(onBoardFind);
+    .then(onBoardFind)
+    .catch(function () {
+        if (!!(argv._[0] && argv._[0] === 'simulate')) {
+            board.connect(OpenBCIBoard.OpenBCIConstants.OBCISimulatorPortName)
+                .then(onBoardConnect);
+        }
+    });
 
 // Board find handler
-function onBoardFind (portName) {
-    if (portName) {
+function onBoardFind (portName) {if (portName) {
         console.log('board found', portName);
         board.connect(portName)
             .then(onBoardConnect);

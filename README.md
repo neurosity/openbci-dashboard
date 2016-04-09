@@ -16,3 +16,13 @@ node visualizer
 
 * Go to: http://localhost:3030
 
+## Simulating data
+
+```bash
+node visualizer simulate
+```
+
+## Support
+
+Pull requests are welcomed!
+
