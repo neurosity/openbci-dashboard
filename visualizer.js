@@ -56,37 +56,64 @@ function onBoardConnect () {
 function onBoardReady () {
     board.streamStart();
     board.on('sample', onSample);
-    // @TODO: Add timer?
-    //setTimeout(disconnectBoard, argv._[2]);
 }
 
 // @TODO: Refactor
-var currentSample = 0;
+var bins = 128; // Approx .5 second
+var frequencySample = 0;
+var timeSample = 0;
 var signals = [[],[],[],[],[],[],[],[]];
 var spectrums = [[],[],[],[],[],[],[],[]];
+var timeSeries = [[],[],[],[],[],[],[],[]];
 
 // @TODO: Refactor
 function onSample (sample) {
     console.log('sample', sample);
-    currentSample++;
+    frequencySample++;
+    timeSample++;
 
     Object.keys(sample.channelData).forEach(function (channel, i) {
         signals[i].push(sample.channelData[channel]);
+        timeSeries[i].push(sample.channelData[channel]);
     });
 
-    if (currentSample === 256) { // Approx 1 second
+    if (frequencySample === bins) {
 
         signals.forEach(function (signal, index) {
-            var fft = new dsp.FFT(256, 256);
+            var fft = new dsp.FFT(bins, bins);
             console.log(fft);
             fft.forward(signal);
             spectrums[index] = parseObjectAsArray(fft.spectrum);
+
+            // Apply log10
+            spectrums[index] = spectrums[index].map(function (frequency) {
+                return Math.log10(Math.pow(10, 6) * frequency);
+            });
         });
 
-        io.emit('openBCIFrequency', spectrums);
-        currentSample = 0;
+        var scaler = 250 / bins;
+
+        var labels = new Array(bins / 2).fill()
+            .map(function (x, i) {
+                return Math.ceil((i + 1) * scaler);
+            });
+
+        io.emit('openBCIFrequency', {
+            spectrums: spectrums,
+            labels: labels
+        });
+        frequencySample = 0;
         signals = [[],[],[],[],[],[],[],[]];
         spectrums = [[],[],[],[],[],[],[],[]];
+    }
+
+    if (timeSample === 50) {
+        io.emit('openBCITimeSeries', {
+            timeSeries: timeSeries,
+            samplesTotal: 50
+        });
+        timeSample = 0;
+        timeSeries = [[],[],[],[],[],[],[],[]];
     }
 
 }
@@ -111,3 +138,5 @@ function disconnectBoard () {
             }, 50);
         });
 }
+
+process.on('exit', disconnectBoard.bind(null, { cleanup: true }));

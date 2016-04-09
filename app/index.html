@@ -14,9 +14,15 @@
         <script src="visualizer.js"></script>
 
     </head>
-    <body ng-controller="visualizerCtrl">
+    <body>
 
-        <canvas class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series"></canvas>
+        <section ng-controller="frequencyCtrl">
+            <canvas id="frequency"  class="chart chart-line" chart-data="frequencyData" chart-labels="frequencyLabels" chart-series="series"></canvas>
+        </section>
+
+        <!--<section ng-controller="timeSeriesCtrl">-->
+            <!--<canvas id="timeSeries"  class="chart chart-line" chart-data="timeData" chart-labels="timeLabels" chart-series="series"></canvas>-->
+        <!--</section>-->
 
     </body>
 </html>

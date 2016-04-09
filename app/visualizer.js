@@ -5,22 +5,47 @@ angular.module('openbciVisualizer', ['chart.js'])
             chartColors: ['#F7464A', '#46BFBD','#FDB45C', '#949FB1','#4D5360', '#803690','#00ADF9', '#FF0000'],
             responsive: true,
             pointDot: false,
-            scaleShowLabels: false,
-            showScale: false,
-            datasetFill: false
+            datasetFill: false,
+            scaleOverride: true,
+            scaleStartValue: -2,
+            scaleStepWidth: 1,
+            scaleSteps: 6
         });
     })
-    .controller('visualizerCtrl', function ($scope, $timeout) {
+    .controller('frequencyCtrl', function ($scope, $timeout) {
 
         var socket = io();
 
-        $scope.labels = new Array(128).fill().map(function (x, i) { return i });
         $scope.series = ['Channel 1','Channel 2','Channel 3','Channel 4','Channel 5','Channel 6','Channel 7','Channel 8'];
 
-        socket.on('openBCIFrequency', function (spectrums) {
+        socket.on('openBCIFrequency', function (data) {
+            $scope.frequencyLabels = data.labels;
             $timeout(function () {
-                $scope.data = spectrums;
-                console.log($scope.data);
+                $scope.frequencyData = data.spectrums;
+            });
+        });
+
+    })
+    .controller('timeSeriesCtrl', function ($scope, $timeout) {
+
+        var socket = io();
+        var timeData = [[],[],[],[],[],[],[],[]];
+
+        $scope.series = ['Channel 1','Channel 2','Channel 3','Channel 4','Channel 5','Channel 6','Channel 7','Channel 8'];
+
+        //$scope.timeLabels = new Array(100).fill().map(function (x, i) { return i }); //[-5,-4,-3,-1,0];
+        socket.on('openBCITimeSeries', function (data) {
+            //console.log(data.timeSeries);
+            $timeout(function () {
+                data.timeSeries.forEach(function (channel, index) {
+                    timeData[index] = timeData[index].concat(channel);
+                    if (timeData[0].length === 1300) {
+                        timeData[index] = timeData[index].splice(data.samplesTotal, 0);
+                        $scope.timeData = timeData;
+                        console.log('timeData', $scope.timeData);
+                    }
+                });
+
             });
         });
 
