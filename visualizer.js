@@ -59,7 +59,7 @@ function onBoardReady () {
 }
 
 // @TODO: Refactor
-var bins = 128; // Approx .5 second
+var bins = 512; // Approx .5 second
 var frequencySample = 0;
 var timeSample = 0;
 var signals = [[],[],[],[],[],[],[],[]];

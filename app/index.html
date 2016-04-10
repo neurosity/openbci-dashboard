@@ -11,27 +11,43 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.1.1/Chart.js"></script>
         <script src="//cdn.jsdelivr.net/angular.chartjs/latest/angular-chart.min.js"></script>
 
-        <script src="lib/EEGSpectrumUtils.js"></script>
         <script src="visualizer.js"></script>
+
+        <script src="lib/EEGSpectrumUtils.js"></script>
+
+        <script src="components/frequency/frequency.js"></script>
+        <script src="components/alpha/alpha.js"></script>
+        <script src="components/delta/delta.js"></script>
+        <script src="components/beta/beta.js"></script>
+        <script src="components/theta/theta.js"></script>
+
+        <style>
+            @import url(https://fonts.googleapis.com/css?family=Roboto:400,700,300);
+            body {
+                font-family: 'Roboto', sans-serif;
+            }
+            .flex {
+                display: flex;
+            }
+        </style>
 
     </head>
     <body>
 
-        <section ng-controller="frequencyCtrl">
-            <canvas id="frequency"  class="chart chart-line" chart-data="frequencyData" chart-labels="frequencyLabels" chart-series="series"></canvas>
-        </section>
+        <main>
 
-        <section ng-controller="thetaBandCtrl">
-            <canvas id="theta"  class="chart chart-bar" chart-data="thetaData" chart-labels="series" chart-series="series"></canvas>
-        </section>
+            <h1>OpenBCI Visualizer</h1>
 
-        <section ng-controller="deltaBandCtrl">
-            <canvas id="delta"  class="chart chart-bar" chart-data="deltaData" chart-labels="series" chart-series="series"></canvas>
-        </section>
+            <bci-frequency></bci-frequency>
 
-        <!--<section ng-controller="timeSeriesCtrl">-->
-            <!--<canvas id="timeSeries"  class="chart chart-line" chart-data="timeData" chart-labels="timeLabels" chart-series="series"></canvas>-->
-        <!--</section>-->
+            <section class="flex">
+                <bci-alpha></bci-alpha>
+                <bci-delta></bci-delta>
+                <bci-beta></bci-beta>
+                <bci-theta></bci-theta>
+            </section>
+
+        </main>
 
     </body>
 </html>

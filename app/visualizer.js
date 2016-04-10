@@ -3,7 +3,7 @@ angular.module('openbciVisualizer', ['chart.js'])
     .config(function (ChartJsProvider) {
         ChartJsProvider.setOptions({
             chartColors: ['#F7464A', '#46BFBD','#FDB45C', '#949FB1','#4D5360', '#803690','#00ADF9', '#FF0000'],
-            responsive: true,
+            responsive: false,
             pointDot: false,
             datasetFill: false,
             scaleOverride: true,
@@ -11,52 +11,6 @@ angular.module('openbciVisualizer', ['chart.js'])
             scaleStepWidth: 1,
             scaleSteps: 6
         });
-    })
-    .controller('frequencyCtrl', function ($scope, $timeout) {
-
-        var socket = io();
-
-        $scope.series = ['Channel 1','Channel 2','Channel 3','Channel 4','Channel 5','Channel 6','Channel 7','Channel 8'];
-
-        socket.on('openBCIFrequency', function (data) {
-            $timeout(function () {
-                $scope.frequencyLabels = data.labels;
-                $scope.frequencyData = data.spectrums;
-            });
-        });
-
-    })
-    .controller('thetaBandCtrl', function ($scope, $timeout) {
-
-        var socket = io();
-
-        $scope.series = ['Channel 1','Channel 2','Channel 3','Channel 4','Channel 5','Channel 6','Channel 7','Channel 8'];
-
-        socket.on('openBCIFrequency', function (data) {
-            var thetaRange = EEGSpectrumUtils.filterBand(data.spectrums, data.labels, [4, 6]);
-            $timeout(function () {
-                $scope.thetaLabels = thetaRange.labels;
-                $scope.thetaData = thetaRange.spectrums;
-            });
-        });
-
-
-    })
-    .controller('deltaBandCtrl', function ($scope, $timeout) {
-
-        var socket = io();
-
-        $scope.series = ['Channel 1','Channel 2','Channel 3','Channel 4','Channel 5','Channel 6','Channel 7','Channel 8'];
-
-        socket.on('openBCIFrequency', function (data) {
-            var deltaRange = EEGSpectrumUtils.filterBand(data.spectrums, data.labels, [0.5, 4]);
-            $timeout(function () {
-                $scope.deltaLabels = deltaRange.labels;
-                $scope.deltaData = deltaRange.spectrums;
-            });
-        });
-
-
     })
     .controller('timeSeriesCtrl', function ($scope, $timeout) {
 
