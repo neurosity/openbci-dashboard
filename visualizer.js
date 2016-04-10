@@ -60,7 +60,8 @@ function onBoardReady () {
 
 var bins = 128; // Approx .5 second
 var bufferSize = 128;
-var windowSize = bins / 8;
+var windowRefreshRate = 16;
+var windowSize = bins / windowRefreshRate;
 var sampleRate = board.sampleRate();
 var sampleNumber = 0;
 var signals = [[],[],[],[],[],[],[],[]];
@@ -103,7 +104,7 @@ function onSample (sample) {
 
         signals = signals.map(function (channel) {
             return channel.filter(function (signal, index) {
-                return index > 15;
+                return index > (windowSize - 1);
             });
         });
 
