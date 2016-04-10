@@ -58,29 +58,27 @@ function onBoardReady () {
     board.on('sample', onSample);
 }
 
-// @TODO: Refactor
-var bins = 512; // Approx .5 second
-var frequencySample = 0;
-var timeSample = 0;
+var bins = 128; // Approx .5 second
+var bufferSize = 128;
+var windowSize = bins / 8;
+var sampleRate = board.sampleRate();
+var sampleNumber = 0;
 var signals = [[],[],[],[],[],[],[],[]];
-var spectrums = [[],[],[],[],[],[],[],[]];
-var timeSeries = [[],[],[],[],[],[],[],[]];
 
-// @TODO: Refactor
 function onSample (sample) {
     console.log('sample', sample);
-    frequencySample++;
-    timeSample++;
+    sampleNumber++;
 
     Object.keys(sample.channelData).forEach(function (channel, i) {
         signals[i].push(sample.channelData[channel]);
-        timeSeries[i].push(sample.channelData[channel]);
     });
 
-    if (frequencySample === bins) {
+    if (sampleNumber === bins) {
+
+        var spectrums = [[],[],[],[],[],[],[],[]];
 
         signals.forEach(function (signal, index) {
-            var fft = new dsp.FFT(bins, bins);
+            var fft = new dsp.FFT(bufferSize, sampleRate);
             console.log(fft);
             fft.forward(signal);
             spectrums[index] = parseObjectAsArray(fft.spectrum);
@@ -102,18 +100,15 @@ function onSample (sample) {
             spectrums: spectrums,
             labels: labels
         });
-        frequencySample = 0;
-        signals = [[],[],[],[],[],[],[],[]];
-        spectrums = [[],[],[],[],[],[],[],[]];
-    }
 
-    if (timeSample === 50) {
-        io.emit('openBCITimeSeries', {
-            timeSeries: timeSeries,
-            samplesTotal: 50
+        signals = signals.map(function (channel) {
+            return channel.filter(function (signal, index) {
+                return index > 15;
+            });
         });
-        timeSample = 0;
-        timeSeries = [[],[],[],[],[],[],[],[]];
+
+        sampleNumber = bins - windowSize;
+
     }
 
 }
