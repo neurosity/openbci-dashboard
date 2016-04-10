@@ -21,8 +21,8 @@ app.get('*', function(req, res) {
     res.sendFile(path.join(__dirname, '/app/index.html'));
 });
 
-http.listen(3030, function () {
-    console.log('listening on port 3030');
+http.listen(3060, function () {
+    console.log('listening on port 3060');
 });
 
 // OpenBCI
@@ -65,6 +65,7 @@ var windowSize = bins / windowRefreshRate;
 var sampleRate = board.sampleRate();
 var sampleNumber = 0;
 var signals = [[],[],[],[],[],[],[],[]];
+var timeSeries = [[],[],[],[],[],[],[],[]];
 
 function onSample (sample) {
     console.log('sample', sample);
@@ -83,23 +84,26 @@ function onSample (sample) {
             console.log(fft);
             fft.forward(signal);
             spectrums[index] = parseObjectAsArray(fft.spectrum);
-
-            // Apply log10
-            spectrums[index] = spectrums[index].map(function (frequency) {
-                return Math.log10(Math.pow(10, 6) * frequency);
-            });
+            spectrums[index] = voltsToMicrovolts(spectrums[index]);
+            timeSeries[index] = voltsToMicrovolts(signal);
         });
 
-        var scaler = 250 / bins;
+        var scaler = sampleRate / bins;
 
         var labels = new Array(bins / 2).fill()
             .map(function (x, i) {
                 return Math.ceil(i * scaler);
             });
-
-        io.emit('openBCIFrequency', {
-            spectrums: spectrums,
-            labels: labels
+        
+        io.emit('openBCIData', {
+            spectrums: {
+                data: spectrums,
+                labels: labels
+            },
+            timeSeries: {
+                data: timeSeries,
+                labels: new Array(128).fill(2)
+            }
         });
 
         signals = signals.map(function (channel) {
@@ -112,6 +116,12 @@ function onSample (sample) {
 
     }
 
+}
+
+function voltsToMicrovolts (volts) {
+    return volts.map(function (volt) {
+        return Math.log10(Math.pow(10, 6) * volt);
+    });
 }
 
 function parseObjectAsArray (obj) {
@@ -129,10 +139,14 @@ function disconnectBoard () {
     board.streamStop()
         .then(function () {
             setTimeout(function () {
-                board.disconnect();
-                console.log('board disconnected');
+                board.disconnect().then(function () {
+                    console.log('board disconnected');
+                    process.exit();
+                });
             }, 50);
         });
 }
 
-process.on('exit', disconnectBoard.bind(null, { cleanup: true }));
+process.on('SIGINT', function () {
+    setTimeout(disconnectBoard, 50);
+});

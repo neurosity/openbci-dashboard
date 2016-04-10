@@ -1,16 +1,16 @@
 
 angular.module('openbciVisualizer')
-    .component('bciAlpha', {
-        templateUrl: 'components/alpha/alpha.html',
+    .component('bciTime', {
+        templateUrl: 'components/time/time.html',
         controller: function ($timeout) {
             var $ctrl = this;
             var socket = io();
             $ctrl.series = ['Channel 1','Channel 2','Channel 3','Channel 4','Channel 5','Channel 6','Channel 7','Channel 8'];
             socket.on('openBCIData', function (data) {
-                var alphaRange = EEGSpectrumUtils.filterBand(data.spectrums.data, data.spectrums.labels, [8, 12]);
                 $timeout(function () {
-                    $ctrl.labels = alphaRange.labels;
-                    $ctrl.data = alphaRange.spectrums;
+                    console.log(data.timeSeries);
+                    $ctrl.labels = data.timeSeries.labels;
+                    $ctrl.data = data.timeSeries.data;
                 });
             });
         }
