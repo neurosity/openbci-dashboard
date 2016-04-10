@@ -95,7 +95,7 @@ function onSample (sample) {
 
         var labels = new Array(bins / 2).fill()
             .map(function (x, i) {
-                return Math.ceil((i + 1) * scaler);
+                return Math.ceil(i * scaler);
             });
 
         io.emit('openBCIFrequency', {
