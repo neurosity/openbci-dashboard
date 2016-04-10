@@ -14,7 +14,7 @@ npm install
 node visualizer
 ```
 
-* Go to: http://localhost:3036
+* Go to: http://localhost:3060
 
 ## Simulating data
 
