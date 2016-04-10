@@ -81,10 +81,10 @@ function onSample (sample) {
 
         signals.forEach(function (signal, index) {
             var fft = new dsp.FFT(bufferSize, sampleRate);
-            console.log(fft);
             fft.forward(signal);
+
             spectrums[index] = parseObjectAsArray(fft.spectrum);
-            spectrums[index] = voltsToMicrovolts(spectrums[index]);
+            spectrums[index] = voltsToMicrovolts(spectrums[index], true);
             timeSeries[index] = voltsToMicrovolts(signal);
         });
 
@@ -118,9 +118,9 @@ function onSample (sample) {
 
 }
 
-function voltsToMicrovolts (volts) {
+function voltsToMicrovolts (volts, log) {
     return volts.map(function (volt) {
-        return Math.log10(Math.pow(10, 6) * volt);
+        return log ? Math.log10(Math.pow(10, 6) * volt) : Math.pow(10, 6) * volt;
     });
 }
 
