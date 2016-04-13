@@ -1,16 +1,15 @@
 
 angular.module('openbciVisualizer')
-    .component('bciBeta', {
-        templateUrl: 'components/beta/beta.html',
+    .component('bciFrequency', {
+        templateUrl: 'components/frequency/frequency.html',
         controller: function ($timeout) {
             var $ctrl = this;
             var socket = io();
             $ctrl.series = ['Channel 1','Channel 2','Channel 3','Channel 4','Channel 5','Channel 6','Channel 7','Channel 8'];
-            socket.on('openBCIData', function (data) {
-                var betaRange = EEGSpectrumUtils.filterBand(data.spectrums.data, data.spectrums.labels, [12, 40]);
+            socket.on('openBCIFFT', function (data) {
                 $timeout(function () {
-                    $ctrl.labels = betaRange.labels;
-                    $ctrl.data = betaRange.spectrums;
+                    $ctrl.data = data.data;
+                    $ctrl.labels = data.labels;
                 });
             });
         }

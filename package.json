@@ -11,17 +11,36 @@
     "chartjs"
   ],
   "author": "Alex Castillo",
-  "scripts": {},
+  "scripts": {
+    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" \"node visualizer\" ",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "lite": "lite-server",
+    "typings": "typings",
+    "docker-build": "docker build -t ng2-quickstart .",
+    "docker": "npm run docker-build && docker run -it --rm -p 3000:3000 -p 3001:3001 ng2-quickstart",
+    "postinstall": "typings install"
+  },
   "dependencies": {
-    "angular": "^1.5.3",
-    "angular-chartjs": "0.0.5",
+    "angular2": "2.0.0-beta.14",
     "chart.js": "^2.0.0",
-    "dsp.js": "neurojs/dsp.js",
+    "dsp.js": "github:neurojs/dsp.js",
+    "es6-shim": "^0.35.0",
     "express": "^4.13.4",
     "nodemon": "^1.9.1",
-    "openbci-sdk": "^0.2.0",
+    "openbci-sdk": "^0.3.0",
+    "reflect-metadata": "0.1.2",
+    "rxjs": "5.0.0-beta.2",
     "socket.io": "^1.4.5",
     "socket.io-client": "^1.4.5",
-    "yargs": "^4.3.2"
+    "systemjs": "0.19.25",
+    "yargs": "^4.3.2",
+    "zone.js": "0.6.6"
+  },
+  "devDependencies": {
+    "concurrently": "^2.0.0",
+    "lite-server": "^2.2.0",
+    "typescript": "^1.8.9",
+    "typings": "^0.7.12"
   }
 }
