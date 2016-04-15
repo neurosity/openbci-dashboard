@@ -1,5 +1,7 @@
 # OpenBCI Visualizer
 
+![alt text](/assets/preview.png "OpenBCI Visualizer Preview")
+
 A fullstack javascript app for capturing and visualizing OpenBCI EEG data
 
 This project is under development, this is just a first draft.

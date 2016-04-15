@@ -3,6 +3,7 @@
     <head>
         <title>OpenBCI Visualizer</title>
 
+        <link rel="stylesheet" href="visualizer.css">
         <link rel="stylesheet" href="//cdn.jsdelivr.net/angular.chartjs/latest/angular-chart.css">
 
         <script src="node_modules/socket.io-client/socket.io.js"></script>
@@ -22,16 +23,6 @@
         <script src="components/beta/beta.js"></script>
         <script src="components/theta/theta.js"></script>
 
-        <style>
-            @import url(https://fonts.googleapis.com/css?family=Roboto:400,700,300);
-            body {
-                font-family: 'Roboto', sans-serif;
-            }
-            .flex {
-                display: flex;
-            }
-        </style>
-
     </head>
     <body>
 
@@ -39,14 +30,19 @@
 
             <h1>OpenBCI Visualizer</h1>
 
-            <bci-time></bci-time>
-            <bci-frequency></bci-frequency>
+            <section class="row">
+                <bci-time class="block block-50"></bci-time>
+                <bci-frequency class="block block-50"></bci-frequency>
+            </section>
 
-            <section class="flex">
-                <bci-alpha></bci-alpha>
-                <bci-delta></bci-delta>
-                <bci-beta></bci-beta>
-                <bci-theta></bci-theta>
+            <section class="row">
+                <bci-beta class="block block-33"></bci-beta>
+                <bci-theta class="block block-33"></bci-theta>
+                <bci-alpha class="block block-33"></bci-alpha>
+            </section>
+
+            <section class="row">
+                <bci-delta class="block block-25"></bci-delta>
             </section>
 
         </main>
