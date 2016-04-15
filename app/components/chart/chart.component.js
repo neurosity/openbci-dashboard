@@ -18,11 +18,45 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                 core_1 = core_1_1;
             }],
         execute: function() {
-            // import 'io'
-            // import 'chart.js'
             ChartComponent = (function () {
                 function ChartComponent() {
+                    this.io = io;
+                    this.socket = this.io('http://localhost:8080');
+                    this.Chart = Chart;
+                    this.chart = null;
+                    this.options = {
+                        title: 'Frequency Plot',
+                        curveType: 'function',
+                        legend: { position: 'bottom' },
+                        vAxis: {
+                            viewWindowMode: 'explicit',
+                            viewWindow: {
+                                max: 100,
+                                min: 99.8
+                            }
+                        }
+                    };
+                    //this.google = google;
                 }
+                ChartComponent.prototype.drawChart = function (data) {
+                    if (!data)
+                        return;
+                    data = google.visualization.arrayToDataTable(data);
+                    this.chart.draw(data, this.options);
+                };
+                ChartComponent.prototype.ngAfterViewInit = function () {
+                    var _this = this;
+                    google.charts.load('current', { 'packages': ['line'] });
+                    google.charts.setOnLoadCallback(function () {
+                        _this.chart = new google.charts.Line(document.getElementById('chart'));
+                    });
+                    this.socket.on('openBCIFFT', function (data) {
+                        if (_this.chart !== null) {
+                            _this.chart.draw(google.visualization.arrayToDataTable(data));
+                        }
+                        console.log('data', data);
+                    });
+                };
                 ChartComponent = __decorate([
                     core_1.Component({
                         selector: 'bci-chart',

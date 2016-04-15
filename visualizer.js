@@ -1,19 +1,12 @@
-var express = require('express');
-var app = express();
 var path = require('path');
-var http = require('http').Server(app);
 var argv = require('yargs').argv;
 var OpenBCIBoard = require('openbci-sdk');
 var dsp = require('dsp.js');
-var io = require('socket.io')(http);
+var io = require('socket.io')(8080);
 
 // Sockets
-io.on('connection', function(socket) {
-    console.log('A user connected');
-});
-
-http.listen(8000, function () {
-    console.log('sockets on port 8000');
+io.on('connection', (socket) => {
+    console.log('A socket connected');
 });
 
 // OpenBCI
@@ -23,7 +16,7 @@ var board = new OpenBCIBoard.OpenBCIBoard({
 
 board.autoFindOpenBCIBoard()
     .then(onBoardFind)
-    .catch(function () {
+    .catch(() => {
         if (!!(argv._[0] && argv._[0] === 'simulate')) {
             board.connect(OpenBCIBoard.OpenBCIConstants.OBCISimulatorPortName)
                 .then(onBoardConnect);
@@ -31,7 +24,8 @@ board.autoFindOpenBCIBoard()
     });
 
 // Board find handler
-function onBoardFind (portName) {if (portName) {
+function onBoardFind (portName) {
+    if (portName) {
         console.log('board found', portName);
         board.connect(portName)
             .then(onBoardConnect);
@@ -51,23 +45,33 @@ function onBoardReady () {
 
 var bins = 128; // Approx .5 second
 var bufferSize = 128;
-var windowRefreshRate = 16;
+var windowRefreshRate = 64;
 var windowSize = bins / windowRefreshRate;
 var sampleRate = board.sampleRate();
 var sampleNumber = 0;
 var signals = [[],[],[],[],[],[],[],[]];
 
-var timeSeriesWindow = 5;
-var seriesNumber = 0;
-var timeSeries = new Array(8).fill([]); // 8 channels
+//var timeSeriesWindow = 5;
+//var seriesNumber = 0;
+//var timeSeries = new Array(8).fill([]); // 8 channels
+//
+//timeSeries = timeSeries.map(function (channel) {
+//    return new Array(sampleRate * timeSeriesWindow).fill(0)
+//});
 
-timeSeries = timeSeries.map(function (channel) {
-    return new Array(sampleRate * timeSeriesWindow).fill(0)
-});
+var chartData = [
+    ['Channels', 'Channel 1', 'Channel 2', 'Channel 3', 'Channel 4', 'Channel 5', 'Channel 6', 'Channel 7', 'Channel 8']
+];
 
 function onSample (sample) {
 
-    console.log('sample', sample);
+    //[['Channels', 'Channel 1', 'Channel 2', 'Channel 3', 'Channel 4', 'Channel 5', 'Channel 6', 'Channel 7', 'Channel 8'],
+    //['0hz',  1000,      400],
+    //['25hz',  1170,      460],
+    //['35hz',  660,       1120],
+    //['64hz',  1030,      540]]
+
+    //console.log('sample', sample);
     sampleNumber++;
 
     Object.keys(sample.channelData).forEach(function (channel, i) {
@@ -93,10 +97,21 @@ function onSample (sample) {
                 return Math.ceil(i * scaler);
             });
 
-        io.emit('openBCIFFT', {
-            data: spectrums,
-            labels: labels
+        labels.forEach(function (frequency) {
+            chartData.push([frequency]);
         });
+
+        spectrums.forEach(function (channel) {
+            channel.forEach(function (spectrum, index) {
+                chartData[index + 1].push(spectrum);
+            });
+        });
+
+        io.emit('openBCIFFT', chartData);
+
+        chartData = [
+            ['Channels', 'Channel 1', 'Channel 2', 'Channel 3', 'Channel 4', 'Channel 5', 'Channel 6', 'Channel 7', 'Channel 8']
+        ];
 
         signals = signals.map(function (channel) {
             return channel.filter(function (signal, index) {
@@ -108,21 +123,21 @@ function onSample (sample) {
 
     }
 
-    timeSeries.forEach(function (channel, index) {
-        channel.push(voltsToMicrovolts(sample.channelData[index]));
-        channel.shift();
-    });
+    //timeSeries.forEach(function (channel, index) {
+    //    channel.push(voltsToMicrovolts(sample.channelData[index]));
+    //    channel.shift();
+    //});
 
-    seriesNumber++;
+    //seriesNumber++;
 
-    // Time Series
-    if (seriesNumber === 2) {
-        io.emit('openBCISeries', {
-            data: timeSeries,
-            labels: new Array(1250).fill(0)
-        });
-        seriesNumber = 0;
-    }
+    //// Time Series
+    //if (seriesNumber === 2) {
+    //    io.emit('openBCISeries', {
+    //        data: timeSeries,
+    //        labels: new Array(1250).fill(0)
+    //    });
+    //    seriesNumber = 0;
+    //}
 
 
 }
