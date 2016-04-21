@@ -18,11 +18,50 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                 core_1 = core_1_1;
             }],
         execute: function() {
-            // import 'io'
-            // import 'chart.js'
             ChartComponent = (function () {
                 function ChartComponent() {
+                    this.socket = io('http://localhost:8080');
+                    this.chart = null;
                 }
+                ChartComponent.prototype.ngAfterViewInit = function () {
+                    var _this = this;
+                    var chartElement = document.getElementById('chart');
+                    var chartData = {
+                        labels: [],
+                        datasets: []
+                    };
+                    this.chart = new Chart(chartElement, {
+                        type: 'line',
+                        data: chartData,
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                        ticks: {
+                                            display: true,
+                                            autoSkip: false,
+                                            beginAtZero: false,
+                                            min: -3,
+                                            max: 3
+                                        }
+                                    }]
+                            }
+                        }
+                    });
+                    this.socket.on('openBCIFFT', function (data) {
+                        console.log('data', data);
+                        chartData.labels = data.labels;
+                        chartData.datasets = [];
+                        data.data.forEach(function (dataset, index) {
+                            chartData.datasets.push({
+                                label: 'Channel ' + (index + 1),
+                                data: dataset,
+                                fill: false,
+                                tension: 0,
+                            });
+                        });
+                        _this.chart.update();
+                    });
+                };
                 ChartComponent = __decorate([
                     core_1.Component({
                         selector: 'bci-chart',

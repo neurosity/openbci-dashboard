@@ -12,7 +12,7 @@
   ],
   "author": "Alex Castillo",
   "scripts": {
-    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" \"node visualizer\" ",
+    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" \"node --max-old-space-size=2048 visualizer simulate\" ",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "lite": "lite-server",

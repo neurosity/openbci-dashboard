@@ -1,19 +1,12 @@
-var express = require('express');
-var app = express();
 var path = require('path');
-var http = require('http').Server(app);
 var argv = require('yargs').argv;
 var OpenBCIBoard = require('openbci-sdk');
 var dsp = require('dsp.js');
-var io = require('socket.io')(http);
+var io = require('socket.io')(process.env.app_port || 8080);
 
 // Sockets
 io.on('connection', function(socket) {
     console.log('A user connected');
-});
-
-http.listen(8000, function () {
-    console.log('sockets on port 8000');
 });
 
 // OpenBCI
