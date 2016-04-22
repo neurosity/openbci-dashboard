@@ -6,7 +6,7 @@ var argv = require('yargs').argv;
 var OpenBCIBoard = require('openbci-sdk');
 var dsp = require('dsp.js');
 var io = require('socket.io')(http);
-var topogrid = require('topogrid')
+var topogrid = require('topogrid');
 
 // Sockets
 io.on('connection', function(socket){
@@ -113,7 +113,7 @@ function onSample (sample) {
 
         var labels = new Array(bins / 2).fill()
             .map(function (x, i) {
-                return i % 10 === 0 ? Math.ceil(i * scaler) : '';
+                return Math.ceil(i * scaler);
             });
 
         io.emit('bci:fft', {
@@ -129,8 +129,8 @@ function onSample (sample) {
 
         grid = topogrid.create(pos_x,pos_y,data,grid_params);
 
-        io.emit('openBCITopo', {
-            data: grid,
+        io.emit('bci:topo', {
+            data: grid
         });
 
         sampleNumber = bins - windowSize;

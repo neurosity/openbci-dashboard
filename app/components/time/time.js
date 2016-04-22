@@ -1,5 +1,5 @@
 
-angular.module('bciDasboard')
+angular.module('bciDashboard')
     .component('bciTime', {
         templateUrl: 'components/time/time.html',
         controller: function ($timeout) {
@@ -26,7 +26,7 @@ angular.module('bciDasboard')
             };
             socket.on('bci:time', function (data) {
                 $timeout(function () {
-                    console.log('time data', data.data);
+                    //console.log('time data', data.data);
                     $ctrl.labels = data.labels;
                     $ctrl.data = data.data;
                 });

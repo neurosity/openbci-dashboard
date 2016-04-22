@@ -1,5 +1,5 @@
 
-angular.module('bciDasboard')
+angular.module('bciDashboard')
     .component('bciBeta', {
         templateUrl: 'components/beta/beta.html',
         controller: function ($timeout) {

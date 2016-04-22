@@ -1,6 +1,7 @@
 <section>
     <h2>Frequency</h2>
     <canvas id="frequency"
+            ng-if="$ctrl.data"
             class="chart chart-line"
             chart-data="$ctrl.data"
             chart-labels="$ctrl.labels"

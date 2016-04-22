@@ -1,5 +1,5 @@
 
-angular.module('bciDasboard', ['chart.js'])
+angular.module('bciDashboard', ['chart.js'])
     .config(function (ChartJsProvider) {
         ChartJsProvider.setOptions({
             animation: false,
