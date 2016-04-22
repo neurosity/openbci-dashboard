@@ -12,7 +12,8 @@
   ],
   "author": "Alex Castillo",
   "scripts": {
-    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" \"node --max-old-space-size=2048 visualizer simulate\" ",
+    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" \"node --max-old-space-size=2048 visualizer\" ",
+    "simulate": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" \"node --max-old-space-size=2048 visualizer simulate\" ",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "lite": "lite-server",
@@ -27,6 +28,7 @@
     "dsp.js": "github:neurojs/dsp.js",
     "es6-shim": "^0.35.0",
     "express": "^4.13.4",
+    "ng2-charts": "^1.0.3",
     "nodemon": "^1.9.1",
     "openbci-sdk": "^0.3.0",
     "reflect-metadata": "0.1.2",

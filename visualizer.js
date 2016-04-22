@@ -44,7 +44,7 @@ function onBoardReady () {
 
 var bins = 128; // Approx .5 second
 var bufferSize = 128;
-var windowRefreshRate = 16;
+var windowRefreshRate = 8;
 var windowSize = bins / windowRefreshRate;
 var sampleRate = board.sampleRate();
 var sampleNumber = 0;

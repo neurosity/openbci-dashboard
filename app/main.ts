@@ -1,5 +1,5 @@
 
 import { bootstrap } from 'angular2/platform/browser'
-import { AppComponent } from './app';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
-bootstrap(AppComponent);
+bootstrap(DashboardComponent);

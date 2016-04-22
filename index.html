@@ -4,9 +4,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <script src="node_modules/socket.io-client/socket.io.js"></script>
-    <script src="node_modules/chart.js/dist/Chart.js"></script>
+    <!--<script src="node_modules/chart.js/dist/Chart.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
 
-
+    <style>body { margin: 0; }</style>
     <!-- 1. Load libraries -->
     <!-- IE required polyfills, in this exact order -->
     <script src="node_modules/es6-shim/es6-shim.min.js"></script>
@@ -30,13 +31,7 @@
                 .then(null, console.error.bind(console));
     </script>
 </head>
-<!-- 3. Display the application -->
 <body>
-
-    <bci-visualizer>Loading...</bci-visualizer>
-
-    <canvas id="chart" width="400" height="400"></canvas>
-
-
+    <bci-dashboard>Loading...</bci-dashboard>
 </body>
 </html>
