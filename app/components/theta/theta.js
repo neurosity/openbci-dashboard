@@ -1,5 +1,5 @@
 
-angular.module('openbciVisualizer')
+angular.module('bciDasboard')
     .component('bciTheta', {
         templateUrl: 'components/theta/theta.html',
         controller: function ($timeout) {

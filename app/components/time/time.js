@@ -1,5 +1,5 @@
 
-angular.module('openbciVisualizer')
+angular.module('bciDasboard')
     .component('bciTime', {
         templateUrl: 'components/time/time.html',
         controller: function ($timeout) {

@@ -1,5 +1,5 @@
 
-angular.module('openbciVisualizer')
+angular.module('bciDasboard')
     .component('bciFrequency', {
         templateUrl: 'components/frequency/frequency.html',
         controller: function ($timeout) {

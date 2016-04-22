@@ -1,5 +1,5 @@
 
-angular.module('openbciVisualizer')
+angular.module('bciDasboard')
     .component('bciDelta', {
         templateUrl: 'components/delta/delta.html',
         controller: function ($timeout) {

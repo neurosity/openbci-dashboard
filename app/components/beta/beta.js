@@ -1,5 +1,5 @@
 
-angular.module('openbciVisualizer')
+angular.module('bciDasboard')
     .component('bciBeta', {
         templateUrl: 'components/beta/beta.html',
         controller: function ($timeout) {

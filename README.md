@@ -1,4 +1,4 @@
-# OpenBCI Visualizer
+# OpenBCI Dashboard
 
 ![alt text](/assets/preview.gif "OpenBCI Visualizer Preview")
 
