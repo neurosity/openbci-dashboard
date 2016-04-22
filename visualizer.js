@@ -102,7 +102,7 @@ function onSample (sample) {
                 return Math.ceil(i * scaler);
             });
         
-        io.emit('openBCIFFT', {
+        io.emit('bci:fft', {
             data: spectrums,
             labels: labels
         });
@@ -128,7 +128,7 @@ function onSample (sample) {
             channel.shift();
         });
 
-        io.emit('openBCISeries', {
+        io.emit('bci:time', {
             data: timeSeries,
             labels: new Array((sampleRate * timeSeriesWindow) / timeSeriesRate).fill(0)
         });
