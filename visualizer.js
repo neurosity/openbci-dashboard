@@ -99,7 +99,7 @@ function onSample (sample) {
 
         var labels = new Array(bins / 2).fill()
             .map(function (x, i) {
-                return Math.ceil(i * scaler);
+                return i % 10 === 0 ? Math.ceil(i * scaler) : '';
             });
         
         io.emit('bci:fft', {
