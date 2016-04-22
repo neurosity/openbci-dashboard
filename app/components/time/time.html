@@ -1,4 +1,4 @@
-<section>
+<section class="time-series">
     <h2>Time</h2>
     <canvas ng-repeat="channel in $ctrl.data track by $index"
             ng-style="{ position: 'absolute', top: ((70 * $index)) + 'px', padding: '20px 0' }"
@@ -11,5 +11,10 @@
             chart-options="$ctrl.options"
             chart-colours="[$ctrl.colors[$index]]">
     </canvas>
+    <footer class="time-series-duration">
+        <time ng-repeat="second in [5,4,3,2,1,0] track by $index" datetime="P1M">
+            <span ng-if="second">-</span>{{ second }}
+        </time>
+    </footer>
     <div style="height: 600px"></div>
 </section>

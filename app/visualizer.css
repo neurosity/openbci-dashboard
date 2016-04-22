@@ -51,3 +51,14 @@ h1 {
 .block-50 {
   width: 50%;
 }
+
+.time-series-duration {
+  position: absolute;
+  width: 110%;
+  bottom: 30px;
+  display: flex;
+}
+
+.time-series-duration time {
+  width: 20%;
+}
