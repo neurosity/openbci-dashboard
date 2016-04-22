@@ -13,13 +13,16 @@ angular.module('openbciVisualizer')
                 { strokeColor: 'rgba(138,219,229,1)' },
                 { strokeColor: 'rgba(232,223,133,1)' },
                 { strokeColor: 'rgba(148,159,177,1)' },
-                { strokeColor: 'rgba(77,83,96,1)' }
+                { strokeColor: 'rgba(182,224,53,1)' }
             ];
             $ctrl.options = {
                 animation: false,
                 responsive: true,
                 showScale: false,
-                scaleOverride: false
+                scaleOverride: true,
+                scaleStartValue: -500,
+                scaleStepWidth: 1,
+                scaleSteps: 700
             };
             socket.on('bci:time', function (data) {
                 $timeout(function () {
