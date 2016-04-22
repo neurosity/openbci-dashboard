@@ -1,11 +1,15 @@
 <section>
     <h2>Time</h2>
-    <canvas id="time"
+    <canvas ng-repeat="channel in $ctrl.data track by $index"
+            ng-style="{ position: 'absolute', top: ((70 * $index)) + 'px', padding: '20px 0' }"
+            height="50"
+            id="channel1"
+            ng-if="$ctrl.data"
             class="chart chart-line"
-            chart-data="$ctrl.data"
+            chart-data="[channel]"
             chart-labels="$ctrl.labels"
-            chart-series="$ctrl.series"
-            chart-options="{ responsive: true, scaleOverride: false }"
-            chart-colours="$ctrl.colors">
+            chart-options="$ctrl.options"
+            chart-colours="[$ctrl.colors[$index]]">
     </canvas>
+    <div style="height: 600px"></div>
 </section>
