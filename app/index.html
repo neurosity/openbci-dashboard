@@ -5,6 +5,7 @@
 
         <link rel="stylesheet" href="visualizer.css">
         <link rel="stylesheet" href="//cdn.jsdelivr.net/angular.chartjs/latest/angular-chart.css">
+        <link rel="stylesheet" href="components/topo/topo.css">
 
         <script src="node_modules/socket.io-client/socket.io.js"></script>
 
@@ -22,6 +23,7 @@
         <script src="components/delta/delta.js"></script>
         <script src="components/beta/beta.js"></script>
         <script src="components/theta/theta.js"></script>
+        <script src="components/topo/topo.js"></script>
 
     </head>
     <body>
@@ -38,11 +40,15 @@
             <section class="row">
                 <bci-beta class="block block-33"></bci-beta>
                 <bci-theta class="block block-33"></bci-theta>
-                <bci-alpha class="block block-33"></bci-alpha>
             </section>
 
             <section class="row">
-                <bci-delta class="block block-25"></bci-delta>
+                <bci-alpha class="block block-33"></bci-alpha>
+                <bci-delta class="block block-33"></bci-delta>
+            </section>
+
+            <section class="row">
+                <bci-topo class="block block-33"></bci-topo>
             </section>
 
         </main>
