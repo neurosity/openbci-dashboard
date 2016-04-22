@@ -6,6 +6,7 @@ var argv = require('yargs').argv;
 var OpenBCIBoard = require('openbci-sdk');
 var dsp = require('dsp.js');
 var io = require('socket.io')(http);
+var topogrid = require('topogrid')
 
 // Sockets
 io.on('connection', function(socket){
@@ -71,6 +72,19 @@ var timeSeriesRate = 10; // skips every 10 samples
 var seriesNumber = 0;
 var timeSeries = new Array(8).fill([]); // 8 channels
 
+// x coordinates of the data
+var pos_x = [1,5,10];
+
+// y coordinates of the data
+var pos_y = [1,5,10];
+
+// the data values
+var data = [1,10,1];
+
+// the parameters for the grid [x,y,z] where x is the min of the grid, y is the
+// max of the grid and z is the number of points
+var grid_params = [0,10,11];
+
 timeSeries = timeSeries.map(function (channel) {
     return new Array((sampleRate * timeSeriesWindow) / timeSeriesRate).fill(0)
 });
@@ -101,7 +115,7 @@ function onSample (sample) {
             .map(function (x, i) {
                 return i % 10 === 0 ? Math.ceil(i * scaler) : '';
             });
-        
+
         io.emit('bci:fft', {
             data: spectrums,
             labels: labels
@@ -111,6 +125,12 @@ function onSample (sample) {
             return channel.filter(function (signal, index) {
                 return index > (windowSize - 1);
             });
+        });
+
+        grid = topogrid.create(pos_x,pos_y,data,grid_params);
+
+        io.emit('openBCITopo', {
+            data: grid,
         });
 
         sampleNumber = bins - windowSize;
@@ -132,9 +152,9 @@ function onSample (sample) {
             data: timeSeries,
             labels: new Array((sampleRate * timeSeriesWindow) / timeSeriesRate).fill(0)
         });
+
         seriesNumber = 0;
     }
-
 
 }
 
