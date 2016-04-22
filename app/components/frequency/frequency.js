@@ -19,7 +19,7 @@ angular.module('bciDashboard')
             socket.on('bci:fft', function (data) {
                 $timeout(function () {
                     $ctrl.data = data.data;
-                    $ctrl.labels = data.labels.map(function (label) {
+                    $ctrl.labels = data.labels.map(function (label, i) {
                         return i % 10 === 0 ? label : '';
                     });
                 });
