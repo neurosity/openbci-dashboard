@@ -50,16 +50,16 @@ var sampleRate = board.sampleRate();
 var sampleNumber = 0;
 var signals = [[],[],[],[],[],[],[],[]];
 
-var timeSeriesWindow = 5;
+var timeSeriesWindow = 5; // in seconds
+var timeSeriesRate = 10; // skips every 10 samples
 var seriesNumber = 0;
 var timeSeries = new Array(8).fill([]); // 8 channels
 
 timeSeries = timeSeries.map(function (channel) {
-    return new Array(sampleRate * timeSeriesWindow).fill(0)
+    return new Array((sampleRate * timeSeriesWindow) / timeSeriesRate).fill(0)
 });
 
 function onSample (sample) {
-
     console.log('sample', sample);
     sampleNumber++;
 
@@ -67,7 +67,6 @@ function onSample (sample) {
         signals[i].push(sample.channelData[channel]);
     });
 
-    // FFT
     if (sampleNumber === bins) {
 
         var spectrums = [[],[],[],[],[],[],[],[]];
@@ -86,7 +85,7 @@ function onSample (sample) {
                 return Math.ceil(i * scaler);
             });
 
-        io.emit('openBCIFFT', {
+        io.emit('bci:fft', {
             data: spectrums,
             labels: labels
         });
@@ -101,18 +100,19 @@ function onSample (sample) {
 
     }
 
-    timeSeries.forEach(function (channel, index) {
-        channel.push(voltsToMicrovolts(sample.channelData[index]));
-        channel.shift();
-    });
-
     seriesNumber++;
 
     // Time Series
-    if (seriesNumber === 2) {
-        io.emit('openBCISeries', {
+    if (seriesNumber === timeSeriesRate) {
+
+        timeSeries.forEach(function (channel, index) {
+            channel.push(voltsToMicrovolts(sample.channelData[index]));
+            channel.shift();
+        });
+
+        io.emit('bci:time-series', {
             data: timeSeries,
-            labels: new Array(1250).fill(0)
+            labels: new Array((sampleRate * timeSeriesWindow) / timeSeriesRate).fill(0)
         });
         seriesNumber = 0;
     }

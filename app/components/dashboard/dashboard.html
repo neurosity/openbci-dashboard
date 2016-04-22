@@ -3,24 +3,8 @@
     <h1>OpenBCI Dashboard</h1>
 
     <article class="row">
-        <base-chart class="chart block-100"
-                    [data]="lineChartData"
-                    [labels]="lineChartLabels"
-                    [options]="lineChartOptions"
-                    [colours]="lineChartColours"
-                    [series]="lineChartSeries"
-                    [chartType]="lineChartType">
-        </base-chart>
-    </article>
-
-    <article class="row">
-        <bci-beta class="block block-33"></bci-beta>
-        <bci-theta class="block block-33"></bci-theta>
-        <bci-alpha class="block block-33"></bci-alpha>
-    </article>
-
-    <article class="row">
-        <bci-delta class="block block-25"></bci-delta>
+        <time-series class="block-50"></time-series>
+        <frequency class="block-50"></frequency>
     </article>
 
 </section>

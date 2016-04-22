@@ -21,6 +21,12 @@ h1 {
   font-weight: 300;
 }
 
+:host::shadow .chart {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 .row {
   display: flex;
 }
