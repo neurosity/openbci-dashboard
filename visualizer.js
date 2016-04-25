@@ -72,18 +72,12 @@ var timeSeriesRate = 10; // skips every 10 samples
 var seriesNumber = 0;
 var timeSeries = new Array(8).fill([]); // 8 channels
 
-// x coordinates of the data
-var pos_x = [1,5,10];
-
-// y coordinates of the data
-var pos_y = [1,5,10];
-
-// the data values
-var data = [1,10,1];
-
 // the parameters for the grid [x,y,z] where x is the min of the grid, y is the
 // max of the grid and z is the number of points
 var grid_params = [0,10,11];
+var pos_x = [3,7,2,8,0,10,3,7]; // x coordinates of the data
+var pos_y = [0,0,3,3,8,8,10,10]; // y coordinates of the data
+// var data = [10,0,0,0,0,0,-10,30,25]; // the data values
 
 timeSeries = timeSeries.map(function (channel) {
     return new Array((sampleRate * timeSeriesWindow) / timeSeriesRate).fill(0)
@@ -127,7 +121,7 @@ function onSample (sample) {
             });
         });
 
-        grid = topogrid.create(pos_x,pos_y,data,grid_params);
+        grid = topogrid.create(pos_x,pos_y,sample.channelData,grid_params);
 
         io.emit('bci:topo', {
             data: grid
