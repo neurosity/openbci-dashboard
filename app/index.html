@@ -33,23 +33,33 @@
 
             <h1>BCI Dashboard</h1>
 
-            <section class="row">
-                <bci-time class="block block-50"></bci-time>
-                <bci-frequency class="block block-50"></bci-frequency>
+            <nav ng-init="mode = 'frequency'">
+                <button ng-click="mode = 'frequency'">Frequency</button>
+                <button ng-click="mode = 'time'">Time Series</button>
+                <button ng-click="mode = 'filtered'">Frequency Bands</button>
+                <button ng-click="mode = 'topo'">Topo</button>
+            </nav>
+
+            <section class="row" ng-if="mode == 'frequency'">
+                <bci-frequency event-name="bci:fft" class="block block-50"></bci-frequency>
             </section>
 
-            <section class="row">
-                <bci-beta class="block block-33"></bci-beta>
-                <bci-theta class="block block-33"></bci-theta>
+            <section class="row" ng-if="mode == 'time'">
+                <bci-time event-name="bci:time" class="block block-50"></bci-time>
             </section>
 
-            <section class="row">
-                <bci-alpha class="block block-33"></bci-alpha>
-                <bci-delta class="block block-33"></bci-delta>
+            <section class="row" ng-if="mode == 'filtered'">
+                <bci-delta event-name="bci:fft"  class="block block-33"></bci-delta>
+                <bci-theta event-name="bci:fft"  class="block block-33"></bci-theta>
             </section>
 
-            <section class="row">
-                <bci-topo class="block block-33"></bci-topo>
+            <section class="row" ng-if="mode == 'filtered'">
+                <bci-alpha event-name="bci:fft"  class="block block-33"></bci-alpha>
+                <bci-beta event-name="bci:fft"  class="block block-33"></bci-beta>
+            </section>
+
+            <section class="row" ng-if="mode == 'topo'">
+                <bci-topo event-name="bci:topo"  class="block block-50"></bci-topo>
             </section>
 
         </main>

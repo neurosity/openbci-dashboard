@@ -2,9 +2,17 @@
 angular.module('bciDashboard')
     .component('bciTime', {
         templateUrl: 'components/time/time.html',
+        bindings: {
+            eventName: '@'
+        },
         controller: function ($timeout) {
+
             var $ctrl = this;
+
             var socket = io();
+
+            var eventName = 'bci:time';
+
             $ctrl.colors = [
                 { strokeColor: 'rgba(112,185,252,1)' },
                 { strokeColor: 'rgba(116,150,161,1)' },
@@ -15,6 +23,7 @@ angular.module('bciDashboard')
                 { strokeColor: 'rgba(148,159,177,1)' },
                 { strokeColor: 'rgba(182,224,53,1)' }
             ];
+
             $ctrl.options = {
                 animation: false,
                 responsive: true,
@@ -24,12 +33,17 @@ angular.module('bciDashboard')
                 scaleStepWidth: 1,
                 scaleSteps: 700
             };
-            socket.on('bci:time', function (data) {
+
+            socket.on($ctrl.eventName, function (data) {
                 $timeout(function () {
-                    //console.log('time data', data.data);
                     $ctrl.labels = data.labels;
                     $ctrl.data = data.data;
                 });
             });
+
+            $ctrl.$onDestroy = function () {
+                socket.removeListener($ctrl.eventName);
+            };
+
         }
     });

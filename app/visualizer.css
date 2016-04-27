@@ -17,6 +17,49 @@ h1 {
   font-weight: 300;
 }
 
+
+nav {
+  margin-left: 20px;
+}
+
+
+button {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  padding: 8px 20px;
+  text-transform: uppercase;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-right: 2px;
+  cursor: pointer;
+  outline: none;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+nav button:nth-child(1) {
+  background-color: rgba(112,185,252,1);
+}
+
+nav button:nth-child(2) {
+  background-color: rgba(138,219,229,1);
+}
+
+nav button:nth-child(3) {
+  background-color: rgba(162,86,178,1);
+}
+
+nav button:nth-child(4) {
+  background-color: rgba(144,132,246,1);
+}
+
 .row {
   display: flex;
 }
@@ -50,6 +93,10 @@ h1 {
 
 .block-50 {
   width: 50%;
+}
+
+.block-100 {
+  width: 100%;
 }
 
 .time-series-duration {
