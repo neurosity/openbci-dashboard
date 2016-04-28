@@ -111,8 +111,24 @@ function onSample (sample) {
                 return Math.ceil(i * scaler);
             });
 
+        var spectrumsByBand = [];
+        var bands = {
+              delta : [1, 3],
+              theta : [4, 8],
+              alpha : [9, 12],
+              beta : [13, 30]
+        };
+
+        for(band in bands){
+            spectrumsByBand[band] = filterBand(spectrums, labels, bands[band])
+        };
+
         io.emit('bci:fft', {
             data: spectrums,
+            theta: spectrumsByBand.theta.spectrums,
+            delta: spectrumsByBand.delta.spectrums,
+            alpha: spectrumsByBand.alpha.spectrums,
+            beta: spectrumsByBand.beta.spectrums,
             labels: labels
         });
 
@@ -171,6 +187,26 @@ function parseObjectAsArray (obj) {
         array.push(obj[key]);
     });
     return array;
+}
+
+function filterBand(spectrums, labels, range) {
+    if (!spectrums ) return console.log('Please provide spectrums');
+    spectrums = spectrums.map(function (channel) {
+        return channel.filter(function (spectrum, index) {
+            return labels[index] >= range[0] && labels[index] <= range[1];
+        });
+    });
+    spectrums =  [spectrums.map(function (channel) {
+        if (channel.length) {
+            return channel.reduce(function (a, b) {
+                    return a + b;
+                }) / channel.length;
+        } else return channel;
+    })];
+    return {
+        spectrums: spectrums,
+        labels: labels
+    }
 }
 
 /**
