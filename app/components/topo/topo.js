@@ -23,7 +23,7 @@ angular.module('bciDashboard')
 
             socket.on($ctrl.eventName, function (data) {
                 $timeout(function () {
-                    $ctrl.grid = [].concat.apply([], data.data);
+                    $ctrl.grid = data.data;
 
                 });
             });
