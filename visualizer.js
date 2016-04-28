@@ -7,6 +7,7 @@ var OpenBCIBoard = require('openbci-sdk');
 var dsp = require('dsp.js');
 var io = require('socket.io')(http);
 var topogrid = require('topogrid');
+var jStat = require('jstat').jStat;
 
 // Sockets
 io.on('connection', function(socket){
@@ -121,10 +122,15 @@ function onSample (sample) {
             });
         });
 
-        grid = topogrid.create(pos_x,pos_y,sample.channelData,grid_params);
+        var meanSpectrum = spectrums.map(function(channel){
+          return jStat.mean(channel);
+        })
+
+        grid = topogrid.create(pos_x,pos_y,meanSpectrum,grid_params);
+        var grid_flat = [].concat.apply([], grid);
 
         io.emit('bci:topo', {
-            data: grid
+            data: grid_flat
         });
 
         sampleNumber = bins - windowSize;
