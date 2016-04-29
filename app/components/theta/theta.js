@@ -28,10 +28,9 @@ angular.module('bciDashboard')
             };
 
             socket.on($ctrl.eventName, function (data) {
-                var thetaRange = EEGSpectrumUtils.filterBand(data.data, data.labels, [4, 8]);
                 $timeout(function () {
-                    $ctrl.labels = thetaRange.labels;
-                    $ctrl.data = thetaRange.spectrums;
+                  $ctrl.labels = data.labels;
+                  $ctrl.data = data.theta;
                 });
             });
 
