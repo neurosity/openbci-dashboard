@@ -165,11 +165,8 @@ function onSample (sample) {
 
     timeSeries.forEach(function (channel, index) {
         channel.push(
-            offsetForGrid(
-                sample.channelData[index],
-                index
-            )
-        ); // + (index * 200) //voltsToMicrovolts(sample.channelData[index])
+            offsetForGrid(sample.channelData[index], index)
+        );
         channel.shift();
     });
 
@@ -183,6 +180,7 @@ function onSample (sample) {
 
 }
 
+// @TODO: initial dataset is returning messed up values
 function offsetForGrid (amplitude, channelNumber) {
     var scaledAmplitude = amplitude * Math.pow(10, globalScale);
     var offset = 2 * (timeSeries.length - channelNumber) - 1;
