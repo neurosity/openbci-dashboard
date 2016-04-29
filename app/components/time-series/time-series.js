@@ -27,8 +27,6 @@ angular.module('bciDashboard')
                 });
 
                 var smoothie = new SmoothieChart({
-                    //maxValueScale: 1.45,
-                    interpolation: 'linear',
                     millisPerLine: 3000,
                     grid: {
                         fillStyle: '#333333',
@@ -37,22 +35,18 @@ angular.module('bciDashboard')
                         verticalSections: channels.length + 1,
                         borderVisible: false
                     },
-                    //timestampFormatter: SmoothieChart.timeFormatter,
                     maxValue: channels.length * 2,
                     minValue: 0
                 });
 
-                // 200 = 50 samples * 4 millisconds (sample rate)
+                // 200 = 50 samples * 4 milliseconds (sample rate)
                 smoothie.streamTo(element[0].firstChild, 40);
-
-
 
                 channels.forEach(function (channel, i) {
                     smoothie.addTimeSeries(channel, { strokeStyle: colors[i].strokeColor });
                 });
 
                 socket.on(scope.eventName, function (data) {
-                    console.log(data.data);
                     channels.forEach(function (channel, channelNumber) {
                         data.data[channelNumber].forEach(function (amplitude) {
                             channel.append(new Date().getTime(), amplitude);

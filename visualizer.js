@@ -9,6 +9,8 @@ var io = require('socket.io')(http);
 var topogrid = require('topogrid');
 var jStat = require('jstat').jStat;
 
+var globalScale = 1;
+
 // Sockets
 io.on('connection', function(socket){
     console.log('A user connected');
@@ -36,6 +38,7 @@ board.autoFindOpenBCIBoard()
     .then(onBoardFind)
     .catch(function () {
         if (!!(argv._[0] && argv._[0] === 'simulate')) {
+            globalScale = 4;
             board.connect(OpenBCIBoard.OpenBCIConstants.OBCISimulatorPortName)
                 .then(onBoardConnect);
         }
@@ -70,11 +73,13 @@ var sampleNumber = 0;
 var signals = [[],[],[],[],[],[],[],[]];
 
 var timeSeriesWindow = 5; // in seconds
-var timeSeriesRate = 10; // emits time series every 50 samples (adds 200 ms delay because this * sampleInterval  = 200
+var timeSeriesRate = 10; // emits time series every 10 samples (adds 40 ms delay because this * sampleInterval = 40
 var seriesNumber = 0;
 var timeSeries = new Array(8).fill([]); // 8 channels
 timeSeries = timeSeries.map(function () {
-    return new Array((sampleRate * timeSeriesWindow) ).fill(0).map(offsetForGrid); // / timeSeriesRate
+    return new Array((sampleRate * timeSeriesWindow)).fill(0).map(function (amplitude, channelNumber) {
+        return offsetForGrid(amplitude, channelNumber);
+    }); // / timeSeriesRate
 });
 
 // the parameters for the grid [x,y,z] where x is the min of the grid, y is the
@@ -86,8 +91,10 @@ var pos_y = [0,0,3,3,8,8,10,10]; // y coordinates of the data
 
 
 function onSample (sample) {
-    console.log('sample', sample);
+
     sampleNumber++;
+
+    console.log('sample', sample);
 
     Object.keys(sample.channelData).forEach(function (channel, i) {
         signals[i].push(sample.channelData[channel]);
@@ -177,7 +184,9 @@ function onSample (sample) {
 }
 
 function offsetForGrid (amplitude, channelNumber) {
-    return (amplitude * Math.pow(10, 1))  + (2 * (timeSeries.length - channelNumber) - 1);
+    var scaledAmplitude = amplitude * Math.pow(10, globalScale);
+    var offset = 2 * (timeSeries.length - channelNumber) - 1;
+    return parseFloat(scaledAmplitude + offset);
 }
 
 function voltsToMicrovolts (volts, log) {
