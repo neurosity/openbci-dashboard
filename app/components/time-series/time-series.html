@@ -1,0 +1,14 @@
+<section class="time-series">
+    <h2>Time Series</h2>
+    <aside class="time-series-amplitudes">
+        <ul>
+            <li ng-repeat="amplitude in amplitudes track by $index">{{ amplitude }}</li>
+        </ul>
+    </aside>
+    <canvas id="timeSeries" width="1000" height="500" style="margin: 40px 0;"></canvas>
+    <footer class="time-series-duration">
+        <time ng-repeat="second in timeline track by $index" datetime="P1M">
+            <span ng-if="second">-</span>{{ second }}
+        </time>
+    </footer>
+</section>

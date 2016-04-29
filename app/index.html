@@ -42,10 +42,7 @@
             </nav>
 
             <section class="row" ng-if="mode == 'timeSeries'">
-                <section class="time-series">
-                    <h2>Time Series</h2>
-                    <bci-time-series event-name="bci:time" class="block block-100"></bci-time-series>
-                </section>
+                <bci-time-series event-name="bci:time" class="block block-100"></bci-time-series>
             </section>
 
             <section class="row" ng-if="mode == 'frequency'">

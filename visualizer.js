@@ -75,6 +75,7 @@ var signals = [[],[],[],[],[],[],[],[]];
 var timeSeriesWindow = 5; // in seconds
 var timeSeriesRate = 10; // emits time series every 10 samples (adds 40 ms delay because this * sampleInterval = 40
 var seriesNumber = 0;
+var timeline = [5,4,3,2,1,0];
 var timeSeries = new Array(8).fill([]); // 8 channels
 timeSeries = timeSeries.map(function () {
     return new Array((sampleRate * timeSeriesWindow)).fill(0).map(function (amplitude, channelNumber) {
@@ -171,10 +172,18 @@ function onSample (sample) {
     });
 
     if (seriesNumber === timeSeriesRate) {
+
+        var amplitudes = signals.map(function (channel) {
+            return Math.round(voltsToMicrovolts(channel[channel.length - 1])[0] * 100) / 100;
+        });
+
         io.emit('bci:time', {
             data: timeSeries,
+            amplitudes: amplitudes,
+            timeline: timeline,
             labels: new Array((sampleRate * timeSeriesWindow) / timeSeriesRate).fill(0)
         });
+
         seriesNumber = 0;
     }
 
