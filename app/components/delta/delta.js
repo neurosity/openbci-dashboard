@@ -21,10 +21,7 @@ angular.module('bciDashboard')
                 responsive: true,
                 animation: true,
                 animationSteps: 15,
-                scaleOverride: true,
-                scaleStartValue: -4,
-                scaleStepWidth: 2,
-                scaleSteps: 4
+                scaleOverride: true
             };
 
             socket.on($ctrl.eventName, function (data) {
