@@ -9,7 +9,7 @@ var io = require('socket.io')(http);
 var topogrid = require('topogrid');
 var jStat = require('jstat').jStat;
 
-var globalScale = 1;
+var globalScale = 1.5;
 
 // Sockets
 io.on('connection', function(socket){
