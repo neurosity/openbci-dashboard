@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="components/topo/topo.css">
 
         <script src="node_modules/socket.io-client/socket.io.js"></script>
+        <script src="node_modules/smoothie/smoothie.js"></script>
 
         <script src="/node_modules/angular/angular.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.1.1/Chart.js"></script>
@@ -18,6 +19,7 @@
         <script src="lib/chroma.min.js"></script>
 
         <script src="components/frequency/frequency.js"></script>
+        <script src="components/time-series/time-series.js"></script>
         <script src="components/time/time.js"></script>
         <script src="components/alpha/alpha.js"></script>
         <script src="components/delta/delta.js"></script>
@@ -32,19 +34,22 @@
 
             <h1>BCI Dashboard</h1>
 
-            <nav ng-init="mode = 'frequency'">
+            <nav ng-init="mode = 'timeSeries'">
+                <button ng-click="mode = 'timeSeries'">Time Series</button>
                 <button ng-click="mode = 'frequency'">Frequency</button>
-                <button ng-click="mode = 'time'">Time Series</button>
                 <button ng-click="mode = 'filtered'">Frequency Bands</button>
                 <button ng-click="mode = 'topo'">Topo</button>
             </nav>
 
-            <section class="row" ng-if="mode == 'frequency'">
-                <bci-frequency event-name="bci:fft" class="block block-50"></bci-frequency>
+            <section class="row" ng-if="mode == 'timeSeries'">
+                <section class="time-series">
+                    <h2>Time Series</h2>
+                    <bci-time-series event-name="bci:time" class="block block-100"></bci-time-series>
+                </section>
             </section>
 
-            <section class="row" ng-if="mode == 'time'">
-                <bci-time event-name="bci:time" class="block block-50"></bci-time>
+            <section class="row" ng-if="mode == 'frequency'">
+                <bci-frequency event-name="bci:fft" class="block block-50"></bci-frequency>
             </section>
 
             <section class="row" ng-if="mode == 'filtered'">

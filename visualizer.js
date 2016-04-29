@@ -121,7 +121,7 @@ function onSample (sample) {
 
         for(band in bands){
             spectrumsByBand[band] = filterBand(spectrums, labels, bands[band])
-        };
+        }
 
         io.emit('bci:fft', {
             data: spectrums,
@@ -140,7 +140,7 @@ function onSample (sample) {
 
         var meanSpectrum = spectrums.map(function(channel){
           return jStat.mean(channel);
-        })
+        });
 
         grid = topogrid.create(pos_x,pos_y,meanSpectrum,grid_params);
         var grid_flat = [].concat.apply([], grid);
