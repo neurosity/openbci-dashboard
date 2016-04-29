@@ -65,13 +65,17 @@ var bufferSize = 128;
 var windowRefreshRate = 8;
 var windowSize = bins / windowRefreshRate;
 var sampleRate = board.sampleRate();
+var sampleInterval = (1 / sampleRate) * 1000; // in milliseconds (4)
 var sampleNumber = 0;
 var signals = [[],[],[],[],[],[],[],[]];
 
 var timeSeriesWindow = 5; // in seconds
-var timeSeriesRate = 10; // skips every 10 samples
+var timeSeriesRate = 10; // emits time series every 50 samples (adds 200 ms delay because this * sampleInterval  = 200
 var seriesNumber = 0;
 var timeSeries = new Array(8).fill([]); // 8 channels
+timeSeries = timeSeries.map(function () {
+    return new Array((sampleRate * timeSeriesWindow) ).fill(0).map(offsetForGrid); // / timeSeriesRate
+});
 
 // the parameters for the grid [x,y,z] where x is the min of the grid, y is the
 // max of the grid and z is the number of points
@@ -79,10 +83,6 @@ var grid_params = [0,10,11];
 var pos_x = [3,7,2,8,0,10,3,7]; // x coordinates of the data
 var pos_y = [0,0,3,3,8,8,10,10]; // y coordinates of the data
 // var data = [10,0,0,0,0,0,-10,30,25]; // the data values
-
-timeSeries = timeSeries.map(function (channel) {
-    return new Array((sampleRate * timeSeriesWindow) / timeSeriesRate).fill(0)
-});
 
 
 function onSample (sample) {
@@ -153,25 +153,31 @@ function onSample (sample) {
 
     }
 
-
+    // Time Series
     seriesNumber++;
 
-    // Time Series
+    timeSeries.forEach(function (channel, index) {
+        channel.push(
+            offsetForGrid(
+                sample.channelData[index],
+                index
+            )
+        ); // + (index * 200) //voltsToMicrovolts(sample.channelData[index])
+        channel.shift();
+    });
+
     if (seriesNumber === timeSeriesRate) {
-
-        timeSeries.forEach(function (channel, index) {
-            channel.push(voltsToMicrovolts(sample.channelData[index]));
-            channel.shift();
-        });
-
         io.emit('bci:time', {
             data: timeSeries,
             labels: new Array((sampleRate * timeSeriesWindow) / timeSeriesRate).fill(0)
         });
-
         seriesNumber = 0;
     }
 
+}
+
+function offsetForGrid (amplitude, channelNumber) {
+    return (amplitude * Math.pow(10, 1))  + (2 * (timeSeries.length - channelNumber) - 1);
 }
 
 function voltsToMicrovolts (volts, log) {
