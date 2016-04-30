@@ -1,7 +1,8 @@
 <section ng-class="{ loading: !$ctrl.data }">
-    <h2>Frequency</h2>
+    <h2>Frequency <span class="frequency-type">{{ $ctrl.type }}</span></h2>
     <canvas id="frequency"
-            class="chart chart-line"
+            class="chart-base"
+            chart-type="$ctrl.type"
             chart-data="$ctrl.data"
             chart-labels="$ctrl.labels"
             chart-series="$ctrl.series"

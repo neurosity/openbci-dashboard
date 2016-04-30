@@ -3,11 +3,15 @@ angular.module('bciDashboard')
     .component('bciFrequency', {
         templateUrl: 'components/frequency/frequency.html',
         bindings: {
-          eventName: '@'
+            type: '@',
+            eventName: '@'
         },
         controller: function ($timeout) {
 
             var $ctrl = this;
+
+            // Default chart type as fallback
+            $ctrl.type = $ctrl.type || 'Line';
 
             var socket = io();
 
