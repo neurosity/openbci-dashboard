@@ -1,8 +1,14 @@
-<base-chart class="chart"
-            [data]="lineChartData"
-            [labels]="lineChartLabels"
-            [options]="lineChartOptions"
-            [colours]="lineChartColours"
-            [series]="lineChartSeries"
-            [chartType]="lineChartType">
-</base-chart>
+<section class="time-series">
+    <h2>Time Series</h2>
+    <aside class="time-series-amplitudes">
+        <ul>
+            <li *ngFor="amplitude of amplitudes">{{ amplitude }}</li>
+        </ul>
+    </aside>
+    <canvas id="timeSeries" width="1000" height="500" style="margin: 40px 0;"></canvas>
+    <footer class="time-series-duration">
+        <time *ngFor="second of timeline" datetime="P1M">
+            <span [hidden]="!second">-</span>{{ second }}
+        </time>
+    </footer>
+</section>

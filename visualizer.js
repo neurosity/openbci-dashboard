@@ -47,21 +47,34 @@ var bufferSize = 128;
 var windowRefreshRate = 8;
 var windowSize = bins / windowRefreshRate;
 var sampleRate = board.sampleRate();
+var sampleInterval = (1 / sampleRate) * 1000; // in milliseconds (4)
 var sampleNumber = 0;
 var signals = [[],[],[],[],[],[],[],[]];
 
 var timeSeriesWindow = 5; // in seconds
-var timeSeriesRate = 10; // skips every 10 samples
+var timeSeriesRate = 10; // emits time series every 10 samples (adds 40 ms delay because this * sampleInterval = 40
 var seriesNumber = 0;
+var timeline = [5,4,3,2,1,0];
 var timeSeries = new Array(8).fill([]); // 8 channels
-
-timeSeries = timeSeries.map(function (channel) {
-    return new Array((sampleRate * timeSeriesWindow) / timeSeriesRate).fill(0)
+timeSeries = timeSeries.map(function () {
+    return new Array((sampleRate * timeSeriesWindow)).fill(0).map(function (amplitude, channelNumber) {
+        return offsetForGrid(amplitude, channelNumber);
+    }); // / timeSeriesRate
 });
 
+// the parameters for the grid [x,y,z] where x is the min of the grid, y is the
+// max of the grid and z is the number of points
+var grid_params = [0,10,11];
+var pos_x = [3,7,2,8,0,10,3,7]; // x coordinates of the data
+var pos_y = [0,0,3,3,8,8,10,10]; // y coordinates of the data
+// var data = [10,0,0,0,0,0,-10,30,25]; // the data values
+
+
 function onSample (sample) {
-    console.log('sample', sample);
+
     sampleNumber++;
+
+    console.log('sample', sample);
 
     Object.keys(sample.channelData).forEach(function (channel, i) {
         signals[i].push(sample.channelData[channel]);
@@ -85,8 +98,24 @@ function onSample (sample) {
                 return Math.ceil(i * scaler);
             });
 
+        var spectrumsByBand = [];
+        var bands = {
+            delta : [1, 3],
+            theta : [4, 8],
+            alpha : [9, 12],
+            beta : [13, 30]
+        };
+
+        for(band in bands){
+            spectrumsByBand[band] = filterBand(spectrums, labels, bands[band])
+        }
+
         io.emit('bci:fft', {
             data: spectrums,
+            theta: spectrumsByBand.theta.spectrums,
+            delta: spectrumsByBand.delta.spectrums,
+            alpha: spectrumsByBand.alpha.spectrums,
+            beta: spectrumsByBand.beta.spectrums,
             labels: labels
         });
 
@@ -96,28 +125,54 @@ function onSample (sample) {
             });
         });
 
+        var meanSpectrum = spectrums.map(function(channel){
+            return jStat.mean(channel);
+        });
+
+        grid = topogrid.create(pos_x,pos_y,meanSpectrum,grid_params);
+        var grid_flat = [].concat.apply([], grid);
+
+        io.emit('bci:topo', {
+            data: grid_flat
+        });
+
         sampleNumber = bins - windowSize;
 
     }
 
+    // Time Series
     seriesNumber++;
 
-    // Time Series
+    timeSeries.forEach(function (channel, index) {
+        channel.push(
+            offsetForGrid(sample.channelData[index], index)
+        );
+        channel.shift();
+    });
+
     if (seriesNumber === timeSeriesRate) {
 
-        timeSeries.forEach(function (channel, index) {
-            channel.push(voltsToMicrovolts(sample.channelData[index]));
-            channel.shift();
+        var amplitudes = signals.map(function (channel) {
+            return Math.round(voltsToMicrovolts(channel[channel.length - 1])[0] * 100) / 100;
         });
 
-        io.emit('bci:time-series', {
+        io.emit('bci:time', {
             data: timeSeries,
+            amplitudes: amplitudes,
+            timeline: timeline,
             labels: new Array((sampleRate * timeSeriesWindow) / timeSeriesRate).fill(0)
         });
+
         seriesNumber = 0;
     }
 
+}
 
+// @TODO: initial dataset is returning messed up values
+function offsetForGrid (amplitude, channelNumber) {
+    var scaledAmplitude = amplitude * Math.pow(10, globalScale);
+    var offset = 2 * (timeSeries.length - channelNumber) - 1;
+    return parseFloat(scaledAmplitude + offset);
 }
 
 function voltsToMicrovolts (volts, log) {
@@ -133,6 +188,26 @@ function parseObjectAsArray (obj) {
         array.push(obj[key]);
     });
     return array;
+}
+
+function filterBand(spectrums, labels, range) {
+    if (!spectrums ) return console.log('Please provide spectrums');
+    spectrums = spectrums.map(function (channel) {
+        return channel.filter(function (spectrum, index) {
+            return labels[index] >= range[0] && labels[index] <= range[1];
+        });
+    });
+    spectrums =  [spectrums.map(function (channel) {
+        if (channel.length) {
+            return channel.reduce(function (a, b) {
+                    return a + b;
+                }) / channel.length;
+        } else return channel;
+    })];
+    return {
+        spectrums: spectrums,
+        labels: labels
+    }
 }
 
 /**

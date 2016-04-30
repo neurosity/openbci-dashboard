@@ -1,63 +1,77 @@
-import { Component, ViewEncapsulation } from 'angular2/core';
-import { CHART_DIRECTIVES } from '../../services/ng2-charts';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 declare var io: any;
+declare var SmoothieChart: any;
+declare var TimeSeries: any;
+declare var smoothie: any;
 
 @Component({
     selector: 'time-series',
     templateUrl: 'app/components/time-series/time-series.html',
     encapsulation: ViewEncapsulation.None,
-    directives: [CHART_DIRECTIVES]
 })
 
 export class TimeSeriesComponent {
 
     socket: any;
 
-    constructor() {
+    constructor(element: ElementRef) {
+
+        console.log(element);
+
+        this.channels.forEach(function (channel, i) {
+            smoothie.addTimeSeries(channel, { strokeStyle: this.colors[i].strokeColor });
+        });
+
+        smoothie.streamTo(element.nativeElement.querySelector('canvas'), 40);
+
         this.socket = io('http://localhost:8080');
-        this.socket.on('bci:time-series', (data) => {
-            console.log('time-series:data', data);
-            this.lineChartData = data.data;
-            this.lineChartLabels = data.labels;
+        this.socket.on('bci:time', (data) => {
+            updateTimeSeries(data);
         });
     }
 
-    private lineChartType:string = 'Line';
+    updateTimeSeries (data) {
+        this.amplitudes = data.amplitudes;
+        this.timeline = data.timeline;
 
-    private lineChartData:Array<any> = [[]];
+        this.channels.forEach(function (channel, channelNumber) {
+            data.data[channelNumber].forEach(function (amplitude) {
+                channel.append(new Date().getTime(), amplitude);
+            });
+        });
+    }
 
-    private lineChartColours:Array<any> = [
+    private channels: Array<any> = Array(8).fill().map(function () {
+        return new TimeSeries();
+    });
+
+    private colors: Array<any> = [
         { strokeColor: 'rgba(112,185,252,1)' },
         { strokeColor: 'rgba(116,150,161,1)' },
-        { strokeColor: 'rgba(162,86,178,1)' },
+        { strokeColor: 'rgba(162,86,178,1)'  },
         { strokeColor: 'rgba(144,132,246,1)' },
         { strokeColor: 'rgba(138,219,229,1)' },
         { strokeColor: 'rgba(232,223,133,1)' },
         { strokeColor: 'rgba(148,159,177,1)' },
-        { strokeColor: 'rgba(77,83,96,1)' }
+        { strokeColor: 'rgba(182,224,53,1)'  }
     ];
 
-    private lineChartLabels:Array<any> = [];
-    private lineChartSeries:Array<any> = this.generateChannels();
+    private smoothie: any = new SmoothieChart({
+        millisPerLine: 3000,
+        grid: {
+            fillStyle: '#333333',
+            strokeStyle: 'rgba(255,255,255,0.05)',
+            sharpLines: false,
+            verticalSections: this.channels.length,
+            borderVisible: true
+        },
+        labels: {
+            disabled: true
+        },
+        maxValue: this.channels.length * 2,
+        minValue: 0
+    });
 
-    private lineChartOptions:any = {
-        animation: false,
-        responsive: true,
-        pointDot: false,
-        pointDotRadius: 1,
-        pointDotStrokeWidth: 0,
-        datasetFill: false,
-        //scaleOverride: true,
-        scaleStartValue: -2,
-        scaleStepWidth: 1,
-        scaleSteps: 6,
-        barShowStroke: false,
-        barValueSpacing: 1
-    };
-
-    generateChannels () {
-        return Array(8).fill('Channel ').map((item, index) => item + (index + 1));
-    }
 
 }

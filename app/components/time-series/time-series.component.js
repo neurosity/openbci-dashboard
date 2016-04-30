@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../services/ng2-charts'], function(exports_1, context_1) {
+System.register(['@angular/core'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,23 +10,20 @@ System.register(['angular2/core', '../../services/ng2-charts'], function(exports
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, ng2_charts_1;
+    var core_1;
     var TimeSeriesComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
-            },
-            function (ng2_charts_1_1) {
-                ng2_charts_1 = ng2_charts_1_1;
             }],
         execute: function() {
             TimeSeriesComponent = (function () {
-                function TimeSeriesComponent() {
-                    var _this = this;
-                    this.lineChartType = 'Line';
-                    this.lineChartData = [[]];
-                    this.lineChartColours = [
+                function TimeSeriesComponent(element) {
+                    this.channels = Array(8).fill().map(function () {
+                        return new TimeSeries();
+                    });
+                    this.colors = [
                         { strokeColor: 'rgba(112,185,252,1)' },
                         { strokeColor: 'rgba(116,150,161,1)' },
                         { strokeColor: 'rgba(162,86,178,1)' },
@@ -34,42 +31,49 @@ System.register(['angular2/core', '../../services/ng2-charts'], function(exports
                         { strokeColor: 'rgba(138,219,229,1)' },
                         { strokeColor: 'rgba(232,223,133,1)' },
                         { strokeColor: 'rgba(148,159,177,1)' },
-                        { strokeColor: 'rgba(77,83,96,1)' }
+                        { strokeColor: 'rgba(182,224,53,1)' }
                     ];
-                    this.lineChartLabels = [];
-                    this.lineChartSeries = this.generateChannels();
-                    this.lineChartOptions = {
-                        animation: false,
-                        responsive: true,
-                        pointDot: false,
-                        pointDotRadius: 1,
-                        pointDotStrokeWidth: 0,
-                        datasetFill: false,
-                        //scaleOverride: true,
-                        scaleStartValue: -2,
-                        scaleStepWidth: 1,
-                        scaleSteps: 6,
-                        barShowStroke: false,
-                        barValueSpacing: 1
-                    };
+                    this.smoothie = new SmoothieChart({
+                        millisPerLine: 3000,
+                        grid: {
+                            fillStyle: '#333333',
+                            strokeStyle: 'rgba(255,255,255,0.05)',
+                            sharpLines: false,
+                            verticalSections: this.channels.length,
+                            borderVisible: true
+                        },
+                        labels: {
+                            disabled: true
+                        },
+                        maxValue: this.channels.length * 2,
+                        minValue: 0
+                    });
+                    console.log(element);
+                    this.channels.forEach(function (channel, i) {
+                        smoothie.addTimeSeries(channel, { strokeStyle: this.colors[i].strokeColor });
+                    });
+                    smoothie.streamTo(element.nativeElement.querySelector('canvas'), 40);
                     this.socket = io('http://localhost:8080');
-                    this.socket.on('bci:time-series', function (data) {
-                        console.log('time-series:data', data);
-                        _this.lineChartData = data.data;
-                        _this.lineChartLabels = data.labels;
+                    this.socket.on('bci:time', function (data) {
+                        updateTimeSeries(data);
                     });
                 }
-                TimeSeriesComponent.prototype.generateChannels = function () {
-                    return Array(8).fill('Channel ').map(function (item, index) { return item + (index + 1); });
+                TimeSeriesComponent.prototype.updateTimeSeries = function (data) {
+                    this.amplitudes = data.amplitudes;
+                    this.timeline = data.timeline;
+                    this.channels.forEach(function (channel, channelNumber) {
+                        data.data[channelNumber].forEach(function (amplitude) {
+                            channel.append(new Date().getTime(), amplitude);
+                        });
+                    });
                 };
                 TimeSeriesComponent = __decorate([
                     core_1.Component({
                         selector: 'time-series',
                         templateUrl: 'app/components/time-series/time-series.html',
                         encapsulation: core_1.ViewEncapsulation.None,
-                        directives: [ng2_charts_1.CHART_DIRECTIVES]
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [Object])
                 ], TimeSeriesComponent);
                 return TimeSeriesComponent;
             }());

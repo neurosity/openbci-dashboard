@@ -30,9 +30,10 @@ System.register(['angular2/core', 'angular2/common'], function(exports_1, contex
                         template: "<canvas></canvas>",
                         directives: [common_1.CORE_DIRECTIVES, common_1.NgClass]
                     }), 
-                    __metadata('design:paramtypes', [core_1.ElementRef])
+                    __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object])
                 ], Charts);
                 return Charts;
+                var _a;
             }());
             exports_1("Charts", Charts);
             BaseChart = (function () {
@@ -279,9 +280,10 @@ System.register(['angular2/core', 'angular2/common'], function(exports_1, contex
                         template: "\n  <canvas style=\"width: 100%; height: 100%;\" (click)=\"click($event)\" (mousemove)=\"hover($event)\"></canvas>\n  ",
                         directives: [common_1.CORE_DIRECTIVES, common_1.FORM_DIRECTIVES, common_1.NgClass]
                     }), 
-                    __metadata('design:paramtypes', [core_1.ElementRef])
+                    __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object])
                 ], BaseChart);
                 return BaseChart;
+                var _a;
             }());
             exports_1("BaseChart", BaseChart);
             exports_1("CHART_DIRECTIVES", CHART_DIRECTIVES = [Charts, BaseChart]);

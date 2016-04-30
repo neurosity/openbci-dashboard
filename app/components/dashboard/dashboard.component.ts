@@ -1,4 +1,4 @@
-import { Component } from 'angular2/core';
+import { Component } from '@angular2/core';
 import { FrequencyComponent } from '../frequency/frequency.component';
 import { TimeSeriesComponent } from '../time-series/time-series.component';
 

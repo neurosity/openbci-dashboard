@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation} from 'angular2/core';
+import { Component, ViewEncapsulation} from '@angular2/core';
 import { CHART_DIRECTIVES } from '../../services/ng2-charts';
 
 declare var io: any;
