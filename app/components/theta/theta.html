@@ -1,7 +1,6 @@
-<section>
+<section ng-class="{ loading: !$ctrl.data }">
     <h2>Theta</h2>
     <canvas id="theta"
-            ng-if="$ctrl.data"
             class="chart chart-bar"
             chart-data="$ctrl.data"
             chart-labels="$ctrl.series"

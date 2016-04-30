@@ -18,6 +18,13 @@ h1 {
   font-weight: 300;
 }
 
+.loading:after {
+  content: 'Loading...';
+  text-transform: uppercase;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
 
 nav {
   margin-left: 20px;

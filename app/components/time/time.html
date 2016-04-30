@@ -1,10 +1,9 @@
-<section class="time-series">
+<section class="time-series" ng-class="{ loading: !$ctrl.data }">
     <h2>Time</h2>
     <canvas ng-repeat="channel in $ctrl.data track by $index"
             ng-style="{ position: 'absolute', top: ((70 * $index)) + 'px', padding: '20px 0' }"
             height="50"
-            id="channel1"
-            ng-if="$ctrl.data"
+            id="channel{{ $index }}"
             class="chart chart-line"
             chart-data="[channel]"
             chart-labels="$ctrl.labels"
