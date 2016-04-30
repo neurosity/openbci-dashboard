@@ -19,6 +19,7 @@
         <script src="lib/chroma.min.js"></script>
 
         <script src="components/frequency/frequency.js"></script>
+        <script src="components/frequency-radar/frequency-radar.js"></script>
         <script src="components/time-series/time-series.js"></script>
         <script src="components/time/time.js"></script>
         <script src="components/alpha/alpha.js"></script>
@@ -37,6 +38,7 @@
             <nav ng-init="mode = 'timeSeries'">
                 <button ng-click="mode = 'timeSeries'">Time Series</button>
                 <button ng-click="mode = 'frequency'">Frequency</button>
+                <button ng-click="mode = 'frequencyRadar'">Frequency Radar</button>
                 <button ng-click="mode = 'filtered'">Frequency Bands</button>
                 <button ng-click="mode = 'topo'">Topo</button>
             </nav>
@@ -47,6 +49,10 @@
 
             <section class="row" ng-if="mode == 'frequency'">
                 <bci-frequency event-name="bci:fft" class="block block-75"></bci-frequency>
+            </section>
+
+            <section class="row" ng-if="mode == 'frequencyRadar'">
+                <bci-frequency-radar event-name="bci:fft" class="block block-75"></bci-frequency-radar>
             </section>
 
             <section class="row" ng-if="mode == 'filtered'">
