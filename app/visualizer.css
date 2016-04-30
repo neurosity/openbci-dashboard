@@ -24,6 +24,8 @@ h1 {
   position: absolute;
   top: 50%;
   left: 50%;
+  margin: -10px 0 0 -40px;
+  font-size: 12px;
 }
 
 nav {
@@ -93,25 +95,34 @@ nav button:nth-child(4) {
 
 .block-25 {
   width: 25%;
+  min-height: 200px;
 }
 
 .block-33 {
   width: 33%;
+  min-height: 260px;
 }
 
 .block-50 {
   width: 50%;
+  min-height: 400px;
+}
+
+.block-75 {
+  width: 75%;
+  min-height: 580px;
 }
 
 .block-100 {
   width: 100%;
+  min-height: 580px;
 }
 
 .time-series-amplitudes {
   position: absolute;
   right: 20px;
   top: 60px;
-  height: 500px;
+  height: 450px;
   text-align: right;
 }
 .time-series-amplitudes ul {
@@ -127,7 +138,7 @@ nav button:nth-child(4) {
 
 .time-series-duration {
   position: absolute;
-  width: 109%;
+  width: 105%;
   bottom: 22px;
   display: flex;
 }
