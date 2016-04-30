@@ -1,6 +1,6 @@
 # OpenBCI Dashboard
 
-![alt text](/assets/preview2.gif "OpenBCI Dashboard Preview")
+![alt text](/assets/preview3.gif "OpenBCI Dashboard Preview")
 
 A fullstack javascript app for capturing and visualizing OpenBCI EEG data
 
