@@ -30,7 +30,7 @@ angular.module('bciDashboard')
                     millisPerLine: 3000,
                     grid: {
                         fillStyle: '#333333',
-                        strokeStyle: 'rgba(255,255,255,0.05)',
+                        strokeStyle: 'rgba(0,0,0,0.1)',
                         sharpLines: false,
                         verticalSections: channels.length,
                         borderVisible: true

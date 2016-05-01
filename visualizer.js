@@ -75,7 +75,7 @@ var signals = [[],[],[],[],[],[],[],[]];
 var timeSeriesWindow = 5; // in seconds
 var timeSeriesRate = 10; // emits time series every 10 samples (adds 40 ms delay because this * sampleInterval = 40
 var seriesNumber = 0;
-var timeline = [5,4,3,2,1,0];
+var timeline = generateTimeline(20, 2, 's');
 var timeSeries = new Array(8).fill([]); // 8 channels
 timeSeries = timeSeries.map(function () {
     return new Array((sampleRate * timeSeriesWindow)).fill(0).map(function (amplitude, channelNumber) {
@@ -229,6 +229,25 @@ function filterBand(spectrums, labels, range) {
         spectrums: spectrums,
         labels: labels
     }
+}
+
+/**
+ * generateTimeline
+ * @param size
+ * @param skip
+ * @param suffix
+ * @returns {Array.<T>}
+ */
+function generateTimeline (size, skip, suffix) {
+    return new Array(size)
+        .fill(suffix)
+        .map(function (value, index) {
+            return (index ? '-' : '') + index;
+        })
+        .filter(function (value) {
+            return value % skip === 0;
+        })
+        .reverse();
 }
 
 /**

@@ -7,8 +7,6 @@
     </aside>
     <canvas id="timeSeries" width="950" height="450" style="margin: 40px 80px 40px 0;"></canvas>
     <footer class="time-series-duration">
-        <time ng-repeat="second in timeline track by $index" datetime="P1M">
-            <span ng-if="second">-</span>{{ second }}
-        </time>
+        <time ng-repeat="second in timeline track by $index" datetime="P1M">{{ second }}</time>
     </footer>
 </section>
