@@ -10,7 +10,7 @@ angular.module('bciDashboard')
 
                 var socket = io();
 
-                var colors = [
+                scope.colors = [
                     { strokeColor: 'rgba(112,185,252,1)' },
                     { strokeColor: 'rgba(116,150,161,1)' },
                     { strokeColor: 'rgba(162,86,178,1)'  },
@@ -20,6 +20,8 @@ angular.module('bciDashboard')
                     { strokeColor: 'rgba(148,159,177,1)' },
                     { strokeColor: 'rgba(182,224,53,1)'  }
                 ];
+
+                scope.channels = ['CH1','CH2','CH3','CH4','CH5','CH6','CH7','CH8'];
 
                 // Construct time series array with 8 channels
                 var channels = Array(8).fill().map(function () {
@@ -46,9 +48,8 @@ angular.module('bciDashboard')
                 smoothie.streamTo(element[0].querySelector('canvas'), 40);
 
                 channels.forEach(function (channel, i) {
-                    smoothie.addTimeSeries(channel, { strokeStyle: colors[i].strokeColor });
+                    smoothie.addTimeSeries(channel, { strokeStyle: scope.colors[i].strokeColor });
                 });
-
 
                 socket.on(scope.eventName, function (data) {
 
