@@ -37,9 +37,7 @@ angular.module('bciDashboard')
             socket.on($ctrl.eventName, function (data) {
                 $timeout(function () {
                     $ctrl.data = data.data;
-                    $ctrl.labels = data.labels.map(function (label, i) {
-                        return i % 10 === 0 ? label : '';
-                    });
+                    $ctrl.labels = data.labels;
                 });
             });
 

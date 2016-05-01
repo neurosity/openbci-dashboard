@@ -112,11 +112,14 @@ function onSample (sample) {
             spectrums[index] = voltsToMicrovolts(spectrums[index], true);
         });
 
-        var scaler = sampleRate / bins;
-
         var labels = new Array(bins / 2).fill()
-            .map(function (x, i) {
-                return Math.ceil(i * scaler);
+            // Apply scaler
+            .map(function (label, index) {
+                return Math.ceil(index * (sampleRate / bins));
+            })
+            // Skip every 4, add unit
+            .map(function (label, index, labels) {
+                return (index % 4 === 0 || index === (labels.length - 1)) ? label + ' Hz' : '';
             });
 
         var spectrumsByBand = [];
@@ -180,8 +183,7 @@ function onSample (sample) {
         io.emit('bci:time', {
             data: timeSeries,
             amplitudes: amplitudes,
-            timeline: timeline,
-            labels: new Array((sampleRate * timeSeriesWindow) / timeSeriesRate).fill(0)
+            timeline: timeline
         });
 
         seriesNumber = 0;
