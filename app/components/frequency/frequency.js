@@ -32,7 +32,7 @@ angular.module('bciDashboard')
                 animationSteps: 15
             };
 
-            $ctrl.series = ['Channel 1','Channel 2','Channel 3','Channel 4','Channel 5','Channel 6','Channel 7','Channel 8'];
+            $ctrl.series = ['CH1','CH2','CH3','CH4','CH5','CH6','CH7','CH8'];
 
             socket.on($ctrl.eventName, function (data) {
                 $timeout(function () {
