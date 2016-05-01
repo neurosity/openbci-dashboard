@@ -256,15 +256,11 @@ function generateTimeline (size, skip, suffix) {
 function disconnectBoard () {
     board.streamStop()
         .then(function () {
-            setTimeout(function () {
-                board.disconnect().then(function () {
-                    console.log('board disconnected');
-                    process.exit();
-                });
-            }, 50);
+            board.disconnect().then(function () {
+                console.log('board disconnected');
+                process.exit();
+            });
         });
 }
 
-process.on('SIGINT', function () {
-    setTimeout(disconnectBoard, 50);
-});
+process.on('SIGINT', disconnectBoard);
