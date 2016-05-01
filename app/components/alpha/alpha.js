@@ -8,6 +8,7 @@ angular.module('bciDashboard')
         controller: function ($timeout) {
 
             var $ctrl = this;
+
             var socket = io();
 
             $ctrl.colors = [

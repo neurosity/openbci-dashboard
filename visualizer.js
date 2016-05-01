@@ -116,10 +116,6 @@ function onSample (sample) {
             // Apply scaler
             .map(function (label, index) {
                 return Math.ceil(index * (sampleRate / bins));
-            })
-            // Skip every 4, add unit
-            .map(function (label, index, labels) {
-                return (index % 4 === 0 || index === (labels.length - 1)) ? label + ' Hz' : '';
             });
 
         var spectrumsByBand = [];
@@ -133,6 +129,11 @@ function onSample (sample) {
         for(band in bands){
             spectrumsByBand[band] = filterBand(spectrums, labels, bands[band])
         }
+
+        // Skip every 4, add unit
+        labels = labels.map(function (label, index, labels) {
+            return (index % 4 === 0 || index === (labels.length - 1)) ? label + ' Hz' : '';
+        });
 
         io.emit('bci:fft', {
             data: spectrums,
