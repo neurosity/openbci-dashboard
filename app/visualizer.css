@@ -134,6 +134,7 @@ nav button:nth-child(6) {
   height: 450px;
   text-align: right;
   color: rgba(102,102,102,1);
+  font-size: 12px;
 }
 
 .time-series-amplitudes ul {
@@ -149,10 +150,11 @@ nav button:nth-child(6) {
 
 .time-series-duration {
   position: absolute;
-  width: 97%;
+  width: 102%;
   bottom: 22px;
   display: flex;
   color: rgba(102,102,102,1);
+  font-size: 12px;
 }
 
 .time-series-duration time {

@@ -174,7 +174,7 @@ function onSample (sample) {
     if (seriesNumber === timeSeriesRate) {
 
         var amplitudes = signals.map(function (channel) {
-            return Math.round(voltsToMicrovolts(channel[channel.length - 1])[0] * 100) / 100;
+            return (Math.round(voltsToMicrovolts(channel[channel.length - 1])[0])) + ' uV';
         });
 
         io.emit('bci:time', {
@@ -240,12 +240,15 @@ function filterBand(spectrums, labels, range) {
  */
 function generateTimeline (size, skip, suffix) {
     return new Array(size)
-        .fill(suffix)
+        .fill()
         .map(function (value, index) {
-            return (index ? '-' : '') + index;
+            return index;
         })
-        .filter(function (value) {
-            return value % skip === 0;
+        .filter(function (value, index) {
+            return index % skip === 0;
+        })
+        .map(function (value) {
+            return (value ? '-' : '') + value + suffix;
         })
         .reverse();
 }
