@@ -1,9 +1,9 @@
-<section class="time-series" ng-class="{ loading: !amplitudes }">
+<section class="time-series" ng-class="{ loading: !$ctrl.amplitudes }">
     <h2>Time Series</h2>
     <aside class="time-series-channels">
         <ul>
-            <li ng-repeat="channel in channels track by $index"
-                ng-style="{ 'color': colors[$index].strokeColor }">
+            <li ng-repeat="channel in $ctrl.channels track by $index"
+                ng-style="{ 'color': $ctrl.colors[$index].strokeColor }">
                 {{ channel }}
             </li>
         </ul>
@@ -11,16 +11,16 @@
     <canvas id="timeSeries" width="950" height="450"></canvas>
     <aside class="time-series-amplitudes">
         <ul>
-            <li ng-repeat="amplitude in amplitudes track by $index"
-                ng-style="{ 'color': colors[$index].strokeColor }">
+            <li ng-repeat="amplitude in $ctrl.amplitudes track by $index"
+                ng-style="{ 'color': $ctrl.colors[$index].strokeColor }">
                 {{ amplitude }}
             </li>
         </ul>
     </aside>
     <footer class="time-series-duration">
-        <time ng-repeat="second in timeline track by $index"
+        <time ng-repeat="time in $ctrl.timeline track by $index"
               datetime="P1M">
-            {{ second }}
+            {{ time }}
         </time>
     </footer>
 </section>

@@ -1,16 +1,41 @@
 
-angular.module('bciDashboard')
-    .directive('bciTimeSeries', function () {
+(function () {
+
+    angular.module('bciDashboard')
+        .directive('bciTimeSeries', bciTimeSeries);
+
+    function bciTimeSeries() {
+
+        var timeSeries = new SmoothieChart({
+            millisPerLine: 3000,
+            grid: {
+                fillStyle: '#333333',
+                strokeStyle: 'rgba(0,0,0,0.1)',
+                sharpLines: false,
+                verticalSections: 8,
+                borderVisible: true
+            },
+            labels: {
+                disabled: true
+            },
+            maxValue: 8 * 2,
+            minValue: 0
+        });
+
         return {
             templateUrl: 'components/time-series/time-series.html',
             scope: {
                 eventName: '@'
             },
-            link: function (scope, element) {
+            bindToController: true,
+            controllerAs: '$ctrl',
+            controller: function ($timeout) {
+
+                var $ctrl = this;
 
                 var socket = io();
 
-                scope.colors = [
+                $ctrl.colors = [
                     { strokeColor: 'rgba(112,185,252,1)' },
                     { strokeColor: 'rgba(116,150,161,1)' },
                     { strokeColor: 'rgba(162,86,178,1)'  },
@@ -21,54 +46,42 @@ angular.module('bciDashboard')
                     { strokeColor: 'rgba(182,224,53,1)'  }
                 ];
 
-                scope.channels = ['CH1','CH2','CH3','CH4','CH5','CH6','CH7','CH8'];
+                $ctrl.channels = ['CH1','CH2','CH3','CH4','CH5','CH6','CH7','CH8'];
 
-                // Construct time series array with 8 channels
-                var channels = Array(8).fill().map(function () {
+                // Construct time series array with 8 lines
+                var lines = Array(8).fill().map(function () {
                     return new TimeSeries();
                 });
 
-                var smoothie = new SmoothieChart({
-                    millisPerLine: 3000,
-                    grid: {
-                        fillStyle: '#333333',
-                        strokeStyle: 'rgba(0,0,0,0.1)',
-                        sharpLines: false,
-                        verticalSections: channels.length,
-                        borderVisible: true
-                    },
-                    labels: {
-                        disabled: true
-                    },
-                    maxValue: channels.length * 2,
-                    minValue: 0
+                lines.forEach(function (line, index) {
+                    timeSeries.addTimeSeries(line, { strokeStyle: $ctrl.colors[index].strokeColor });
                 });
 
-                // 200 = 50 samples * 4 milliseconds (sample rate)
-                smoothie.streamTo(element[0].querySelector('canvas'), 40);
+                socket.on($ctrl.eventName, function (data) {
 
-                channels.forEach(function (channel, i) {
-                    smoothie.addTimeSeries(channel, { strokeStyle: scope.colors[i].strokeColor });
-                });
-
-                socket.on(scope.eventName, function (data) {
-
-                    scope.$evalAsync(function () {
-                        scope.amplitudes = data.amplitudes;
-                        scope.timeline = data.timeline;
+                    $timeout(function () {
+                        $ctrl.amplitudes = data.amplitudes;
+                        $ctrl.timeline = data.timeline;
                     });
 
-                    channels.forEach(function (channel, channelNumber) {
-                        data.data[channelNumber].forEach(function (amplitude) {
-                            channel.append(new Date().getTime(), amplitude);
+                    lines.forEach(function (line, index) {
+                        data.data[index].forEach(function (amplitude) {
+                            line.append(new Date().getTime(), amplitude);
                         });
                     });
+
                 });
 
-                scope.$onDestroy = function () {
-                    socket.removeListener(scope.eventName);
+                $ctrl.$onDestroy = function () {
+                    socket.removeListener($ctrl.eventName);
                 };
 
+            },
+            link: function (scope, element) {
+                // 200 = 50 samples * 4 milliseconds (sample rate)
+                timeSeries.streamTo(element[0].querySelector('canvas'), 40);
             }
         }
-    });
+    }
+
+})();
