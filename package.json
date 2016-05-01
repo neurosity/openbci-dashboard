@@ -20,7 +20,7 @@
     "express": "^4.13.4",
     "jstat": "^1.5.2",
     "nodemon": "^1.9.1",
-    "openbci-sdk": "^0.2.0",
+    "openbci-sdk": "^0.3.4",
     "smoothie": "^1.27.0",
     "socket.io": "^1.4.5",
     "socket.io-client": "^1.4.5",
