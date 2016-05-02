@@ -1,6 +1,7 @@
 
-angular.module('bciDashboard')
-    .component('bciAlpha', {
+(function () {
+
+    var BCIAlpha = {
         templateUrl: 'components/alpha/alpha.html',
         bindings: {
             eventName: '@'
@@ -35,4 +36,9 @@ angular.module('bciDashboard')
             };
 
         }
-    });
+    };
+
+    angular.module('bciDashboard')
+        .component('bciAlpha', BCIAlpha);
+
+})();

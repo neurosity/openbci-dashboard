@@ -1,6 +1,7 @@
 
-angular.module('bciDashboard')
-    .component('bciBeta', {
+(function () {
+
+    var BCIBeta = {
         templateUrl: 'components/beta/beta.html',
         bindings: {
             eventName: '@'
@@ -25,8 +26,8 @@ angular.module('bciDashboard')
 
             socket.on($ctrl.eventName, function (data) {
                 $timeout(function () {
-                  $ctrl.labels = data.labels;
-                  $ctrl.data = data.beta;
+                    $ctrl.labels = data.labels;
+                    $ctrl.data = data.beta;
                 });
             });
 
@@ -35,4 +36,9 @@ angular.module('bciDashboard')
             };
 
         }
-    });
+    };
+
+    angular.module('bciDashboard')
+        .component('bciBeta', BCIBeta);
+
+})();

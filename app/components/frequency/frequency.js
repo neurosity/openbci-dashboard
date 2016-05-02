@@ -1,6 +1,7 @@
 
-angular.module('bciDashboard')
-    .component('bciFrequency', {
+(function () {
+
+    var BCIFrequency = {
         templateUrl: 'components/frequency/frequency.html',
         bindings: {
             type: '@',
@@ -46,4 +47,9 @@ angular.module('bciDashboard')
             };
 
         }
-    });
+    };
+
+    angular.module('bciDashboard')
+        .component('bciFrequency', BCIFrequency);
+
+})();

@@ -1,6 +1,7 @@
 
-angular.module('bciDashboard')
-    .component('bciTheta', {
+(function () {
+
+    var BCITheta = {
         templateUrl: 'components/theta/theta.html',
         bindings: {
             eventName: '@'
@@ -25,8 +26,8 @@ angular.module('bciDashboard')
 
             socket.on($ctrl.eventName, function (data) {
                 $timeout(function () {
-                  $ctrl.labels = data.labels;
-                  $ctrl.data = data.theta;
+                    $ctrl.labels = data.labels;
+                    $ctrl.data = data.theta;
                 });
             });
 
@@ -35,4 +36,9 @@ angular.module('bciDashboard')
             };
 
         }
-    });
+    };
+
+    angular.module('bciDashboard')
+        .component('bciTheta', BCITheta);
+
+})();
