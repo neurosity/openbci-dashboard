@@ -37,7 +37,8 @@
         }
     };
 
-    angular.module('bciDashboard')
+    angular
+        .module('bciDashboard')
         .component('bciTopo', BCITopo);
 
 })();

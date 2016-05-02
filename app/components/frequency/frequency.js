@@ -49,7 +49,8 @@
         }
     };
 
-    angular.module('bciDashboard')
+    angular
+        .module('bciDashboard')
         .component('bciFrequency', BCIFrequency);
 
 })();

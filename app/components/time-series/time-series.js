@@ -1,7 +1,8 @@
 
 (function () {
 
-    angular.module('bciDashboard')
+    angular
+        .module('bciDashboard')
         .directive('bciTimeSeries', bciTimeSeries);
 
     function bciTimeSeries() {

@@ -38,7 +38,8 @@
         }
     };
 
-    angular.module('bciDashboard')
+    angular
+        .module('bciDashboard')
         .component('bciTheta', BCITheta);
 
 })();

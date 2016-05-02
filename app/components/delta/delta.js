@@ -39,7 +39,8 @@
         }
     };
 
-    angular.module('bciDashboard')
+    angular
+        .module('bciDashboard')
         .component('bciDelta', BCIDelta);
 
 })();

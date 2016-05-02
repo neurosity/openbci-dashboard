@@ -1,6 +1,11 @@
 
-angular.module('bciDashboard', ['chart.js'])
-    .config(function (ChartJsProvider) {
+(function () {
+
+    angular
+        .module('bciDashboard', ['chart.js'])
+        .config(bciDashboardConfig);
+
+    function bciDashboardConfig (ChartJsProvider) {
         ChartJsProvider.setOptions({
             animation: false,
             responsive: true,
@@ -19,4 +24,6 @@ angular.module('bciDashboard', ['chart.js'])
             barStrokeWidth: 1,
             strokeColor: 'rgba(116,150,161,1)'
         });
-    });
+    }
+
+})();
