@@ -86,7 +86,6 @@ timeSeries = timeSeries.map(function () {
 
 // the parameters for the grid [x,y,z] where x is the min of the grid, y is the
 // max of the grid and z is the number of points
-var grid_params = [0,10,11];
 var pos_x = [3,7,2,8,0,10,3,7]; // x coordinates of the data
 var pos_y = [0,0,3,3,8,8,10,10]; // y coordinates of the data
 // var data = [10,0,0,0,0,0,-10,30,25]; // the data values
@@ -95,7 +94,7 @@ var pos_y = [0,0,3,3,8,8,10,10]; // y coordinates of the data
 var iirCalculator = new Fili.CalcCascades();
 
 // calculate filter coefficients
-var iirFilterCoeffs = iirCalculator.bandstop({
+var notchFilterCoeffs = iirCalculator.bandstop({
     order: 2, // cascade 3 biquad filters (max: 12)
     characteristic: 'butterworth',
     Fs: 250, // sampling frequency
@@ -106,9 +105,30 @@ var iirFilterCoeffs = iirCalculator.bandstop({
     preGain: false // adds one constant multiplication for highpass and lowpass
     // k = (1 + cos(omega)) * 0.5 / k = 1 with preGain == false
   });
-
 // create a filter instance from the calculated coeffs
-var iirFilter = new Fili.IirFilter(iirFilterCoeffs);
+var notchFilter = new Fili.IirFilter(notchFilterCoeffs);
+
+var hpFilterCoeffs = iirCalculator.highpass({
+    order: 3, // cascade 3 biquad filters (max: 12)
+    characteristic: 'butterworth',
+    Fs: 250, // sampling frequency
+    Fc: 1,
+    gain: 0, // gain for peak, lowshelf and highshelf
+    preGain: false // adds one constant multiplication for highpass and lowpass
+    // k = (1 + cos(omega)) * 0.5 / k = 1 with preGain == false
+  });
+var hpFilter = new Fili.IirFilter(hpFilterCoeffs);
+
+var lpFilterCoeffs = iirCalculator.lowpass({
+    order: 3, // cascade 3 biquad filters (max: 12)
+    characteristic: 'butterworth',
+    Fs: 250, // sampling frequency
+    Fc: 50,
+    gain: 0, // gain for peak, lowshelf and highshelf
+    preGain: false // adds one constant multiplication for highpass and lowpass
+    // k = (1 + cos(omega)) * 0.5 / k = 1 with preGain == false
+  });
+var lpFilter = new Fili.IirFilter(lpFilterCoeffs);
 
 function onSample (sample) {
 
@@ -126,7 +146,9 @@ function onSample (sample) {
 
         signals.forEach(function (signal, index) {
 
-            signal = iirFilter.multiStep(signal);
+            signal = notchFilter.multiStep(signal);
+            signal = lpFilter.multiStep(signal);
+            signal = hpFilter.multiStep(signal);
 
             var fft = new dsp.FFT(bufferSize, sampleRate);
             fft.forward(signal);
