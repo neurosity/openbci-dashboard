@@ -13,9 +13,9 @@
   "author": "Alex Castillo",
   "scripts": {},
   "dependencies": {
-    "angular": "^1.5.3",
-    "angular-chartjs": "0.0.5",
-    "chart.js": "^2.0.0",
+    "angular": "^1.5.5",
+    "angular-chart.js": "^0.10.2",
+    "chart.js": "^1.1.1",
     "dsp.js": "neurojs/dsp.js",
     "express": "^4.13.4",
     "jstat": "^1.5.2",
