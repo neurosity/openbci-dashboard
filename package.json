@@ -18,6 +18,7 @@
     "chart.js": "^1.1.1",
     "dsp.js": "neurojs/dsp.js",
     "express": "^4.13.4",
+    "fili": "^1.2.1",
     "jstat": "^1.5.2",
     "nodemon": "^1.9.1",
     "openbci-sdk": "^0.3.4",
