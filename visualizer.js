@@ -10,6 +10,8 @@ var topogrid = require('topogrid');
 var jStat = require('jstat').jStat;
 
 var globalScale = 1.5;
+var transitionWidth = .5;
+var lowFrequencyCutoff = 1
 
 // Sockets
 io.on('connection', function(socket){
@@ -63,8 +65,7 @@ function onBoardReady () {
     board.on('sample', onSample);
 }
 
-var bins = 128; // Approx .5 second
-var bufferSize = 128;
+var bins = 256; // Approx .5 second
 var windowRefreshRate = 8;
 var windowSize = bins / windowRefreshRate;
 var sampleRate = board.sampleRate();
@@ -106,8 +107,10 @@ function onSample (sample) {
         var spectrums = [[],[],[],[],[],[],[],[]];
 
         signals.forEach(function (signal, index) {
-            var fft = new dsp.FFT(bufferSize, sampleRate);
+            var fft = new dsp.FFT(bins, sampleRate);
             fft.forward(signal);
+            // fft.forward(signal.reverse()); // we should filter forward and backwards for zero-phase filtering
+            // signal.reverse()
             spectrums[index] = parseObjectAsArray(fft.spectrum);
             spectrums[index] = voltsToMicrovolts(spectrums[index], true);
         });
@@ -117,6 +120,35 @@ function onSample (sample) {
             .map(function (label, index) {
                 return Math.ceil(index * (sampleRate / bins));
             });
+
+        // highpass filter
+        var filteredSignals = [[],[],[],[],[],[],[],[]];
+        var filteredLabels = labels.filter(function (label, index){
+          return label <= lowFrequencyCutoff;
+        })
+        ;
+        freqCritIndex = filteredLabels.length;
+
+        highPassFilter = new Array(labels.length).fill(1);
+        transitionWidthIndexLength = Math.ceil(transitionWidth / scaler);
+
+        highPassFilter.map(function (value, index)) {
+          if (index < filteredLabels.length - transitionWidthIndexLength)
+            {
+                return 0
+            }
+        }
+        highPassFilter.map(function (value, index)) {
+          if (freqCrit - transitionWidthIndexLength <= index <= freqCrit - transitionWidthIndexLength)
+            {
+                return .5
+            }
+        }
+
+        spectrums.forEach(function (spectrum, index) {
+          spectrum = highPassFilter * spectrum
+          filteredSignals[index] = fft.reverse(spectrum)
+        }
 
         var spectrumsByBand = [];
         var bands = {
