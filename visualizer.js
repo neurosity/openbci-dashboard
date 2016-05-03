@@ -114,7 +114,7 @@ function onSample (sample) {
 
     sampleNumber++;
 
-    // console.log('sample', sample);
+    console.log('sample', sample);
 
     Object.keys(sample.channelData).forEach(function (channel, i) {
         signals[i].push(sample.channelData[channel]);
