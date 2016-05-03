@@ -14,8 +14,8 @@
   "scripts": {},
   "dependencies": {
     "angular": "^1.5.5",
-    "angular-chart.js": "^0.10.2",
-    "chart.js": "^1.1.1",
+    "angular-chart.js": "^1.0.0-alpha6",
+    "chart.js": "^2.0.2",
     "dsp.js": "neurojs/dsp.js",
     "express": "^4.13.4",
     "jstat": "^1.5.2",

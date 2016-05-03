@@ -12,7 +12,7 @@
             var $ctrl = this;
 
             // Default chart type as fallback
-            $ctrl.type = $ctrl.type || 'Line';
+            $ctrl.type = $ctrl.type || 'line';
 
             var socket = io();
 
@@ -29,7 +29,7 @@
 
             $ctrl.options = {
                 responsive: true,
-                animation: true,
+                //animation: true,
                 animationSteps: 15
             };
 

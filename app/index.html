@@ -3,7 +3,6 @@
     <head>
         <title>BCI Dashboard</title>
 
-        <link rel="stylesheet" href="node_modules/angular-chart.js/dist/angular-chart.css">
         <link rel="stylesheet" href="visualizer.css">
         <link rel="stylesheet" href="components/topo/topo.css">
 
@@ -11,7 +10,7 @@
         <script src="node_modules/smoothie/smoothie.js"></script>
 
         <script src="node_modules/angular/angular.js"></script>
-        <script src="node_modules/chart.js/Chart.js"></script>
+        <script src="node_modules/chart.js/dist/Chart.js"></script>
         <script src="node_modules/angular-chart.js/dist/angular-chart.js"></script>
 
         <script src="visualizer.js"></script>
@@ -46,11 +45,11 @@
             </section>
 
             <section class="row" ng-if="mode == 'frequency'">
-                <bci-frequency type="Line" event-name="bci:fft" class="block block-75"></bci-frequency>
+                <bci-frequency type="line" event-name="bci:fft" class="block block-75"></bci-frequency>
             </section>
 
             <section class="row" ng-if="mode == 'frequencyRadar'">
-                <bci-frequency type="Radar" event-name="bci:fft" class="block block-75"></bci-frequency>
+                <bci-frequency type="radar" event-name="bci:fft" class="block block-75"></bci-frequency>
             </section>
 
             <section class="row" ng-if="mode == 'filtered'">
