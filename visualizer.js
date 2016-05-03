@@ -154,12 +154,6 @@ function onSample (sample) {
           return jStat.mean(channel);
         });
 
-        grid = topogrid.create(pos_x,pos_y,meanSpectrum,grid_params);
-        var grid_flat = [].concat.apply([], grid);
-
-        io.emit('bci:topo', {
-            data: grid_flat
-        });
 
         sampleNumber = bins - windowSize;
 
@@ -188,6 +182,13 @@ function onSample (sample) {
         });
 
         seriesNumber = 0;
+
+        grid = topogrid.create(pos_x,pos_y,sample.channelData,grid_params);
+        var grid_flat = [].concat.apply([], grid);
+
+        io.emit('bci:topo', {
+            data: grid_flat
+        });
     }
 
 }
