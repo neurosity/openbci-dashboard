@@ -8,6 +8,7 @@ var dsp = require('dsp.js');
 var io = require('socket.io')(http);
 var topogrid = require('topogrid');
 var jStat = require('jstat').jStat;
+var Fili = require('fili');
 
 var globalScale = 1.5;
 
@@ -90,12 +91,30 @@ var pos_x = [3,7,2,8,0,10,3,7]; // x coordinates of the data
 var pos_y = [0,0,3,3,8,8,10,10]; // y coordinates of the data
 // var data = [10,0,0,0,0,0,-10,30,25]; // the data values
 
+//  Instance of a filter coefficient calculator
+var iirCalculator = new Fili.CalcCascades();
+
+// calculate filter coefficients
+var iirFilterCoeffs = iirCalculator.bandstop({
+    order: 2, // cascade 3 biquad filters (max: 12)
+    characteristic: 'butterworth',
+    Fs: 250, // sampling frequency
+    Fc: 60,
+    F1: 59,
+    F2: 61,
+    gain: 0, // gain for peak, lowshelf and highshelf
+    preGain: false // adds one constant multiplication for highpass and lowpass
+    // k = (1 + cos(omega)) * 0.5 / k = 1 with preGain == false
+  });
+
+// create a filter instance from the calculated coeffs
+var iirFilter = new Fili.IirFilter(iirFilterCoeffs);
 
 function onSample (sample) {
 
     sampleNumber++;
 
-    console.log('sample', sample);
+    // console.log('sample', sample);
 
     Object.keys(sample.channelData).forEach(function (channel, i) {
         signals[i].push(sample.channelData[channel]);
@@ -106,6 +125,9 @@ function onSample (sample) {
         var spectrums = [[],[],[],[],[],[],[],[]];
 
         signals.forEach(function (signal, index) {
+
+            signal = iirFilter.multiStep(signal);
+
             var fft = new dsp.FFT(bufferSize, sampleRate);
             fft.forward(signal);
             spectrums[index] = parseObjectAsArray(fft.spectrum);
