@@ -71,7 +71,6 @@ var windowSize = bins / windowRefreshRate;
 var sampleRate = board.sampleRate();
 var sampleInterval = (1 / sampleRate) * 1000; // in milliseconds (4)
 var sampleNumber = 0;
-var sampleRate = board.sampleRate();
 var signals = [[],[],[],[],[],[],[],[]];
 var signalsFiltered = [[],[],[],[],[],[],[],[]];
 
@@ -107,7 +106,7 @@ var notchFilterCoeffs = iirCalculator.bandstop({
     gain: 0, // gain for peak, lowshelf and highshelf
     preGain: false // adds one constant multiplication for highpass and lowpass
     // k = (1 + cos(omega)) * 0.5 / k = 1 with preGain == false
-  });
+});
 // create a filter instance from the calculated coeffs
 var notchFilter = new Fili.IirFilter(notchFilterCoeffs);
 
@@ -119,7 +118,8 @@ var hpFilterCoeffs = iirCalculator.highpass({
     gain: 0, // gain for peak, lowshelf and highshelf
     preGain: false // adds one constant multiplication for highpass and lowpass
     // k = (1 + cos(omega)) * 0.5 / k = 1 with preGain == false
-  });
+});
+  
 var hpFilter = new Fili.IirFilter(hpFilterCoeffs);
 
 var lpFilterCoeffs = iirCalculator.lowpass({
@@ -130,7 +130,8 @@ var lpFilterCoeffs = iirCalculator.lowpass({
     gain: 0, // gain for peak, lowshelf and highshelf
     preGain: false // adds one constant multiplication for highpass and lowpass
     // k = (1 + cos(omega)) * 0.5 / k = 1 with preGain == false
-  });
+});
+
 var lpFilter = new Fili.IirFilter(lpFilterCoeffs);
 
 function onSample (sample) {
@@ -141,6 +142,7 @@ function onSample (sample) {
 
     Object.keys(sample.channelData).forEach(function (channel, i) {
         signals[i].push(sample.channelData[channel]);
+        signalsFiltered[i].push(sample.channelData[channel]);
     });
 
     if (sampleNumber === bins) {
@@ -148,16 +150,10 @@ function onSample (sample) {
         var spectrums = [[],[],[],[],[],[],[],[]];
 
         signals.forEach(function (signal, index) {
-
-            signalFiltered = notchFilter.multiStep(signal);
-            signalFiltered = lpFilter.multiStep(signalFiltered);
-            signalFiltered = hpFilter.multiStep(signalFiltered);
-            signalsFiltered[index] = signalFiltered
-
+            signal = notchFilter.multiStep(signal);
             var fft = new dsp.FFT(bufferSize, sampleRate);
             fft.forward(signal);
             spectrums[index] = parseObjectAsArray(fft.spectrum);
-
             spectrums[index] = voltsToMicrovolts(spectrums[index], true);
         });
 
@@ -176,7 +172,7 @@ function onSample (sample) {
               gamma: [30, 100]
         };
 
-        for(band in bands){
+        for (band in bands) {
             spectrumsByBand[band] = filterBand(spectrums, labels, bands[band])
         }
 
@@ -195,7 +191,7 @@ function onSample (sample) {
             labels: labels
         });
 
-        signalsFiltered = signalsFiltered.map(function (channel) {
+        signals = signals.map(function (channel) {
             return channel.filter(function (signal, index) {
                 return index > (windowSize - 1);
             });
@@ -218,6 +214,9 @@ function onSample (sample) {
             offsetForGrid(sample.channelData[index], index)
         );
         channel.shift();
+        channel = notchFilter.multiStep(channel);
+        channel = lpFilter.multiStep(channel);
+        channel = hpFilter.multiStep(channel);
     });
 
     if (seriesNumber === timeSeriesRate) {
