@@ -86,7 +86,7 @@ timeSeries = timeSeries.map(function () {
 
 // the parameters for the grid [x,y,z] where x is the min of the grid, y is the
 // max of the grid and z is the number of points
-grid_params = [0,10,11];
+var grid_params = [0,10,11];
 var pos_x = [3,7,2,8,0,10,3,7]; // x coordinates of the data
 var pos_y = [0,0,3,3,8,8,10,10]; // y coordinates of the data
 // var data = [10,0,0,0,0,0,-10,30,25]; // the data values
