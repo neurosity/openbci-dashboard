@@ -1,0 +1,11 @@
+<section ng-class="{ loading: !$ctrl.data }">
+    <h2 class="capitalize">{{ $ctrl.type }}</h2>
+    <canvas id="frequency-band-{{ $ctrl.type }}"
+            class="chart chart-bar"
+            chart-data="$ctrl.data"
+            chart-labels="$ctrl.channels"
+            chart-series="$ctrl.channels"
+            chart-options="$ctrl.options"
+            chart-colours="$ctrl.colors">
+    </canvas>
+</section>
