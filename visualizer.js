@@ -4,7 +4,8 @@ var path = require('path');
 var http = require('http').Server(app);
 var argv = require('yargs').argv;
 var OpenBCIBoard = require('openbci-sdk');
-var dsp = require('dsp.js');
+var Fili = require('fili');
+var iirCalculator = new Fili.CalcCascades();
 var io = require('socket.io')(http);
 var topogrid = require('topogrid');
 var jStat = require('jstat').jStat;
@@ -95,7 +96,7 @@ function onSample (sample) {
 
     sampleNumber++;
 
-    console.log('sample', sample);
+    // console.log('sample', sample);
 
     Object.keys(sample.channelData).forEach(function (channel, i) {
         signals[i].push(sample.channelData[channel]);
@@ -106,10 +107,11 @@ function onSample (sample) {
         var spectrums = [[],[],[],[],[],[],[],[]];
 
         signals.forEach(function (signal, index) {
-            var fft = new dsp.FFT(bufferSize, sampleRate);
-            fft.forward(signal);
-            spectrums[index] = parseObjectAsArray(fft.spectrum);
-            spectrums[index] = voltsToMicrovolts(spectrums[index], true);
+            var fft = new Fili.Fft(128);
+            var fftResult = fft.forward(signal, 'hanning');
+            var magnitude = fft.magnitude(fftResult)
+            var dB = fft.magToDb(magnitude);
+            spectrums[index] = dB;
         });
 
         var labels = new Array(bins / 2).fill()
