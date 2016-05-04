@@ -165,10 +165,11 @@ function onSample (sample) {
 
         var spectrumsByBand = [];
         var bands = {
-              delta : [1, 3],
-              theta : [4, 8],
-              alpha : [9, 12],
-              beta : [13, 30]
+              delta: [1, 3],
+              theta: [4, 8],
+              alpha: [8, 12],
+              beta: [13, 30],
+              gamma: [30, 100]
         };
 
         for(band in bands){
@@ -186,6 +187,7 @@ function onSample (sample) {
             delta: spectrumsByBand.delta.spectrums,
             alpha: spectrumsByBand.alpha.spectrums,
             beta: spectrumsByBand.beta.spectrums,
+            gamma: spectrumsByBand.gamma.spectrums,
             labels: labels
         });
 
