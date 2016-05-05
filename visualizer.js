@@ -72,7 +72,6 @@ var sampleRate = board.sampleRate();
 var sampleInterval = (1 / sampleRate) * 1000; // in milliseconds (4)
 var sampleNumber = 0;
 var signals = [[],[],[],[],[],[],[],[]];
-var signalsFiltered = [[],[],[],[],[],[],[],[]];
 
 var timeSeriesWindow = 5; // in seconds
 var timeSeriesRate = 10; // emits time series every 10 samples (adds 40 ms delay because this * sampleInterval = 40
@@ -142,7 +141,6 @@ function onSample (sample) {
 
     Object.keys(sample.channelData).forEach(function (channel, i) {
         signals[i].push(sample.channelData[channel]);
-        signalsFiltered[i].push(sample.channelData[channel]);
     });
 
     if (sampleNumber === bins) {
@@ -214,14 +212,11 @@ function onSample (sample) {
             offsetForGrid(sample.channelData[index], index)
         );
         channel.shift();
-        channel = notchFilter.multiStep(channel);
-        channel = lpFilter.multiStep(channel);
-        channel = hpFilter.multiStep(channel);
     });
 
     if (seriesNumber === timeSeriesRate) {
 
-        var amplitudes = signalsFiltered.map(function (channel) {
+        var amplitudes = signals.map(function (channel) {
             return (Math.round(voltsToMicrovolts(channel[channel.length - 1])[0])) + ' uV';
         });
 
