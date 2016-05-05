@@ -1,6 +1,6 @@
 <section ng-class="{ loading: !$ctrl.data }">
-    <h2>Alpha</h2>
-    <canvas id="alpha"
+    <h2 class="capitalize">{{ $ctrl.type }}</h2>
+    <canvas id="frequency-band-{{ $ctrl.type }}"
             class="chart chart-bar"
             chart-data="$ctrl.data"
             chart-labels="$ctrl.channels"

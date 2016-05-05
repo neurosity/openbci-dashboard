@@ -18,6 +18,10 @@ h1 {
   font-weight: 300;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
 .loading:after {
   content: 'Loading...';
   text-transform: uppercase;

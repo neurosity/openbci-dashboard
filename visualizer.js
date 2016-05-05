@@ -98,37 +98,39 @@ var iirCalculator = new Fili.CalcCascades();
 var notchFilterCoeffs = iirCalculator.bandstop({
     order: 2, // cascade 3 biquad filters (max: 12)
     characteristic: 'butterworth',
-    Fs: 250, // sampling frequency
+    Fs: sampleRate, // sampling frequency
     Fc: 60,
     F1: 59,
     F2: 61,
     gain: 0, // gain for peak, lowshelf and highshelf
     preGain: false // adds one constant multiplication for highpass and lowpass
     // k = (1 + cos(omega)) * 0.5 / k = 1 with preGain == false
-  });
+});
 // create a filter instance from the calculated coeffs
 var notchFilter = new Fili.IirFilter(notchFilterCoeffs);
 
 var hpFilterCoeffs = iirCalculator.highpass({
     order: 3, // cascade 3 biquad filters (max: 12)
     characteristic: 'butterworth',
-    Fs: 250, // sampling frequency
+    Fs: sampleRate, // sampling frequency
     Fc: 1,
     gain: 0, // gain for peak, lowshelf and highshelf
     preGain: false // adds one constant multiplication for highpass and lowpass
     // k = (1 + cos(omega)) * 0.5 / k = 1 with preGain == false
-  });
+});
+  
 var hpFilter = new Fili.IirFilter(hpFilterCoeffs);
 
 var lpFilterCoeffs = iirCalculator.lowpass({
     order: 3, // cascade 3 biquad filters (max: 12)
     characteristic: 'butterworth',
-    Fs: 250, // sampling frequency
+    Fs: sampleRate, // sampling frequency
     Fc: 50,
     gain: 0, // gain for peak, lowshelf and highshelf
     preGain: false // adds one constant multiplication for highpass and lowpass
     // k = (1 + cos(omega)) * 0.5 / k = 1 with preGain == false
-  });
+});
+
 var lpFilter = new Fili.IirFilter(lpFilterCoeffs);
 
 function onSample (sample) {
@@ -146,11 +148,7 @@ function onSample (sample) {
         var spectrums = [[],[],[],[],[],[],[],[]];
 
         signals.forEach(function (signal, index) {
-
             signal = notchFilter.multiStep(signal);
-            signal = lpFilter.multiStep(signal);
-            signal = hpFilter.multiStep(signal);
-
             var fft = new dsp.FFT(bufferSize, sampleRate);
             fft.forward(signal);
             spectrums[index] = parseObjectAsArray(fft.spectrum);
@@ -165,13 +163,14 @@ function onSample (sample) {
 
         var spectrumsByBand = [];
         var bands = {
-              delta : [1, 3],
-              theta : [4, 8],
-              alpha : [9, 12],
-              beta : [13, 30]
+              delta: [1, 3],
+              theta: [4, 8],
+              alpha: [8, 12],
+              beta: [13, 30],
+              gamma: [30, 100]
         };
 
-        for(band in bands){
+        for (band in bands) {
             spectrumsByBand[band] = filterBand(spectrums, labels, bands[band])
         }
 
@@ -186,6 +185,7 @@ function onSample (sample) {
             delta: spectrumsByBand.delta.spectrums,
             alpha: spectrumsByBand.alpha.spectrums,
             beta: spectrumsByBand.beta.spectrums,
+            gamma: spectrumsByBand.gamma.spectrums,
             labels: labels
         });
 
