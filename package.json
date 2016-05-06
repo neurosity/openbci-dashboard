@@ -7,8 +7,9 @@
   "license": "MIT",
   "keywords": [
     "openbci",
-    "fft",
-    "chartjs"
+    "eeg",
+    "neurojs",
+    "dashboard"
   ],
   "author": "Alex Castillo",
   "scripts": {},
