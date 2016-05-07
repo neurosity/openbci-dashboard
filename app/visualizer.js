@@ -20,7 +20,6 @@
             scaleSteps: 6,
             barShowStroke: false,
             barValueSpacing: 1,
-            barShowStroke: true,
             barStrokeWidth: 1,
             strokeColor: 'rgba(116,150,161,1)'
         });
