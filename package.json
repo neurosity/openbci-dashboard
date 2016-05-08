@@ -12,7 +12,10 @@
     "dashboard"
   ],
   "author": "Alex Castillo",
-  "scripts": {},
+  "scripts": {
+    "start": "node visualizer",
+    "simulate": "node visualizer simulate"
+  },
   "repository": {
     "type": "git",
     "url": "git@github.com:NeuroJS/openbci-dashboard.git"
