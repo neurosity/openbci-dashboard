@@ -13,7 +13,7 @@ This project is under development, this is just a first draft.
 
 ```bash
 npm install
-node visualizer
+node start
 ```
 
 * Go to: http://localhost:3060
@@ -21,7 +21,7 @@ node visualizer
 ## Simulating data
 
 ```bash
-node visualizer simulate
+node run simulate
 ```
 
 ## Support
