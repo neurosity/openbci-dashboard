@@ -1,0 +1,66 @@
+
+.time-series {
+    position: relative;    
+}
+
+.time-series canvas {
+  margin: 40px 80px 40px 40px;
+}
+
+.time-series-channels,
+.time-series-amplitudes {
+  position: absolute;
+  top: 60px;
+  height: 450px;
+  color: rgba(102,102,102,1);
+  font-size: 12px;
+}
+
+.time-series-channels {
+  width: 40px;
+  left: 20px;
+  text-align: left;
+  color: #000000;
+  font-weight: 500;
+}
+
+.time-series-amplitudes {
+  right: 20px;
+  text-align: right;
+}
+
+.time-series-channels ul {
+  width: 100%;
+}
+
+.time-series-channels li {
+  width: 100%;
+  height: 100%;
+  padding-top: 20px;
+}
+
+.time-series-channels ul,
+.time-series-amplitudes ul {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  flex-direction: column;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.time-series-duration {
+  position: absolute;
+  left: 50px;
+  width: 98%;
+  bottom: 22px;
+  display: flex;
+  color: rgba(102,102,102,1);
+  font-size: 12px;
+}
+
+.time-series-duration time {
+  width: 20%;
+}

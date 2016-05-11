@@ -1,11 +1,8 @@
-var express = require('express');
-var app = express();
 var path = require('path');
-var http = require('http').Server(app);
 var argv = require('yargs').argv;
 var OpenBCIBoard = require('openbci-sdk');
 var dsp = require('dsp.js');
-var io = require('socket.io')(http);
+var io = require('socket.io')(process.env.app_port || 8080);
 var topogrid = require('topogrid');
 var jStat = require('jstat').jStat;
 var Fili = require('fili');
@@ -15,19 +12,6 @@ var globalScale = 1.5;
 // Sockets
 io.on('connection', function(socket){
     console.log('A user connected');
-});
-
-// Server
-app.use(express.static(path.join(__dirname, '/app')));
-
-app.use('/node_modules', express.static(path.join(__dirname, '/node_modules')));
-
-app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, '/app/index.html'));
-});
-
-http.listen(3060, function () {
-    console.log('listening on port 3060');
 });
 
 // OpenBCI

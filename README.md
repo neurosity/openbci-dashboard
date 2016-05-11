@@ -13,15 +13,15 @@ This project is under development, this is just a first draft.
 
 ```bash
 npm install
-node start
+npm run visualize
 ```
 
-* Go to: http://localhost:3060
+* Go to: http://localhost:4200
 
 ## Simulating data
 
 ```bash
-node run simulate
+npm run simulate
 ```
 
 ## Support

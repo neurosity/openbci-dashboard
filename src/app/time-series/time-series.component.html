@@ -1,0 +1,26 @@
+<section class="time-series" [ngClass]="{ 'loading': !amplitudes }">
+    <h2>Time Series</h2>
+    <aside class="time-series-channels">
+        <ul>
+            <li *ngFor="let channel of channels, let i = index"
+                [ngStyle]="{ 'color': colors[i].strokeColor }">
+                {{ channel }}
+            </li>
+        </ul>
+    </aside>
+    <canvas id="timeSeries" width="950" height="450"></canvas>
+    <aside class="time-series-amplitudes">
+        <ul>
+            <li *ngFor="let amplitude of amplitudes, let i = index"
+                [ngStyle]="{ 'color': colors[i].strokeColor }">
+                {{ amplitude }}
+            </li>
+        </ul>
+    </aside>
+    <footer class="time-series-duration">
+        <time *ngFor="let time of timeline"
+              datetime="P1M">
+            {{ time }}
+        </time>
+    </footer>
+</section>
