@@ -5,6 +5,44 @@ export class ChartService {
 
   constructor() {}
   
+  getChartJSDefaults (overrides: any = {}): any {
+    return Object.assign({
+      responsive: true,
+      animation: false,
+      animationSteps: 15,
+      datasetStrokeWidth: 1,
+      pointDot: false,
+      pointDotRadius: 1,
+      pointDotStrokeWidth: 0,
+      datasetFill: false,
+      scaleOverride: true,
+      scaleStartValue: -2,
+      scaleStepWidth: 1,
+      scaleSteps: 6,
+      barShowStroke: false,
+      barValueSpacing: 1,
+      barStrokeWidth: 1
+    }, overrides);
+  }
+  
+  getChartSmoothieDefaults (overrides: any = {}): any {
+    return Object.assign({
+        millisPerLine: 3000,
+        grid: {
+            fillStyle: '#333333',
+            strokeStyle: 'rgba(0,0,0,0.1)',
+            sharpLines: false,
+            verticalSections: this.getChannels().length,
+            borderVisible: true
+        },
+        labels: {
+            disabled: true
+        },
+        maxValue: this.getChannels().length * 2,
+        minValue: 0
+    }, overrides);
+  }
+  
   getChannels (): Array<string> {
     return Array(8).fill('CH').map((item, index) => item + (index + 1));
   }

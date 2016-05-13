@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, Input } from '@angular/core';
 import * as io from 'socket.io-client';
 import { ChartService } from '../shared';
 import { CHART_DIRECTIVES } from '../shared/ng2-charts';
+import { Constants } from '../shared/constants';
 
 @Component({
   moduleId: module.id,
@@ -9,15 +10,17 @@ import { CHART_DIRECTIVES } from '../shared/ng2-charts';
   templateUrl: 'frequency-band.component.html',
   styleUrls: ['frequency-band.component.css'],
   directives: [CHART_DIRECTIVES],
-  providers: [ChartService]
+  providers: [ChartService, Constants]
 })
 
 export class FrequencyBandComponent implements OnInit {
 
   socket: any;
-  constructor(private view: ElementRef, private chartService: ChartService) {
+  constructor(private view: ElementRef, 
+              private chartService: ChartService, 
+              private constants: Constants) {
     this.view = view;
-    this.socket = io('http://localhost:8080');
+    this.socket = io(constants.socket.url);
   }
   
   @Input() public type:string;
@@ -27,28 +30,13 @@ export class FrequencyBandComponent implements OnInit {
   private data:Array<any> = [[]];
   private colors:Array<any>;
   private channels:Array<string> = this.chartService.getChannels();
-
-  private options:any = {
-      responsive: false,
-      animation: false,
-      animationSteps: 15,
-      datasetStrokeWidth: 1,
-      pointDot: false,
-      pointDotRadius: 1,
-      pointDotStrokeWidth: 0,
-      datasetFill: false,
-      scaleOverride: true,
-      scaleStartValue: -2,
-      scaleStepWidth: 1,
-      scaleSteps: 6,
-      barShowStroke: false,
-      barValueSpacing: 1,
-      barStrokeWidth: 1
-  };
+  private options:any = this.chartService.getChartJSDefaults({
+    responsive: false
+  });
   
   ngOnInit() {    
     this.colors = this.chartService.getColorByIndex(this.color);
-    this.socket.on('bci:fft', (data) => {
+    this.socket.on(this.constants.socket.events.fft, (data) => {
       this.data = data[this.band || 'data'];
     });
   }

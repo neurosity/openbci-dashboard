@@ -2,39 +2,28 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 import { SmoothieChart, TimeSeries } from 'smoothie';
 import { ChartService } from '../shared';
 import * as io from 'socket.io-client';
+import { Constants } from '../shared/constants';
 
 @Component({
   moduleId: module.id,
   selector: 'bci-time-series',
   templateUrl: 'time-series.component.html',
   styleUrls: ['time-series.component.css'],
-  providers: [ChartService]
+  providers: [ChartService, Constants]
 })
 
 export class TimeSeriesComponent implements OnInit {
 
   socket: any;
-  constructor(private view: ElementRef, private chartService: ChartService) {
+  constructor(private view: ElementRef, 
+              private chartService: ChartService, 
+              private constants: Constants) {
     this.view = view;
-    this.socket = io('http://localhost:8080');
+    this.socket = io(constants.socket.url);
     this.chartService = chartService;
   }
   
-  private options = {
-      millisPerLine: 3000,
-      grid: {
-          fillStyle: '#333333',
-          strokeStyle: 'rgba(0,0,0,0.1)',
-          sharpLines: false,
-          verticalSections: 8,
-          borderVisible: true
-      },
-      labels: {
-          disabled: true
-      },
-      maxValue: 8 * 2,
-      minValue: 0
-  };
+  private options = this.chartService.getChartSmoothieDefaults();
   
   private timeSeries = new SmoothieChart(this.options);
   private amplitudes = [];
@@ -46,7 +35,7 @@ export class TimeSeriesComponent implements OnInit {
   ngOnInit() {
     this.addTimeSeriesLines();
         
-    this.socket.on('bci:time', (data) => {
+    this.socket.on(this.constants.socket.events.time, (data) => {
       this.amplitudes = data.amplitudes;
       this.timeline = data.timeline;
       this.appendTimeSeriesLines(data.data);
