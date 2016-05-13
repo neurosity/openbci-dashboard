@@ -1,0 +1,100 @@
+* {
+  box-sizing: border-box;
+}
+
+:host {
+  display: block;
+  margin: 20px;
+  padding: 20px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  background-color: #333333;
+  position: relative;
+  height: 100%;
+  width: 50%;
+}
+
+h2 {
+  position: absolute;
+  margin: 0;
+  top: 10px;
+  right: 20px;
+  font-weight: 300;
+}
+
+.topoplot-wrapper {
+  width: 300px;
+  height: 300px;
+  border: 3px solid black;
+  border-radius: 50%;
+  position: relative;
+}
+
+[class*='topoplot-c'] {
+  z-index: 2;
+  background-color: black;
+  border: 1px solid black;
+  width: 5%;
+  height: 5%;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.top {
+  top: 2%
+}
+.middle {
+  top: calc(50% - 50px);
+}
+.third {
+  top: 70%;
+}
+.bottom {
+  bottom: 2%;
+}
+
+.top.left,
+.bottom.left {
+  left: 32%;
+}
+
+.top.right,
+.bottom.right {
+  right: 32%;
+}
+
+.middle.left {
+  left: 25%;
+}
+
+.middle.right {
+  right: 25%;
+}
+
+.third.left {
+  left: 8%;
+}
+
+.third.right {
+  right: 8%;
+}
+
+
+/* Grid */
+
+.topoplot-grid {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  -webkit-clip-path: circle(50%);
+  border-radius: 50%;
+  -webkit-filter: blur(10px);
+}
+
+[class*='topoplot-u'] {
+  float: left;
+  /*border: 1px solid lightgray;*/
+  width: 9.09%;
+  height: 9.09%;
+  /*background: lightblue;*/
+}

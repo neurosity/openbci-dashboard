@@ -9,7 +9,8 @@ export class Constants {
         url: 'http://localhost:8080',
         events: {
             fft: 'bci:fft',
-            time: 'bci:time'
+            time: 'bci:time',
+            topo: 'bci:topo'
         }
     };  
   }

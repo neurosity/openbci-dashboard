@@ -9,6 +9,7 @@ module.exports = function(defaults) {
       'smoothie/smoothie.js',
       'chart.js/Chart.js',
       'ng2-charts/bundles/ng2-charts.js',
+      'chroma-js/chroma.js',
       'systemjs/dist/system-polyfills.js',
       'systemjs/dist/system.src.js',
       'zone.js/dist/*.js',

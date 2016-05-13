@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TimeSeriesComponent } from './time-series';
 import { FrequencyComponent } from './frequency';
 import { FrequencyBandsComponent } from './frequency-bands';
+import { TopoComponent } from './topo';
 import { Routes, Router, ROUTER_PROVIDERS, ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
@@ -17,7 +18,8 @@ import { Routes, Router, ROUTER_PROVIDERS, ROUTER_DIRECTIVES } from '@angular/ro
   { path: '/time-series', component: TimeSeriesComponent },
   { path: '/frequency/line', component: FrequencyComponent },
   { path: '/frequency/radar', component: FrequencyComponent },
-  { path: '/frequency/bands', component: FrequencyBandsComponent }
+  { path: '/frequency/bands', component: FrequencyBandsComponent },
+  { path: '/topo', component: TopoComponent }
 ])
 
 export class DashboardComponent implements OnInit {

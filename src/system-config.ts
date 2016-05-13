@@ -5,7 +5,8 @@
 const map: any = {
   'smoothie': 'vendor/smoothie/smoothie.js',
   'ng2-charts': 'vendor/ng2-charts/bundles/ng2-charts.js',
-  'socket.io-client': 'vendor/socket.io-client/socket.io.js'
+  'socket.io-client': 'vendor/socket.io-client/socket.io.js',
+  'chroma-js': 'vendor/chroma-js/chroma.js'
 };  
 
 /** User packages configuration. */
@@ -38,6 +39,7 @@ const barrels: string[] = [
   'app/nav',
   'app/frequency-bands',
   'app/frequency-band',
+  'app/topo',
   /** @cli-barrel */
 ];
 
