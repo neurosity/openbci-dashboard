@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Input } from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy, Input } from '@angular/core';
 import { RouteSegment, ROUTER_PROVIDERS } from '@angular/router';
 import * as io from 'socket.io-client';
 import { ChartService } from '../shared';
@@ -40,5 +40,9 @@ export class FrequencyComponent implements OnInit {
       this.labels = data.labels;
     });
   }
+  
+  ngOnDestroy () {
+    this.socket.removeListener(this.constants.socket.events.fft);
+  } 
 
 }

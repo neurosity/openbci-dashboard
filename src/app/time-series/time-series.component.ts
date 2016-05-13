@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { SmoothieChart, TimeSeries } from 'smoothie';
 import { ChartService } from '../shared';
 import * as io from 'socket.io-client';
@@ -41,6 +41,10 @@ export class TimeSeriesComponent implements OnInit {
       this.appendTimeSeriesLines(data.data);
     });
   }
+  
+  ngOnDestroy () {
+    this.socket.removeListener(this.constants.socket.events.time);
+  } 
   
   ngAfterViewInit () {
     this.timeSeries.streamTo(this.view.nativeElement.querySelector('canvas'), 40);

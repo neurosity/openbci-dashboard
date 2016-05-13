@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Input } from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy, Input } from '@angular/core';
 import * as io from 'socket.io-client';
 import { ChartService } from '../shared';
 import { CHART_DIRECTIVES } from '../shared/ng2-charts';
@@ -40,5 +40,9 @@ export class FrequencyBandComponent implements OnInit {
       this.data = data[this.band || 'data'];
     });
   }
+  
+  ngOnDestroy () {
+    this.socket.removeListener(this.constants.socket.events.fft);
+  } 
 
 }
