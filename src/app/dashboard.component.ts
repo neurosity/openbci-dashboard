@@ -15,6 +15,7 @@ import { Routes, Router, ROUTER_PROVIDERS, ROUTER_DIRECTIVES } from '@angular/ro
 })
 
 @Routes([
+  { path: '/', component: TimeSeriesComponent },
   { path: '/time-series', component: TimeSeriesComponent },
   { path: '/frequency/line', component: FrequencyComponent },
   { path: '/frequency/radar', component: FrequencyComponent },
@@ -29,7 +30,6 @@ export class DashboardComponent implements OnInit {
   }
   
   ngOnInit () {
-    this.router.navigate(['/time-series']);
   }
   
 }
