@@ -1,4 +1,5 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Input } from '@angular/core';
+import { RouteSegment, ROUTER_PROVIDERS } from '@angular/router';
 import * as io from 'socket.io-client';
 import { ChartService } from '../shared';
 import { CHART_DIRECTIVES } from '../shared/ng2-charts';
@@ -9,24 +10,28 @@ import { CHART_DIRECTIVES } from '../shared/ng2-charts';
   templateUrl: 'frequency.component.html',
   styleUrls: ['frequency.component.css'],
   directives: [CHART_DIRECTIVES],
-  providers: [ChartService]
+  providers: [ChartService, ROUTER_PROVIDERS]
 })
 
 export class FrequencyComponent implements OnInit {
 
   socket: any;
-  constructor(private view: ElementRef, private chartService: ChartService) {
+  constructor(private view: ElementRef, 
+              private chartService: ChartService,
+              private segment: RouteSegment) {
     this.view = view;
     this.socket = io('http://localhost:8080');
+    this.type = segment.getParam('type') || 'Line';
   }
   
-  private chartType:string = 'Line';
-  private chartData:Array<any> = [[]];
-  private chartLabels:Array<any> = [];
-  private chartColors:Array<any> = this.chartService.getColors();
-  private chartSeries:Array<string> = this.chartService.getChannels();
+  @Input() type:string;
+  
+  private data:Array<any> = [[]];
+  private labels:Array<any> = [];
+  private colors:Array<any> = this.chartService.getColors();
+  private channels:Array<string> = this.chartService.getChannels();
 
-  private chartOptions:any = {
+  private options:any = {
       responsive: true,
       animation: false,
       animationSteps: 15,
@@ -46,8 +51,8 @@ export class FrequencyComponent implements OnInit {
   
   ngOnInit() {    
     this.socket.on('bci:fft', (data) => {
-      this.chartData = data.data;
-      this.chartLabels = data.labels;
+      this.data = data.data;
+      this.labels = data.labels;
     });
   }
 

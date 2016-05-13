@@ -1,11 +1,11 @@
 <section class="frequency" [ngClass]="{ 'loading': !amplitudes }">
-    <h2>Frequency</h2>
+    <h2>Frequency {{ type }}</h2>
     <base-chart class="chart"
-      [data]="chartData"
-      [labels]="chartLabels"
-      [options]="chartOptions"
-      [colours]="chartColors"
-      [series]="chartSeries"
-      [chartType]="chartType">
+      [data]="data"
+      [labels]="labels"
+      [options]="options"
+      [colours]="colors"
+      [series]="channels"
+      [chartType]="type">
     </base-chart>
 </section>

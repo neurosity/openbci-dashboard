@@ -2,8 +2,8 @@
   <h1>{{title}}</h1>
   <nav>
     <a [routerLink]="['/time-series']">Time Series</a>
-    <a [routerLink]="['/frequency']">Frequency</a>
-    <a ng-click="">Frequency Radar</a>
+    <a [routerLink]="['/frequency/line', { type: 'Line' }]">Frequency Line</a>
+    <a [routerLink]="['/frequency/radar', { type: 'Radar' }]">Frequency Radar</a>
     <a ng-click="">Frequency Bands</a>
     <a ng-click="">Topo</a>
   </nav>
