@@ -1,0 +1,11 @@
+<section class="frequency-band" [ngClass]="{ 'loading': !data }">
+    <h2 class="capitalize">{{ band }} {{ type }}</h2>
+     <base-chart class="chart"
+      [data]="data"
+      [labels]="channels"
+      [options]="options"
+      [colours]="colors"
+      [series]="channels"
+      [chartType]="type">
+    </base-chart>
+</section>

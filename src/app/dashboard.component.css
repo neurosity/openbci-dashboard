@@ -82,6 +82,7 @@ h1 {
 
 nav {
   margin-left: 20px;
+  margin-bottom: 20px;
 }
 
 
@@ -101,6 +102,7 @@ nav a {
   cursor: pointer;
   outline: none;
   text-decoration: none;
+  display: inline-block;
 }
 
 nav a:hover {

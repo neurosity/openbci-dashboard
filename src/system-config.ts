@@ -36,8 +36,8 @@ const barrels: string[] = [
   'app/frequency',
   'app/time-series',
   'app/nav',
-  'app/+frequency',
-  'app/+frequency-band',
+  'app/frequency-bands',
+  'app/frequency-band',
   /** @cli-barrel */
 ];
 

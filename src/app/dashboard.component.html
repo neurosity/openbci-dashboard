@@ -4,7 +4,7 @@
     <a [routerLink]="['/time-series']">Time Series</a>
     <a [routerLink]="['/frequency/line', { type: 'Line' }]">Frequency Line</a>
     <a [routerLink]="['/frequency/radar', { type: 'Radar' }]">Frequency Radar</a>
-    <a ng-click="">Frequency Bands</a>
+    <a [routerLink]="['/frequency/bands']">Frequency Bands</a>
     <a ng-click="">Topo</a>
   </nav>
   <router-outlet></router-outlet>

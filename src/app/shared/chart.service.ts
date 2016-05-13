@@ -11,15 +11,19 @@ export class ChartService {
   
   getColors (): Array<any> {
     return [
-      { strokeColor: 'rgba(112,185,252,1)' },
-      { strokeColor: 'rgba(116,150,161,1)' },
-      { strokeColor: 'rgba(162,86,178,1)' },
-      { strokeColor: 'rgba(144,132,246,1)' },
-      { strokeColor: 'rgba(138,219,229,1)' },
-      { strokeColor: 'rgba(232,223,133,1)' },
-      { strokeColor: 'rgba(148,159,177,1)' },
-      { strokeColor: 'rgba(77,83,96,1)' }
+      { strokeColor: 'rgba(112,185,252,1)', fillColor: 'rgba(112,185,252,1)' },
+      { strokeColor: 'rgba(116,150,161,1)', fillColor: 'rgba(116,150,161,1)' },
+      { strokeColor: 'rgba(162,86,178,1)', fillColor: 'rgba(162,86,178,1)' },
+      { strokeColor: 'rgba(144,132,246,1)', fillColor: 'rgba(144,132,246,1)' },
+      { strokeColor: 'rgba(138,219,229,1)', fillColor: 'rgba(138,219,229,1)' },
+      { strokeColor: 'rgba(232,223,133,1)', fillColor: 'rgba(232,223,133,1)' },
+      { strokeColor: 'rgba(148,159,177,1)', fillColor: 'rgba(148,159,177,1)' },
+      { strokeColor: 'rgba(77,83,96,1)', fillColor: 'rgba(77,83,96,1)' }
     ]; 
+  }
+  
+  getColorByIndex (index:number): Array<any> {
+    return this.getColors().filter((c, i) => index === i);
   }
 
 }
