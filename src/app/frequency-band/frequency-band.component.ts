@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import * as io from 'socket.io-client';
 import { ChartService } from '../shared';
 import { CHART_DIRECTIVES } from '../shared/ng2-charts';
@@ -16,10 +16,7 @@ import { Constants } from '../shared/constants';
 export class FrequencyBandComponent implements OnInit {
 
   socket: any;
-  constructor(private view: ElementRef, 
-              private chartService: ChartService, 
-              private constants: Constants) {
-    this.view = view;
+  constructor(private chartService: ChartService, private constants: Constants) {
     this.socket = io(constants.socket.url);
   }
   

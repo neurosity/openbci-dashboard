@@ -10,7 +10,7 @@
   background-color: #333333;
   position: relative;
   height: 100%;
-  width: 50%;
+  width: 70%;
 }
 
 h2 {
@@ -19,6 +19,7 @@ h2 {
   top: 10px;
   right: 20px;
   font-weight: 300;
+  z-index: 1;
 }
 
 .topoplot-wrapper {

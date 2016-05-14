@@ -10,6 +10,7 @@ module.exports = function(defaults) {
       'chart.js/Chart.js',
       'ng2-charts/bundles/ng2-charts.js',
       'chroma-js/chroma.js',
+      'plotly.js/dist/plotly.js',
       'systemjs/dist/system-polyfills.js',
       'systemjs/dist/system.src.js',
       'zone.js/dist/*.js',
