@@ -17,11 +17,9 @@ import { Constants } from '../shared/constants';
 export class FrequencyComponent implements OnInit {
 
   socket: any;
-  constructor(private view: ElementRef, 
-              private chartService: ChartService,
+  constructor(private chartService: ChartService,
               private segment: RouteSegment,
               private constants: Constants) {
-    this.view = view;
     this.socket = io(constants.socket.url);
     this.type = segment.getParam('type') || 'Line';
   }

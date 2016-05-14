@@ -18,7 +18,6 @@ export class TimeSeriesComponent implements OnInit {
   constructor(private view: ElementRef, 
               private chartService: ChartService, 
               private constants: Constants) {
-    this.view = view;
     this.socket = io(constants.socket.url);
     this.chartService = chartService;
   }
