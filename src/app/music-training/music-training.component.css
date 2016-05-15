@@ -1,0 +1,20 @@
+
+:host {
+  display: block;
+  margin: 20px;
+  padding: 20px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  background-color: #333333;
+  position: relative;
+  height: 100%;
+  width: 70%;
+}
+
+h2 {
+  position: absolute;
+  margin: 0;
+  top: 10px;
+  right: 20px;
+  font-weight: 300;
+  z-index: 1;
+}

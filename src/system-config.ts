@@ -7,7 +7,8 @@ const map: any = {
   'ng2-charts': 'vendor/ng2-charts/bundles/ng2-charts.js',
   'socket.io-client': 'vendor/socket.io-client/socket.io.js',
   'chroma-js': 'vendor/chroma-js/chroma.js',
-  'plotly': 'vendor/plotly.js/dist/plotly.js'
+  'plotly': 'vendor/plotly.js/dist/plotly.js',
+  'phaser': 'vendor/phaser/dist/phaser.js'
 };  
 
 /** User packages configuration. */
@@ -41,6 +42,7 @@ const barrels: string[] = [
   'app/frequency-bands',
   'app/frequency-band',
   'app/topo',
+  'app/music-training',
   /** @cli-barrel */
 ];
 
