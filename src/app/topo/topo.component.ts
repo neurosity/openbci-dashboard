@@ -26,10 +26,13 @@ export class TopoComponent implements OnInit {
     x: [],
     y: [],
     name: 'density',
-    ncontours: 40,
+    ncontours: 15,
     colorscale: [
-      [0, 'rgb(255, 0, 0)'], 
-      [.33, 'rgb(255, 255, 0)'], 
+      [0, 'rgb(208, 0, 0)'], 
+      [.50, 'rgb(247, 192, 0)'], 
+      [.60, 'rgb(241, 255, 22)'], 
+      [.80, 'rgb(68, 255, 250)'], 
+      [.95, 'rgb(50, 0, 159)'], 
       [1, 'rgb(51, 51, 51)']
     ],
     reversescale: true,
@@ -37,6 +40,9 @@ export class TopoComponent implements OnInit {
     type: 'histogram2dcontour',
     line: {
       width: 1
+    },
+    contours: {
+      //coloring: 'heatmap'
     }
   };
     
@@ -47,7 +53,25 @@ export class TopoComponent implements OnInit {
     bargap: 0,
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
-    margin: { l: 0, r: 0, b: 0, t: 0 }
+    margin: { l: 0, r: 0, b: 0, t: 0 },
+    xaxis: {
+      autorange: true,
+      showgrid: false,
+      zeroline: false,
+      showline: false,
+      autotick: true,
+      ticks: '',
+      showticklabels: false
+    },
+    yaxis: {
+      autorange: true,
+      showgrid: false,
+      zeroline: false,
+      showline: false,
+      autotick: true,
+      ticks: '',
+      showticklabels: false
+    }
   };
   
   private options: any = {
@@ -59,11 +83,11 @@ export class TopoComponent implements OnInit {
     Plotly.newPlot(this.plotElement.id, [this.data], this.layout, this.options);
 
     this.socket.on(this.constants.socket.events.topo, (data) => {
-      console.log(data.data);
-      this.data.x = this.getRandomData().x; //data.data;
-      this.data.y = this.getRandomData().y; //data.data;
+      console.log(data.plot);
+      this.data.x = data.plot.x; //this.getRandomData().x
+      this.data.y = data.plot.y; //this.getRandomData().y
       Plotly.redraw(this.plotElement);
-      Plotly.Plots.resize(this.plotElement);
+      //Plotly.Plots.resize(this.plotElement);
     });
   }
   
@@ -79,8 +103,8 @@ export class TopoComponent implements OnInit {
           y = Math.random() * 2 - 1;
           rds = x * x + y * y;
         } while (rds == 0 || rds > 1);
-        c = Math.sqrt(-2 * Math.log(rds) / rds); // Box-Muller transform
-        return x * c; // throw away extra sample y * c
+        c = Math.sqrt(-2 * Math.log(rds) / rds);
+        return x * c;
     }
 
     var N = 2000,

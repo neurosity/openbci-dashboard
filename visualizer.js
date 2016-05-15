@@ -214,9 +214,38 @@ function onSample (sample) {
 
         grid = topogrid.create(pos_x,pos_y,sample.channelData,grid_params);
         var grid_flat = [].concat.apply([], grid);
+        
+        //**********//
+        
+        var Xs = signals.map(function (channel, i) {
+            var x = [3,7,2,8,0,10,3,7]; 
+            return channel.map(function (volt) {
+                return volt + (x[i]);
+            });
+        });
+        
+        var Ys = signals.map(function (channel, i) {
+            var y = [0,0,3,3,8,8,10,10]; 
+            return channel.map(function (volt) {
+                return volt + (y[i]);
+            });
+        });
+        
+        var plotX = [].concat.apply([], Xs).sort(function (a, b) {
+            return a - b;
+        });
+        var plotY = [].concat.apply([], Ys).sort(function (a, b) {
+            return a - b;
+        });
+        
+        //**********//
 
         io.emit('bci:topo', {
-            data: grid_flat
+            data: grid_flat,
+            plot: {
+                x: plotX,
+                y: plotY
+            }
         });
     }
 
