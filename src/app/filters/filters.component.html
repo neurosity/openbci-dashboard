@@ -1,0 +1,20 @@
+<aside class="filters">
+  <h3>Filters</h3>
+  <nav>
+    <article *ngFor="let filter of filters" 
+             [ngClass]="{ disabled: !filter.enabled }">
+      <label>{{ filter.label }}</label>
+      <div class="select">
+        <select 
+          [multiple]="filter.type === 'multiple'"
+          [disabled]="!filter.enabled"
+          (change)="applyFilter($event.target.value)">
+          <option *ngFor="let option of filter.options" 
+                  [value]="option.id">
+            {{ option.label }}
+          </option>
+        </select>
+      </div>
+    </article>
+  </nav>
+</aside>

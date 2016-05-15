@@ -5,13 +5,20 @@ var dsp = require('dsp.js');
 var io = require('socket.io')(process.env.app_port || 8080);
 var topogrid = require('topogrid');
 var jStat = require('jstat').jStat;
-var Fili = require('fili');
+var BCIFilter = require('./src/server/bci.filter');
 
 var globalScale = 1.5;
 
 // Sockets
-io.on('connection', function(socket){
+io.on('connection', function (socket) {
     console.log('A user connected');
+    socket.on('bci:filter', function (filter) {
+        BCIFilter.apply(filter);
+    });
+    
+    socket.on('disconnect', function () {
+        console.log('user disconnected');
+    });
 });
 
 // OpenBCI
@@ -75,48 +82,6 @@ var pos_x = [3,7,2,8,0,10,3,7]; // x coordinates of the data
 var pos_y = [0,0,3,3,8,8,10,10]; // y coordinates of the data
 // var data = [10,0,0,0,0,0,-10,30,25]; // the data values
 
-//  Instance of a filter coefficient calculator
-var iirCalculator = new Fili.CalcCascades();
-
-// calculate filter coefficients
-var notchFilterCoeffs = iirCalculator.bandstop({
-    order: 2, // cascade 3 biquad filters (max: 12)
-    characteristic: 'butterworth',
-    Fs: sampleRate, // sampling frequency
-    Fc: 60,
-    F1: 59,
-    F2: 61,
-    gain: 0, // gain for peak, lowshelf and highshelf
-    preGain: false // adds one constant multiplication for highpass and lowpass
-    // k = (1 + cos(omega)) * 0.5 / k = 1 with preGain == false
-});
-// create a filter instance from the calculated coeffs
-var notchFilter = new Fili.IirFilter(notchFilterCoeffs);
-
-var hpFilterCoeffs = iirCalculator.highpass({
-    order: 3, // cascade 3 biquad filters (max: 12)
-    characteristic: 'butterworth',
-    Fs: sampleRate, // sampling frequency
-    Fc: 1,
-    gain: 0, // gain for peak, lowshelf and highshelf
-    preGain: false // adds one constant multiplication for highpass and lowpass
-    // k = (1 + cos(omega)) * 0.5 / k = 1 with preGain == false
-});
-  
-var hpFilter = new Fili.IirFilter(hpFilterCoeffs);
-
-var lpFilterCoeffs = iirCalculator.lowpass({
-    order: 3, // cascade 3 biquad filters (max: 12)
-    characteristic: 'butterworth',
-    Fs: sampleRate, // sampling frequency
-    Fc: 50,
-    gain: 0, // gain for peak, lowshelf and highshelf
-    preGain: false // adds one constant multiplication for highpass and lowpass
-    // k = (1 + cos(omega)) * 0.5 / k = 1 with preGain == false
-});
-
-var lpFilter = new Fili.IirFilter(lpFilterCoeffs);
-
 function onSample (sample) {
 
     sampleNumber++;
@@ -132,15 +97,15 @@ function onSample (sample) {
         var spectrums = [[],[],[],[],[],[],[],[]];
 
         signals.forEach(function (signal, index) {
-            signal = notchFilter.multiStep(signal);
+            signal = BCIFilter.process(signal);
             var fft = new dsp.FFT(bufferSize, sampleRate);
             fft.forward(signal);
             spectrums[index] = parseObjectAsArray(fft.spectrum);
             spectrums[index] = voltsToMicrovolts(spectrums[index], true);
         });
 
-        var labels = new Array(bins / 2).fill()
-            // Apply scaler
+        // Apply scaler
+        var labels = new Array(bins / 2).fill()    
             .map(function (label, index) {
                 return Math.ceil(index * (sampleRate / bins));
             });

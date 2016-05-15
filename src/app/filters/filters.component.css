@@ -1,0 +1,66 @@
+:host {
+  display: block;
+}
+
+.filters {
+  width: 120px;
+  height: 100vh;
+  padding: 14px;
+  background-color: #333;
+}
+
+.filters h3 {
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.filters article {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+
+.filters nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.filters label {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.filters .select {
+  position: relative;
+  border: 2px solid rgba(255,255,255, 0.6);
+  border-radius: 4px;
+}
+
+.filters .select:after {
+  content: "▼";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  font-size: 6px;
+  line-height: 27px;
+  padding: 0 8px;
+  color: rgba(255,255,255,0.2);
+  pointer-events: none;
+}
+
+.filters select {
+  width: 100%;
+  -webkit-appearance: none;
+  color: rgba(255,255,255,0.4);
+  font-weight: 300;
+  letter-spacing: 1px;
+  background: transparent;
+  padding: 6px;
+  outline: none;
+  border: 0;
+}
+
+.filters .disabled {
+    opacity: 0.2;
+}

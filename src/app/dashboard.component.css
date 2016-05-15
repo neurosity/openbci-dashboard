@@ -10,6 +10,10 @@
   margin: 0;
 }
 
+main {
+  display: flex;
+}
+
 h1 {
   padding: 20px;
   font-weight: 300;

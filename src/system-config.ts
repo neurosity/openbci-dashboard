@@ -41,6 +41,7 @@ const barrels: string[] = [
   'app/frequency-bands',
   'app/frequency-band',
   'app/topo',
+  'app/filters',
   /** @cli-barrel */
 ];
 

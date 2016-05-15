@@ -83,7 +83,7 @@ export class TopoComponent implements OnInit {
     Plotly.newPlot(this.plotElement.id, [this.data], this.layout, this.options);
 
     this.socket.on(this.constants.socket.events.topo, (data) => {
-      console.log(data.plot);
+      //console.log(data.plot);
       this.data.x = data.plot.x; //this.getRandomData().x
       this.data.y = data.plot.y; //this.getRandomData().y
       Plotly.redraw(this.plotElement);

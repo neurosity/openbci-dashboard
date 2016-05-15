@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FiltersComponent } from './filters';
 import { TimeSeriesComponent } from './time-series';
 import { FrequencyComponent } from './frequency';
 import { FrequencyBandsComponent } from './frequency-bands';
@@ -10,7 +11,7 @@ import { Routes, Router, ROUTER_PROVIDERS, ROUTER_DIRECTIVES } from '@angular/ro
   selector: 'bci-dashboard',
   templateUrl: 'dashboard.component.html',
   styleUrls: ['dashboard.component.css'],
-  directives: [ROUTER_DIRECTIVES],
+  directives: [ROUTER_DIRECTIVES, FiltersComponent],
   providers: [ROUTER_PROVIDERS]
 })
 
