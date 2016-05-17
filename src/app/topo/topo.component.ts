@@ -21,31 +21,18 @@ export class TopoComponent implements OnInit {
   constructor(private view: ElementRef, private constants: Constants) {
     this.socket = io(constants.socket.url);
   }
-  
+    
   private data: any = {
-    x: [],
-    y: [],
-    name: 'density',
-    ncontours: 15,
-    colorscale: [
-      [0, 'rgb(208, 0, 0)'], 
-      [.50, 'rgb(247, 192, 0)'], 
-      [.60, 'rgb(241, 255, 22)'], 
-      [.80, 'rgb(68, 255, 250)'], 
-      [.95, 'rgb(50, 0, 159)'], 
-      [1, 'rgb(51, 51, 51)']
-    ],
-    reversescale: true,
-    showscale: false,
-    type: 'histogram2dcontour',
-    line: {
-      width: 1
-    },
+    z: [],
+    x: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].reverse(),
+    y: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].reverse(),
+    type: 'contour',
+    colorscale: 'Jet',
     contours: {
       //coloring: 'heatmap'
     }
   };
-    
+  
   private layout: any = {
     autosize: true,
     width: 600,
@@ -83,11 +70,9 @@ export class TopoComponent implements OnInit {
     Plotly.newPlot(this.plotElement.id, [this.data], this.layout, this.options);
 
     this.socket.on(this.constants.socket.events.topo, (data) => {
-      //console.log(data.plot);
-      this.data.x = data.plot.x; //this.getRandomData().x
-      this.data.y = data.plot.y; //this.getRandomData().y
+      this.data.z = data.data; 
       Plotly.redraw(this.plotElement);
-      //Plotly.Plots.resize(this.plotElement);
+      Plotly.Plots.resize(this.plotElement);
     });
   }
   
