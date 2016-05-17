@@ -5,6 +5,45 @@ export class ChartService {
 
   constructor() {}
   
+  getPlotlyContourLayout (overrides: any = {}): any {
+    return Object.assign({
+      bargap: 0,
+      autosize: true,
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      margin: { l: 0, r: 0, b: 0, t: 0 },
+      xaxis: {
+        autorange: true,
+        showgrid: false,
+        zeroline: false,
+        showline: false,
+        autotick: true,
+        ticks: '',
+        showticklabels: false
+      },
+      yaxis: {
+        autorange: true,
+        showgrid: false,
+        zeroline: false,
+        showline: false,
+        autotick: true,
+        ticks: '',
+        showticklabels: false
+      }
+    }, overrides);
+  }
+  
+  getPlotlyContourData (overrides: any = {}): any {
+    return Object.assign({
+      z: [],
+      x: [],
+      y: [],
+      type: 'contour',
+      colorscale: 'Jet',
+      showscale: false
+    }, overrides);
+  }
+  
   getChartJSDefaults (overrides: any = {}): any {
     return Object.assign({
       responsive: true,
