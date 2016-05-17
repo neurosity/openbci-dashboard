@@ -12,6 +12,7 @@ This project is under development, this is just a first draft.
 * Turn on OpenBCI board
 
 ```bash
+npm install -g angular-cli concurrently
 npm install
 npm run visualize
 ```
