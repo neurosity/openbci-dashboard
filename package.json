@@ -3,7 +3,7 @@
   "description": "A fullstack javascript app for capturing and visualizing OpenBCI EEG data",
   "main": "visualizer.js",
   "version": "0.1.0",
-  "author": "Alex Castillo",
+  "author": "Alex Castillo <alex@castillo.io>",
   "license": "MIT",
   "private": false,
   "angular-cli": {},
