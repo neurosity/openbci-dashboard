@@ -16,7 +16,7 @@ import { Routes, Router, ROUTER_PROVIDERS, ROUTER_DIRECTIVES } from '@angular/ro
 })
 
 @Routes([
-  { path: '/', component: TopoComponent },
+  { path: '/', component: TimeSeriesComponent },
   { path: '/time-series', component: TimeSeriesComponent },
   { path: '/frequency/line', component: FrequencyComponent },
   { path: '/frequency/radar', component: FrequencyComponent },
