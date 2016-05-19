@@ -2,7 +2,7 @@
 
 ![alt text](/assets/preview3.gif "OpenBCI Dashboard Preview")
 
-A fullstack javascript app for capturing and visualizing OpenBCI EEG data
+A fullstack JavaScript app for reading and visualizing OpenBCI EEG data.
 
 This project is under development, this is just a first draft.
 
