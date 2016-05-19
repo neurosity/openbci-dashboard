@@ -25,6 +25,17 @@ npm run visualize
 npm run simulate
 ```
 
+## Technologies 
+
+* Node.js
+* Angular 2
+* Socket.io
+* Data Visualization
+    - Plotly.js
+    - Chart.js
+    - Smoothie
+
+
 ## Support
 
 Pull requests are welcomed!
