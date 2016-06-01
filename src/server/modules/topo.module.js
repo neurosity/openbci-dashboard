@@ -23,9 +23,10 @@ module.exports = class Topo {
         this.x = [3,7,2,8,0,10,3,7]; 
         this.y = [0,0,3,3,8,8,10,10];
         this.grid = [];
+        this.subscribe();
     }
     
-    listen () {
+    subscribe () {
         this.signalEvent.on('bci:signal', (signal) => {     
             this.signalToGrid(signal);
             this.emit();

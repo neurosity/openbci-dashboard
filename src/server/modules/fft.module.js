@@ -22,9 +22,10 @@ module.exports = class FFT {
               beta: [13, 30],
               gamma: [30, 100]
         };
+        this.subscribe();
     }
         
-    listen () {
+    subscribe () {
         this.signalEvent.on('bci:signal', (signals) => {        
             this.signalsToFFT(signals);
             this.scaleLabels();

@@ -13,6 +13,15 @@ module.exports = class TimeSeries {
         this.timeline = Utils.data.generateTimeline(20, 2, 's');
         this.timeSeries = this.create(8); // 8 channels
         this.amplitudes = [];
+        this.subscribe();
+    }
+    
+    subscribe () {
+        this.signalEvent.on('bci:signal', (signal) => {  
+            this.offsetForGrid(signal);
+            this.signalToAmplitudes(signal);
+            this.emit();
+        });
     }
     
     create (channelAmount) {
@@ -24,14 +33,6 @@ module.exports = class TimeSeries {
                     // @TODO: Migrate scale (4) elsewhere
                     return Utils.signal.offsetForGrid(amplitude, channelNumber, timeSeries.length, 4);
                 });
-        });
-    }
-    
-    listen () {
-        this.signalEvent.on('bci:signal', (signal) => {  
-            this.offsetForGrid(signal);
-            this.signalToAmplitudes(signal);
-            this.emit();
         });
     }
     
