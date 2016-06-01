@@ -24,12 +24,8 @@ module.exports = class Signals {
     init () {
         // Sockets
         this.io.on('connection', (socket) => {
-            console.log('A user connected');
             socket.on('bci:filter', (filter) => {
                 Utils.filter.apply(filter);
-            });
-            socket.on('disconnect', () => {
-                console.log('user disconnected');
             });
         });
     }
@@ -39,7 +35,7 @@ module.exports = class Signals {
         this.add(sample);
        
         if (this.sampleNumber === this.bins) {  
-            this.signalEvent.emit('bci:signal', [...this.signals]); // clone array
+            this.signalEvent.emit('bci:signal', [...this.signals]);
             this.window();
         }
     }
@@ -61,6 +57,3 @@ module.exports = class Signals {
     }
     
 }
-
-
-

@@ -37,7 +37,7 @@ module.exports = class FFT {
     
     signalsToFFT (signals) {
         signals.forEach((signal, index) => {
-            //signal = Utils.filter.process(signal);
+            signal = Utils.filter.process(signal);
             let fft = new dsp.FFT(this.bufferSize, this.sampleRate);
             fft.forward(signal);
             this.spectrums[index] = Utils.data.parseObjectAsArray(fft.spectrum);

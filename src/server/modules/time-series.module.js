@@ -20,6 +20,7 @@ module.exports = class TimeSeries {
         this.signalEvent.on('bci:signal', (signal) => {  
             this.offsetForGrid(signal);
             this.signalToAmplitudes(signal);
+            this.filter();
             this.emit();
         });
     }
@@ -41,6 +42,12 @@ module.exports = class TimeSeries {
             // @TODO: Migrate scale (4) elsewhere
             channel.push(Utils.signal.offsetForGrid(signal[channelIndex][signal[channelIndex].length - 1], channelIndex, this.timeSeries.length, 4));
             channel.shift();
+        });
+    }
+    
+    filter () {
+        this.timeSeries.forEach((signal) => {
+            signal = Utils.filter.process(signal);
         });
     }
     

@@ -16,19 +16,19 @@ module.exports = {
     
     apply (filter) {
         if (!filter) return;
-        var id = filter.split(':')[0];
-        var value = filter.split(':')[1];
-        if (id && value) {
-            this.state[id] = value;
-        }
+        let [id, value] = filter.split(':');
+        this.state[id] = value;
     },
     
     process (signal) {
-        //Object.keys(this.state).forEach(function(key) {
-            //var 
-            //if () this[key.toLowerCase()](signal);
-        //});
-        //signal = this.notch(signal);  
+        Object.keys(this.state).forEach((key) => {
+            let filter = key.toLowerCase();
+            if (filter in this && typeof this[filter] === 'function') {
+                // @TODO: apply all filters dynamically
+                //signal = this[signal](signal);
+            }
+        });
+        signal = this.notch(signal);
         return signal;
     },
     
@@ -56,6 +56,9 @@ module.exports = {
     },
     
     bandpass (signal) {
+        
+        // @TODO: Finish bandpass filter
+        return filter;
     
         var iirCalculator = new Fili.CalcCascades();
         
