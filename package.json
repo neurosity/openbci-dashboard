@@ -12,8 +12,8 @@
     "postinstall": "typings install",
     "lint": "tslint \"src/**/*.ts\"",
     "format": "clang-format -i -style=file --glob=src/**/*.ts",
-    "visualize": "concurrently \"ng serve\" \"node visualizer\" ",
-    "simulate": "concurrently \"ng serve\" \"node visualizer simulate\" ",
+    "visualize": "concurrently \"ng serve\" \"node src/server/app\" ",
+    "simulate": "concurrently \"ng serve\" \"node src/server/app simulate\" ",
     "pree2e": "webdriver-manager update",
     "e2e": "protractor"
   },

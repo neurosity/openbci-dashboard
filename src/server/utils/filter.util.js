@@ -1,9 +1,10 @@
+'use strict';
 
 var Fili = require('fili');
 
-function BCIFilter () {
+module.exports = {
     
-    this.state = {
+    state: {
         BANDPASS: '1-50',
         NOTCH: '60',
         VERTSCALE: '50',
@@ -11,24 +12,27 @@ function BCIFilter () {
         SMOOTH: '0-75',
         POLARITY: 'YES',
         MAXFREQUENCY: '60'
-    }
+    },    
     
-    this.apply = function (filter) {
+    apply (filter) {
         if (!filter) return;
         var id = filter.split(':')[0];
         var value = filter.split(':')[1];
         if (id && value) {
             this.state[id] = value;
         }
-    }
+    },
     
-    this.process = function (signal) {
-        // @TODO: apply other filters 
-        signal = this.notch(signal);  
+    process (signal) {
+        //Object.keys(this.state).forEach(function(key) {
+            //var 
+            //if () this[key.toLowerCase()](signal);
+        //});
+        //signal = this.notch(signal);  
         return signal;
-    }
+    },
     
-    this.notch = function (signal) {
+    notch (signal) {
             
         if (this.state.NOTCH === 'NONE') return signal;
         
@@ -39,8 +43,8 @@ function BCIFilter () {
             characteristic: 'butterworth',
             Fs: 250, // sampling frequency
             Fc: notchValue,
-            F1: 59,
-            F2: 61,
+            F1: notchValue - 1,
+            F2: notchValue + 1,
             gain: 0, // gain for peak, lowshelf and highshelf
             preGain: false // adds one constant multiplication for highpass and lowpass
             // k = (1 + cos(omega)) * 0.5 / k = 1 with preGain == false
@@ -49,9 +53,9 @@ function BCIFilter () {
         var notchFilter = new Fili.IirFilter(notchFilterCoeffs);
         
         return notchFilter.multiStep(signal);
-    }
+    },
     
-    this.bandpass = function (signal) {
+    bandpass (signal) {
     
         var iirCalculator = new Fili.CalcCascades();
         
@@ -80,13 +84,29 @@ function BCIFilter () {
         var lpFilter = new Fili.IirFilter(lpFilterCoeffs);
         
         // @TODO: get from state which filter to use, then return it based on state settings
+    },
+    
+    filterBand (spectrums, labels, range) {
+        if (!spectrums ) return console.log('Please provide spectrums');
+        spectrums = spectrums.map(function (channel) {
+            return channel.filter(function (spectrum, index) {
+                return labels[index] >= range[0] && labels[index] <= range[1];
+            });
+        });
+        spectrums = [spectrums.map(function (channel) {
+            if (channel.length) {
+                return channel.reduce(function (a, b) {
+                        return a + b;
+                    }) / channel.length;
+            } else return channel;
+        })];
+        return {
+            spectrums: spectrums,
+            labels: labels
+        }
     }
     
-    return this;
-    
 }
-
-module.exports = new BCIFilter();
 
 
 
