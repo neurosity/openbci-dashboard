@@ -2,29 +2,29 @@
 
 const Utils = require('../utils');
 const EventEmitter = require('events');
+const constants = require('../constants');
 
 class SignalEmitter extends EventEmitter {}
 
 module.exports = class Signals {
     
-    constructor ({ connector, io }) {
-        this.connector = connector;
+    constructor ({ io }) {
         this.io = io;
-        this.signalEvent = new SignalEmitter();
-        this.bins = 512; // aka ~2 seconds
-        this.bufferSize = 512;
-        this.windowRefreshRate = 32;
+        this.signal = new SignalEmitter();
+        this.bins = constants.signal.bins;
+        this.bufferSize = constants.signal.bufferSize;
+        this.windowRefreshRate = constants.signal.windowRefreshRate;
         this.windowSize = this.bins / this.windowRefreshRate;
-        this.sampleRate = this.connector.sampleRate(); // aka 250
-        this.sampleNumber = 0;
+        this.sampleRate = constants.signal.sampleRate;
         this.signals = [[],[],[],[],[],[],[],[]];
+        this.sampleNumber = 0;
         this.init();
     }
     
     init () {
         // Sockets
         this.io.on('connection', (socket) => {
-            socket.on('bci:filter', (filter) => {
+            socket.on(constants.events.filter, (filter) => {
                 Utils.filter.apply(filter);
             });
         });
@@ -35,7 +35,7 @@ module.exports = class Signals {
         this.add(sample);
        
         if (this.sampleNumber === this.bins) {  
-            this.signalEvent.emit('bci:signal', [...this.signals]);
+            this.signal.emit(constants.events.signal, [...this.signals]);
             this.window();
         }
     }

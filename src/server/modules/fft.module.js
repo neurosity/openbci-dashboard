@@ -2,31 +2,25 @@
 
 const dsp = require('dsp.js');
 const Utils = require('../utils');
+const constants = require('../constants');
 
 module.exports = class FFT {
     
-    constructor ({ connector, io, signalEvent }) {
-        this.connector = connector;
+    constructor ({ io, signal }) {
         this.io = io;
-        this.signalEvent = signalEvent;
-        this.bins = 512; // aka ~2 seconds
-        this.bufferSize = 512;
-        this.sampleRate = this.connector.sampleRate(); // aka 250
+        this.signal = signal;
+        this.bins = constants.signal.bins;
+        this.bufferSize = constants.signal.bufferSize;
+        this.sampleRate = constants.signal.sampleRate;
+        this.bands = constants.bands;
         this.spectrums = [[],[],[],[],[],[],[],[]];
-        this.spectrumsByBand = [];
+        this.byBand = [];
         this.labels = [];
-        this.bands = {
-              delta: [1, 3],
-              theta: [4, 8],
-              alpha: [8, 12],
-              beta: [13, 30],
-              gamma: [30, 100]
-        };
         this.subscribe();
     }
         
     subscribe () {
-        this.signalEvent.on('bci:signal', (signals) => {        
+        this.signal.on(constants.events.signal, (signals) => {        
             this.signalsToFFT(signals);
             this.scaleLabels();
             this.filterBands();
@@ -54,26 +48,28 @@ module.exports = class FFT {
     
     filterBands () {
         for (let band in this.bands) {
-            this.spectrumsByBand[band] = Utils.filter.filterBand(this.spectrums, this.labels, this.bands[band]);
+            this.byBand[band] = Utils.filter.filterBand(this.spectrums, this.labels, this.bands[band]);
         }
     }
     
     filterLabels () {
         // Skip every 8, add uni (too many labels issue)
         this.labels = this.labels.map((label, index, labels) => {
-            return (index % 8 === 0 || index === (labels.length - 1)) ? label + ' Hz' : '';
+            let eighth = index % constants.scale.skipLabels === 0;
+            let last = index === (labels.length - 1);
+            return eighth || last ? `${label} ${constants.units.hertz}` : ``;
         });
     }
     
     emit () {
-        this.io.emit('bci:fft', {
+        this.io.emit(constants.events.fft, {
             data: this.spectrums,
             labels: this.labels,
-            theta: this.spectrumsByBand.theta.spectrums,
-            delta: this.spectrumsByBand.delta.spectrums,
-            alpha: this.spectrumsByBand.alpha.spectrums,
-            beta: this.spectrumsByBand.beta.spectrums,
-            gamma: this.spectrumsByBand.gamma.spectrums
+            theta: this.byBand.theta.spectrums,
+            delta: this.byBand.delta.spectrums,
+            alpha: this.byBand.alpha.spectrums,
+            beta: this.byBand.beta.spectrums,
+            gamma: this.byBand.gamma.spectrums
         });
     }
     

@@ -4,6 +4,7 @@ var argv = require('yargs').argv;
 
 const OpenBCI = require('openbci-sdk');
 const OpenBCIBoard = OpenBCI.OpenBCIBoard;
+const constants = require('../constants');
 
 module.exports = class Serialport extends OpenBCIBoard {
     
@@ -15,7 +16,7 @@ module.exports = class Serialport extends OpenBCIBoard {
         return new Promise((resolve, reject) => {
             
             var onConnect = () => {
-                this.on('ready', () => {
+                this.on(constants.connector.readyEvent, () => {
                     this.streamStart();
                     resolve();
                 });
@@ -43,18 +44,17 @@ module.exports = class Serialport extends OpenBCIBoard {
     stop () {
         this.streamStop().then(() => {
             this.disconnect().then(() => {
-                console.log('board disconnected');
                 process.exit();
             });
         });
     }
     
     stream (callback) {
-        this.on('sample', callback);
+        this.on(constants.connector.sampleEvent, callback);
     }
     
     isSimulated () {
-        return !!(argv._[0] && argv._[0] === 'simulate');
+        return !!(argv._[0] && argv._[0] === constants.connector.simulateFlag);
     }
     
 }
