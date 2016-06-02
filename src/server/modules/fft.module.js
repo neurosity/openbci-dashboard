@@ -6,9 +6,8 @@ const constants = require('../constants');
 
 module.exports = class FFT {
     
-    constructor ({ io, signal }) {
-        this.io = io;
-        this.signal = signal;
+    constructor ({ Signal }) {
+        this.signal = Signal;
         this.bins = constants.signal.bins;
         this.bufferSize = constants.signal.bufferSize;
         this.sampleRate = constants.signal.sampleRate;
@@ -20,7 +19,7 @@ module.exports = class FFT {
     }
         
     subscribe () {
-        this.signal.on(constants.events.signal, (signals) => {        
+        this.signal.emitter.on(constants.events.signal, (signals) => {        
             this.signalsToFFT(signals);
             this.scaleLabels();
             this.filterBands();
@@ -62,7 +61,7 @@ module.exports = class FFT {
     }
     
     emit () {
-        this.io.emit(constants.events.fft, {
+        this.signal.io.emit(constants.events.fft, {
             data: this.spectrums,
             labels: this.labels,
             theta: this.byBand.theta.spectrums,

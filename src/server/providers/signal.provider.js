@@ -1,16 +1,17 @@
 'use strict';
 
-const Utils = require('../utils');
+const io = require('socket.io')(process.env.app_port || 8080);
 const EventEmitter = require('events');
+const Utils = require('../utils');
 const constants = require('../constants');
 
 class SignalEmitter extends EventEmitter {}
 
-module.exports = class Signals {
+module.exports = class Signal {
     
-    constructor ({ io }) {
+    constructor () {
         this.io = io;
-        this.signal = new SignalEmitter();
+        this.emitter = new SignalEmitter();
         this.bins = constants.signal.bins;
         this.bufferSize = constants.signal.bufferSize;
         this.windowRefreshRate = constants.signal.windowRefreshRate;
@@ -22,12 +23,13 @@ module.exports = class Signals {
     }
     
     init () {
-        // Sockets
         this.io.on('connection', (socket) => {
             socket.on(constants.events.filter, (filter) => {
                 Utils.filter.apply(filter);
             });
         });
+        
+        this.setScale();
     }
     
     buffer (sample) {
@@ -35,7 +37,7 @@ module.exports = class Signals {
         this.add(sample);
        
         if (this.sampleNumber === this.bins) {  
-            this.signal.emit(constants.events.signal, [...this.signals]);
+            this.emitter.emit(constants.events.signal, [...this.signals]);
             this.window();
         }
     }
@@ -54,6 +56,14 @@ module.exports = class Signals {
             });
         });
         this.sampleNumber = this.bins - this.windowSize;
+    }
+    
+    setScale () {
+        if (Utils.signal.isSimulated()) {
+            this.scale = constants.scale.simulated;
+        } else {
+            this.scale = constants.scale.global;
+        }
     }
     
 }

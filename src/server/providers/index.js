@@ -1,7 +1,7 @@
 'use strict';
 
-const Signals = require('./signals.provider');
+const Signal = require('./signal.provider');
 
 module.exports = {
-    Signals
+    Signal
 }

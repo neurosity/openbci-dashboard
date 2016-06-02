@@ -1,7 +1,6 @@
 'use strict';
 
-var argv = require('yargs').argv;
-
+const Utils = require('../utils');
 const OpenBCI = require('openbci-sdk');
 const OpenBCIBoard = OpenBCI.OpenBCIBoard;
 const constants = require('../constants');
@@ -30,7 +29,7 @@ module.exports = class Serialport extends OpenBCIBoard {
                 })
                 .catch((error) => {
                     console.log(error);
-                    if (this.isSimulated()) {
+                    if (Utils.signal.isSimulated()) {
                         this.connect(OpenBCI.OpenBCIConstants.OBCISimulatorPortName)
                             .then(onConnect);
                     } else {
@@ -51,10 +50,6 @@ module.exports = class Serialport extends OpenBCIBoard {
     
     stream (callback) {
         this.on(constants.connector.sampleEvent, callback);
-    }
-    
-    isSimulated () {
-        return !!(argv._[0] && argv._[0] === constants.connector.simulateFlag);
     }
     
 }

@@ -5,9 +5,8 @@ const constants = require('../constants');
 
 module.exports = class TimeSeries {
     
-    constructor ({ io, signal }) {
-        this.io = io;
-        this.signal = signal;
+    constructor ({ Signal }) {
+        this.signal = Signal;
         this.sampleRate = constants.signal.sampleRate;
         this.windowSize = constants.time.windowSize;
         this.timeline = Utils.data.generateTimeline(constants.time.timeline, constants.time.skip, constants.units.seconds);
@@ -17,7 +16,7 @@ module.exports = class TimeSeries {
     }
     
     subscribe () {
-        this.signal.on(constants.events.signal, (signal) => {  
+        this.signal.emitter.on(constants.events.signal, (signal) => {  
             this.offsetForGrid(signal);
             this.signalToAmplitudes(signal);
             this.filter();
@@ -31,17 +30,15 @@ module.exports = class TimeSeries {
             return new Array((this.sampleRate * this.windowSize))
                 .fill(0)
                 .map((amplitude) => {
-                    // @TODO: Migrate scale (4) elsewhere
-                    return Utils.signal.offsetForGrid(amplitude, channelNumber, timeSeries.length, 4);
+                    return Utils.signal.offsetForGrid(amplitude, channelNumber, constants.connector.channels, this.signal.scale);
                 });
         });
     }
     
     offsetForGrid (signal) {
         this.timeSeries.forEach((channel, channelIndex) => {
-            // @TODO: Migrate scale (4) elsewhere
             let offset = signal[channelIndex][signal[channelIndex].length - 1];
-            channel.push(Utils.signal.offsetForGrid(offset, channelIndex, constants.connector.channels, 4));
+            channel.push(Utils.signal.offsetForGrid(offset, channelIndex, constants.connector.channels, this.signal.scale));
             channel.shift();
         });
     }
@@ -60,7 +57,7 @@ module.exports = class TimeSeries {
     }
     
     emit () {
-        this.io.emit(constants.events.time, {
+        this.signal.io.emit(constants.events.time, {
             data: this.timeSeries,
             amplitudes: this.amplitudes,
             timeline: this.timeline

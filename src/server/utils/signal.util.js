@@ -1,5 +1,8 @@
 'use strict';
 
+var argv = require('yargs').argv;
+const constants = require('../constants');
+
 module.exports = {
     
     voltsToMicrovolts (volts, log) {
@@ -16,6 +19,10 @@ module.exports = {
         let scaledAmplitude = amplitude * Math.pow(10, scale);
         let offset = 2 * (channelAmount - channelNumber) - 1;
         return parseFloat(scaledAmplitude + offset);
+    },
+    
+    isSimulated () {
+        return !!(argv._[0] && argv._[0] === constants.connector.simulateFlag);
     }
     
 }

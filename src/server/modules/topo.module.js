@@ -6,16 +6,15 @@ const constants = require('../constants');
 
 module.exports = class Topo {
     
-    constructor ({ io, signal }) {
-        this.io = io;
-        this.signal = signal;
+    constructor ({ Signal }) {
+        this.signal = Signal;
         this.sampleRate = constants.signal.sampleRate;
         this.grid = [];
         this.subscribe();
     }
     
     subscribe () {
-        this.signal.on(constants.events.signal, (signal) => {     
+        this.signal.emitter.on(constants.events.signal, (signal) => {     
             this.signalToGrid(signal);
             this.emit();
         });
@@ -45,7 +44,7 @@ module.exports = class Topo {
     }
     
     emit () {
-        this.io.emit(constants.events.topo, {
+        this.signal.io.emit(constants.events.topo, {
             data: this.grid
         });   
     }
