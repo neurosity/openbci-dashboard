@@ -42,7 +42,7 @@ module.exports = class Signal {
     }
     
     add (sample) {
-        //console.log('sample', sample);
+        console.log('sample', sample);
         Object.keys(sample.channelData).forEach((channel, i) => {
             this.signals[i].push(sample.channelData[channel]);
         });

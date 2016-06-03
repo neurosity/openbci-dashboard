@@ -30,8 +30,8 @@ export class MotionComponent implements OnInit {
       this.rotation = data.data;
       
       if (this.model) {
-        console.log(this.model);
-        this.model.rotation.set(...this.rotation);
+        this.viewer.resetView();
+        this.viewer.model.rotation.set(...this.rotation);
       }
     });
   }
@@ -42,12 +42,10 @@ export class MotionComponent implements OnInit {
       this.viewer.render();
       this.viewer.setWireframe(true);
       this.viewer.loadModelFromURL('app/motion/models/brain-surface.obj');
-
+      this.viewer.setClearColor(0x333333);
+      
       this.viewer.addEventListener('displaymodel', (data) => {
         this.model = data.model;
-        this.model.rotation.set(...this.rotation);
-        this.viewer.updated = true;
-        this.viewer.updateViewport();
       });
     });
   }

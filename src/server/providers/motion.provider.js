@@ -17,15 +17,19 @@ module.exports = class Motion {
             this.simulate();
         } else {
             if (this.hasMotion(auxData)) {
-                this.auxData = auxData;
+                this.auxData = this.amplify(auxData);
                 this.emit();
             }
         }   
              
     }
     
-    hasMotion () {
-        return auxData.reduce((a, b) => a + b, 0)
+    hasMotion (auxData) {
+        return auxData.reduce((a, b) => a + b, 0);
+    }
+    
+    amplify (auxData) {
+        return auxData.map(axis => Math.round(axis));
     }
     
     simulate () {
