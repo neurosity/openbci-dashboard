@@ -4,6 +4,7 @@ import { TimeSeriesComponent } from './time-series';
 import { FrequencyComponent } from './frequency';
 import { FrequencyBandsComponent } from './frequency-bands';
 import { TopoComponent } from './topo';
+import { MotionComponent } from './motion';
 import { Routes, Router, ROUTER_PROVIDERS, ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
@@ -21,6 +22,7 @@ import { Routes, Router, ROUTER_PROVIDERS, ROUTER_DIRECTIVES } from '@angular/ro
   { path: '/frequency/line', component: FrequencyComponent },
   { path: '/frequency/radar', component: FrequencyComponent },
   { path: '/frequency/bands', component: FrequencyBandsComponent },
+  { path: '/motion', component: MotionComponent },
   { path: '/topo', component: TopoComponent }
 ])
 

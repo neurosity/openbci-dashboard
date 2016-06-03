@@ -40,6 +40,7 @@
     "@angular/platform-browser": "2.0.0-rc.1",
     "@angular/platform-browser-dynamic": "2.0.0-rc.1",
     "@angular/router": "2.0.0-rc.1",
+    "brainbrowser": "^2.3.0",
     "chart.js": "^1.0.2",
     "chroma-js": "^1.1.1",
     "dsp.js": "neurojs/dsp.js",

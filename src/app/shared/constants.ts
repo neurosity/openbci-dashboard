@@ -9,7 +9,8 @@ export class Constants {
           fft: 'bci:fft',
           time: 'bci:time',
           topo: 'bci:topo',
-          filter: 'bci:filter'
+          filter: 'bci:filter',
+          motion: 'bci:motion'
       }
   };
   
