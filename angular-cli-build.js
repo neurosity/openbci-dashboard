@@ -11,6 +11,7 @@ module.exports = function(defaults) {
       'ng2-charts/bundles/ng2-charts.js',
       'chroma-js/chroma.js',
       'plotly.js/dist/plotly.js',
+      'brainbrowser/build/brainbrowser-2.3.0/**/*.js',
       'systemjs/dist/system-polyfills.js',
       'systemjs/dist/system.src.js',
       'zone.js/dist/*.js',

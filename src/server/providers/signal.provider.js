@@ -1,6 +1,5 @@
 'use strict';
 
-const io = require('socket.io')(process.env.app_port || 8080);
 const EventEmitter = require('events');
 const Utils = require('../utils');
 const constants = require('../constants');
@@ -9,7 +8,7 @@ class SignalEmitter extends EventEmitter {}
 
 module.exports = class Signal {
     
-    constructor () {
+    constructor ({ io }) {
         this.io = io;
         this.emitter = new SignalEmitter();
         this.bins = constants.signal.bins;

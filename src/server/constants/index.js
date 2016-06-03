@@ -41,11 +41,15 @@ module.exports = {
         time: 'bci:time',
         signal: 'bci:signal',
         filter: 'bci:filter',
+        motion: 'bci:motion',
         terminate: 'SIGINT'
     },
     topo: {
         params: [0,10,11],
         x: [3,7,2,8,0,10,3,7], 
         y: [0,0,3,3,8,8,10,10]
+    },
+    sockets: {
+        port: 8080
     }
 };
