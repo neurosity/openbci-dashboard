@@ -1,10 +1,10 @@
 <section class="frequency" [ngClass]="{ 'loading': !data }">
     <h2>Frequency {{ type }}</h2>
     <base-chart class="chart"
-      [data]="data"
+      [datasets]="data"
       [labels]="labels"
       [options]="options"
-      [colours]="colors"
+      [colors]="colors"
       [series]="channels"
       [chartType]="type">
     </base-chart>

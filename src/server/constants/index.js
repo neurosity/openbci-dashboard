@@ -16,7 +16,7 @@ module.exports = {
     scale: {
         global: 1.5,
         simulated: 4,
-        skipLabels: 8
+        skipLabels: 4
     },
     units: {
         hertz: 'Hz',

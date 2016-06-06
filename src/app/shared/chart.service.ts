@@ -44,24 +44,90 @@ export class ChartService {
     }, overrides);
   }
   
-  getChartJSDefaults (overrides: any = {}): any {
+  getChartJSGlobalDefaults (overrides: any = {}): any {
     return Object.assign({
       responsive: true,
       animation: false,
-      animationSteps: 15,
-      datasetStrokeWidth: 1,
-      pointDot: false,
-      pointDotRadius: 1,
-      pointDotStrokeWidth: 0,
-      datasetFill: false,
-      scaleOverride: true,
-      scaleStartValue: -2,
-      scaleStepWidth: 1,
-      scaleSteps: 6,
-      barShowStroke: false,
-      barValueSpacing: 1,
-      barStrokeWidth: 1
+      legend: {
+        display: true,
+        position: 'bottom'
+      },
     }, overrides);
+  }
+  
+  getChartJSLineDefaults (overrides: any = {}): any {
+    return Object.assign({
+      scales: {
+        xAxes: [{
+          gridLines: {
+            display: true
+          },
+          ticks: {
+            max: 3,
+            min: -2,
+            stepSize: 0.5
+          }
+        }],
+        yAxes: [{
+          gridLines: {
+            display: true
+          },
+          ticks: {
+            max: 3,
+            min: -2,
+            stepSize: 0.5
+          }
+        }]
+      }
+    }, this.getChartJSGlobalDefaults());
+  }
+  
+  getChartJSBarDefaults (overrides: any = {}): any {
+    return Object.assign({
+      scales: {
+        xAxes: [{
+          gridLines: {
+            display: false
+          },
+          ticks: {
+            max: 2,
+            min: 0,
+            stepSize: 0.5
+          }
+        }],
+        yAxes: [{
+          gridLines: {
+            display: false
+          },
+          ticks: {
+            max: 2,
+            min: 0,
+            stepSize: 0.5
+          }
+        }]
+      }
+    }, this.getChartJSGlobalDefaults({
+      legend: {
+        display: false
+      }
+    }));
+  }
+  
+  getChartJSRadarDefaults (overrides: any = {}): any {
+    return Object.assign({
+      scale: {
+        lineArc: false,
+        angleLines: {
+          display: true
+        },
+        ticks: {
+          max: 2,
+          min: -2,
+          stepSize: 0.5,
+          showLabelBackdrop: false
+        }
+      }
+    }, this.getChartJSGlobalDefaults());
   }
   
   getChartSmoothieDefaults (overrides: any = {}): any {
@@ -88,14 +154,14 @@ export class ChartService {
   
   getColors (): Array<any> {
     return [
-      { strokeColor: 'rgba(112,185,252,1)', fillColor: 'rgba(112,185,252,1)' },
-      { strokeColor: 'rgba(116,150,161,1)', fillColor: 'rgba(116,150,161,1)' },
-      { strokeColor: 'rgba(162,86,178,1)', fillColor: 'rgba(162,86,178,1)' },
-      { strokeColor: 'rgba(144,132,246,1)', fillColor: 'rgba(144,132,246,1)' },
-      { strokeColor: 'rgba(138,219,229,1)', fillColor: 'rgba(138,219,229,1)' },
-      { strokeColor: 'rgba(232,223,133,1)', fillColor: 'rgba(232,223,133,1)' },
-      { strokeColor: 'rgba(148,159,177,1)', fillColor: 'rgba(148,159,177,1)' },
-      { strokeColor: 'rgba(77,83,96,1)', fillColor: 'rgba(77,83,96,1)' }
+      { borderColor: 'rgba(112,185,252,1)', backgroundColor: 'rgba(112,185,252,1)' },
+      { borderColor: 'rgba(116,150,161,1)', backgroundColor: 'rgba(116,150,161,1)' },
+      { borderColor: 'rgba(162,86,178,1)', backgroundColor: 'rgba(162,86,178,1)' },
+      { borderColor: 'rgba(144,132,246,1)', backgroundColor: 'rgba(144,132,246,1)' },
+      { borderColor: 'rgba(138,219,229,1)', backgroundColor: 'rgba(138,219,229,1)' },
+      { borderColor: 'rgba(232,223,133,1)', backgroundColor: 'rgba(232,223,133,1)' },
+      { borderColor: 'rgba(148,159,177,1)', backgroundColor: 'rgba(148,159,177,1)' },
+      { borderColor: 'rgba(77,83,96,1)', backgroundColor: 'rgba(77,83,96,1)' }
     ]; 
   }
   

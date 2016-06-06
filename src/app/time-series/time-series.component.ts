@@ -52,7 +52,7 @@ export class TimeSeriesComponent implements OnInit {
   addTimeSeriesLines () {
     this.lines.forEach((line, index) => {
         this.timeSeries.addTimeSeries(line, { 
-          strokeStyle: this.colors[index].strokeColor 
+          strokeStyle: this.colors[index].borderColor 
         });
     });
   }

@@ -7,7 +7,7 @@ module.exports = function(defaults) {
     vendorNpmFiles: [
       'socket.io-client/socket.io.js',
       'smoothie/smoothie.js',
-      'chart.js/Chart.js',
+      'chart.js/dist/Chart.bundle.js',
       'ng2-charts/bundles/ng2-charts.js',
       'chroma-js/chroma.js',
       'plotly.js/dist/plotly.js',

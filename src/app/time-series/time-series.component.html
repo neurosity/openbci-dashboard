@@ -3,7 +3,7 @@
     <aside class="time-series-channels">
         <ul>
             <li *ngFor="let channel of channels, let i = index"
-                [ngStyle]="{ 'color': colors[i].strokeColor }">
+                [ngStyle]="{ 'color': colors[i].borderColor }">
                 {{ channel }}
             </li>
         </ul>
@@ -12,7 +12,7 @@
     <aside class="time-series-amplitudes">
         <ul>
             <li *ngFor="let amplitude of amplitudes, let i = index"
-                [ngStyle]="{ 'color': colors[i].strokeColor }">
+                [ngStyle]="{ 'color': colors[i].borderColor }">
                 {{ amplitude }}
             </li>
         </ul>

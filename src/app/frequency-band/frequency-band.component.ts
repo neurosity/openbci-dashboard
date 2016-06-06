@@ -24,17 +24,20 @@ export class FrequencyBandComponent implements OnInit {
   @Input() public band:string;
   @Input() public color:number;
   
-  private data:Array<any> = [[]];
+  private data:Array<any> = [{ data: [], label: [] }];
   private colors:Array<any>;
   private channels:Array<string> = this.chartService.getChannels();
-  private options:any = this.chartService.getChartJSDefaults({
-    responsive: false
-  });
+  private options:any = this.chartService.getChartJSBarDefaults();
   
-  ngOnInit() {    
+  ngOnInit() {
     this.colors = this.chartService.getColorByIndex(this.color);
     this.socket.on(this.constants.socket.events.fft, (data) => {
-      this.data = data[this.band || 'data'];
+      this.data = [];
+      data[this.band || 'data'].forEach((dataset, index) => {
+        this.data.push({
+          data: dataset
+        });
+      });
     });
   }
   

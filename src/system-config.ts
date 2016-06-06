@@ -4,6 +4,7 @@
 /** Map relative paths to URLs. */
 const map: any = {
   'smoothie': 'vendor/smoothie/smoothie.js',
+  'chartjs': 'vendor/chart.js/dist/Chart.bundle.js',
   'ng2-charts': 'vendor/ng2-charts/bundles/ng2-charts.js',
   'socket.io-client': 'vendor/socket.io-client/socket.io.js',
   'chroma-js': 'vendor/chroma-js/chroma.js',
