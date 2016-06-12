@@ -25,11 +25,31 @@ module.exports = {
             let filter = key.toLowerCase();
             if (filter in this && typeof this[filter] === 'function') {
                 // @TODO: apply all filters dynamically
-                //signal = this[signal](signal);
+                //signal = this[filter](signal);
             }
         });
         signal = this.notch(signal);
         return signal;
+    },
+    
+    highpass (signal) {
+        
+        var iirCalculator = new Fili.CalcCascades();
+        
+        var hpFilterCoeffs = iirCalculator.highpass({
+            order: 4, // cascade 4 biquad filters (max: 12)
+            characteristic: 'butterworth',
+            Fs: 250, // sampling frequency
+            Fc: 1,
+            gain: 0, // gain for peak, lowshelf and highshelf
+            preGain: false // adds one constant multiplication for highpass and lowpass
+            // k = (1 + cos(omega)) * 0.5 / k = 1 with preGain == false
+        });
+        
+        var hpFilter = new Fili.IirFilter(hpFilterCoeffs);
+        
+        return hpFilter.multiStep(signal);
+        
     },
     
     notch (signal) {

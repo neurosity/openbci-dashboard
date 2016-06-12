@@ -8,44 +8,42 @@ module.exports = class TimeSeries {
     constructor ({ Signal }) {
         this.signal = Signal;
         this.sampleRate = constants.signal.sampleRate;
-        this.windowSize = constants.time.windowSize;
+        this.bufferSize = constants.signal.bufferSize;
+        this.windowSize = constants.signal.windowSize;
         this.timeline = Utils.data.generateTimeline(constants.time.timeline, constants.time.skip, constants.units.seconds);
-        this.timeSeries = this.create(constants.connector.channels);
+        this.timeSeries = [];
         this.amplitudes = [];
         this.subscribe();
     }
     
     subscribe () {
         this.signal.emitter.on(constants.events.signal, (signal) => {  
-            this.offsetForGrid(signal);
-            this.signalToAmplitudes(signal);
+            this.timeSeries = signal;
             this.filter();
+            this.offset();
+            this.trim();
+            this.signalToAmplitudes(signal);
             this.emit();
         });
     }
     
-    create (channelAmount) {
-        let timeSeries = new Array(channelAmount).fill([]); 
-        return timeSeries.map((channel, channelNumber) => {
-            return new Array((this.sampleRate * this.windowSize))
-                .fill(0)
-                .map((amplitude) => {
-                    return Utils.signal.offsetForGrid(amplitude, channelNumber, constants.connector.channels, this.signal.scale);
-                });
-        });
-    }
-    
-    offsetForGrid (signal) {
-        this.timeSeries.forEach((channel, channelIndex) => {
-            let offset = signal[channelIndex][signal[channelIndex].length - 1];
-            channel.push(Utils.signal.offsetForGrid(offset, channelIndex, constants.connector.channels, this.signal.scale));
-            channel.shift();
+    offset () {
+        this.timeSeries = this.timeSeries.map((channel, channelIndex) => {
+            return channel.map((amplitude) => {
+                return Utils.signal.offsetForGrid(amplitude, channelIndex, constants.connector.channels, this.signal.scale); 
+            });
         });
     }
     
     filter () {
         this.timeSeries.forEach((signal) => {
-            signal = Utils.filter.process(signal);
+            signal = Utils.filter.highpass(signal);
+        });
+    }
+    
+    trim () {
+        this.timeSeries.forEach((channel) => {
+            channel = channel.splice(0, this.bufferSize - this.windowSize);
         });
     }
     

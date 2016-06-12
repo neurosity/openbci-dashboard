@@ -15,7 +15,6 @@ module.exports = {
     },
     
     offsetForGrid (amplitude, channelNumber, channelAmount = 8, scale = 1.5) {
-        // @TODO: initial dataset is returning messed up values
         let scaledAmplitude = amplitude * Math.pow(10, scale);
         let offset = 2 * (channelAmount - channelNumber) - 1;
         return parseFloat(scaledAmplitude + offset);
