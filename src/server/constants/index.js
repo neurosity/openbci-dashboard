@@ -8,10 +8,12 @@ module.exports = {
         sampleEvent: 'sample'
     },
     signal: {
-        bins: 128,
-        bufferSize: 128,
+        bufferSize: 512,
         sampleRate: 250,
-        windowRefreshRate: 8 // samples
+        windowSize: 32 // data has a moving window of 32 samples = 128 milliseconds (250Hz)
+    },
+    fft: {
+        bins: 512
     },
     scale: {
         global: 1.5,

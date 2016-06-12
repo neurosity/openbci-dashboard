@@ -11,10 +11,8 @@ module.exports = class Signal {
     constructor ({ io }) {
         this.io = io;
         this.emitter = new SignalEmitter();
-        this.bins = constants.signal.bins;
         this.bufferSize = constants.signal.bufferSize;
-        this.windowRefreshRate = constants.signal.windowRefreshRate;
-        this.windowSize = this.bins / this.windowRefreshRate;
+        this.windowSize = constants.signal.windowSize;
         this.sampleRate = constants.signal.sampleRate;
         this.signals = [[],[],[],[],[],[],[],[]];
         this.sampleNumber = 0;
@@ -35,14 +33,14 @@ module.exports = class Signal {
         this.sampleNumber++;
         this.add(sample);
        
-        if (this.sampleNumber === this.bins) {  
+        if (this.sampleNumber === this.bufferSize) {
             this.emitter.emit(constants.events.signal, [...this.signals]);
             this.window();
         }
     }
     
     add (sample) {
-        console.log('sample', sample);
+        //console.log('sample', sample);
         Object.keys(sample.channelData).forEach((channel, i) => {
             this.signals[i].push(sample.channelData[channel]);
         });
@@ -54,7 +52,7 @@ module.exports = class Signal {
                 return index > (this.windowSize - 1);
             });
         });
-        this.sampleNumber = this.bins - this.windowSize;
+        this.sampleNumber = this.bufferSize - this.windowSize;
     }
     
     setScale () {

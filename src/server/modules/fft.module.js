@@ -8,7 +8,7 @@ module.exports = class FFT {
     
     constructor ({ Signal }) {
         this.signal = Signal;
-        this.bins = constants.signal.bins;
+        this.bins = constants.fft.bins;
         this.bufferSize = constants.signal.bufferSize;
         this.sampleRate = constants.signal.sampleRate;
         this.bands = constants.bands;
