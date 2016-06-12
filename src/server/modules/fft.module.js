@@ -1,6 +1,6 @@
 'use strict';
 
-const dsp = require('dsp.js');
+const Fili = require('fili');
 const Utils = require('../utils');
 const constants = require('../constants');
 
@@ -8,8 +8,8 @@ module.exports = class FFT {
     
     constructor ({ Signal }) {
         this.signal = Signal;
-        this.bins = constants.fft.bins;
-        this.bufferSize = constants.signal.bufferSize;
+        this.bufferSize = constants.fft.bufferSize;
+        this.bins = this.bufferSize / 4;
         this.sampleRate = constants.signal.sampleRate;
         this.bands = constants.bands;
         this.spectrums = [[],[],[],[],[],[],[],[]];
@@ -19,7 +19,8 @@ module.exports = class FFT {
     }
         
     subscribe () {
-        this.signal.emitter.on(constants.events.signal, (signals) => {        
+        this.signal.emitter.on(constants.events.signal, (signals) => {
+            //signals = this.trim(signals);    
             this.signalsToFFT(signals);
             this.scaleLabels();
             this.filterBands();
@@ -28,13 +29,20 @@ module.exports = class FFT {
         });
     }
     
+    trim (signals) {
+        return signals.map((channel) => {
+            return channel.splice(this.bins, this.bufferSize);
+        });
+    }
+    
     signalsToFFT (signals) {
         signals.forEach((signal, index) => {
-            signal = Utils.filter.process(signal);
-            let fft = new dsp.FFT(this.bufferSize, this.sampleRate);
-            fft.forward(signal);
-            this.spectrums[index] = Utils.data.parseObjectAsArray(fft.spectrum);
+            //signal = Utils.filter.process(signal);
+            let fft = new Fili.Fft(constants.fft.bufferSize);
+            let spectrum = fft.forward(signal, constants.fft.windowFunction);
+            this.spectrums[index] = fft.magnitude(spectrum);
             this.spectrums[index] = Utils.signal.voltsToMicrovolts(this.spectrums[index], true);
+            console.log('this.spectrums[index]', this.spectrums[index].length);
         });
     }
     

@@ -13,7 +13,8 @@ module.exports = {
         windowSize: 32 // data has a moving window of 32 samples = 128 milliseconds (250Hz)
     },
     fft: {
-        bins: 512
+        bufferSize: 512,
+        windowFunction: 'none'
     },
     scale: {
         global: 1.5,

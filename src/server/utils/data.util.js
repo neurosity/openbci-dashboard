@@ -2,14 +2,6 @@
 
 module.exports = {
     
-    parseObjectAsArray (obj) {
-        var array = [];
-        Object.keys(obj).forEach((key) => {
-            array.push(obj[key]);
-        });
-        return array;
-    },
-    
     /**
      * generateTimeline
      * @param size

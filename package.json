@@ -43,7 +43,6 @@
     "brainbrowser": "^2.3.0",
     "chart.js": "^2.1.4",
     "chroma-js": "^1.1.1",
-    "dsp.js": "neurojs/dsp.js",
     "es6-shim": "^0.35.0",
     "express": "^4.13.4",
     "fili": "^1.2.1",
