@@ -63,7 +63,7 @@ export class ChartService {
             display: true
           },
           ticks: {
-            max: 3,
+            max: 4,
             min: -2,
             stepSize: 0.5
           }
@@ -73,7 +73,7 @@ export class ChartService {
             display: true
           },
           ticks: {
-            max: 3,
+            max: 4,
             min: -2,
             stepSize: 0.5
           }
@@ -90,7 +90,7 @@ export class ChartService {
             display: false
           },
           ticks: {
-            max: 2,
+            max: 4,
             min: 0,
             stepSize: 0.5
           }
@@ -100,7 +100,7 @@ export class ChartService {
             display: false
           },
           ticks: {
-            max: 2,
+            max: 4,
             min: 0,
             stepSize: 0.5
           }
@@ -121,7 +121,7 @@ export class ChartService {
           display: true
         },
         ticks: {
-          max: 2,
+          max: 4,
           min: -2,
           stepSize: 0.5,
           showLabelBackdrop: false
