@@ -35,6 +35,7 @@ module.exports = class FFT {
             fft.forward(signal);
             this.spectrums[index] = Utils.data.parseObjectAsArray(fft.spectrum);
             this.spectrums[index] = Utils.signal.voltsToMicrovolts(this.spectrums[index], true);
+            this.spectrums[index] = Utils.filter.maxFrequency(this.spectrums[index]);
         });
     }
     

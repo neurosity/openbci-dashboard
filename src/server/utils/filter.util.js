@@ -18,6 +18,7 @@ module.exports = {
         if (!filter) return;
         let [id, value] = filter.split(':');
         this.state[id] = value;
+        console.log(filter, this.state.MAXFREQUENCY);
     },
     
     process (signal) {
@@ -73,6 +74,12 @@ module.exports = {
         var notchFilter = new Fili.IirFilter(notchFilterCoeffs);
         
         return notchFilter.multiStep(signal);
+    },
+    
+    maxFrequency (signal) {
+        return signal.filter((frequency) => {
+            return frequency < this.state.MAXFREQUENCY;
+        });
     },
     
     bandpass (signal) {

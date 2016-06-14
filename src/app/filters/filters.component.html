@@ -4,9 +4,9 @@
     <article *ngFor="let filter of filters" 
              [ngClass]="{ disabled: !filter.enabled }">
       <label>{{ filter.label }}</label>
-      <div class="select">
+      <div class="select" *ngIf="filter.type === 'select'">
         <select 
-          [multiple]="filter.type === 'multiple'"
+          [multiple]="filter.multiple"
           [disabled]="!filter.enabled"
           (change)="applyFilter($event.target.value)">
           <option *ngFor="let option of filter.options" 
@@ -14,6 +14,15 @@
             {{ option.label }}
           </option>
         </select>
+      </div>
+      <div class="range" *ngIf="filter.type === 'range'">
+        <input 
+          type="range"
+          [disabled]="!filter.enabled"
+          [min]="filter.min"
+          [max]="filter.max"
+          [(ngModel)]="maxFrequency"
+          (change)="applyFilter(filter.id + ':' + $event.target.value)" /> 
       </div>
     </article>
   </nav>

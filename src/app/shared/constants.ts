@@ -16,9 +16,19 @@ export class Constants {
   
   filters: Array<any> = [
     { 
+      id: 'MAXFREQUENCY', 
+      label: 'Max Frequency',
+      type: 'range',
+      modules: ['fft'],
+      enabled: true,
+      min: 0,
+      max: 125
+    },
+    { 
       id: 'NOTCH', 
       label: 'Notch',
-      type: 'single',
+      type: 'select',
+      modules: ['fft','time'],
       enabled: true,
       options: [
         {
@@ -38,7 +48,8 @@ export class Constants {
     { 
       id: 'BANDPASS', 
       label: 'Band Pass',
-      type: 'single',
+      type: 'select',
+      modules: ['fft'],
       enabled: false,
       options: [
         {
@@ -66,7 +77,7 @@ export class Constants {
     { 
       id: 'VERTSCALE', 
       label: 'Vert Scale',
-      type: 'single',
+      type: 'select',
       enabled: false,
       options: [
         {
@@ -102,7 +113,7 @@ export class Constants {
     { 
       id: 'VERTALGO', 
       label: 'Vert Algo',
-      type: 'single',
+      type: 'select',
       enabled: false,
       options: [
         {
@@ -118,7 +129,7 @@ export class Constants {
     { 
       id: 'SMOOTH', 
       label: 'Smooth',
-      type: 'single',
+      type: 'select',
       enabled: false,
       options: [
         {
@@ -150,7 +161,7 @@ export class Constants {
     { 
       id: 'POLARITY', 
       label: 'Polarity',
-      type: 'single',
+      type: 'select',
       enabled: false,
       options: [
         {
@@ -162,30 +173,6 @@ export class Constants {
           label: 'No'
         }
       ] 
-    },
-    { 
-      id: 'MAXFREQUENCY', 
-      label: 'Max Frequency',
-      type: 'single',
-      enabled: false,
-      options: [
-        {
-          id: 'MAXFREQUENCY:60',
-          label: '60 Hz'
-        },
-        {
-          id: 'MAXFREQUENCY:120',
-          label: '120 Hz'
-        },
-        {
-          id: 'MAXFREQUENCY:20',
-          label: '20 Hz'
-        },
-        {
-          id: 'MAXFREQUENCY:40',
-          label: '40 Hz'
-        }
-      ]
     }
   ];
 
