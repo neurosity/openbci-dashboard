@@ -2,14 +2,12 @@ import {
   Component, OnDestroy, OnInit, OnChanges, EventEmitter, ElementRef, Input,
   Output
 } from '@angular/core';
-import {CORE_DIRECTIVES, FORM_DIRECTIVES, NgClass} from '@angular/common';
 
 declare var Chart:any;
 
 @Component({
   selector: 'base-chart',
   template: `<canvas style="width: 100%; height: 100%;"></canvas>`,
-  directives: [CORE_DIRECTIVES, FORM_DIRECTIVES, NgClass]
 })
 export class BaseChartComponent implements OnDestroy, OnChanges, OnInit {
   public static defaultColors:Array<number[]> = [
@@ -34,6 +32,7 @@ export class BaseChartComponent implements OnDestroy, OnChanges, OnInit {
   @Input() public chartType:string;
   @Input() public colors:Array<any>;
   @Input() public legend:boolean;
+  @Input() public series:any;
 
   @Output() public chartClick:EventEmitter<any> = new EventEmitter();
   @Output() public chartHover:EventEmitter<any> = new EventEmitter();

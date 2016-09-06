@@ -5,11 +5,9 @@ import { CHART_DIRECTIVES } from '../shared/ng2-charts';
 import { Constants } from '../shared/constants';
 
 @Component({
-  moduleId: module.id,
   selector: 'bci-frequency-band',
   templateUrl: 'frequency-band.component.html',
   styleUrls: ['frequency-band.component.css'],
-  directives: [CHART_DIRECTIVES],
   providers: [ChartService, Constants]
 })
 

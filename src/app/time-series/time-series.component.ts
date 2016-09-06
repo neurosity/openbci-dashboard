@@ -1,11 +1,11 @@
 import { Component, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { SmoothieChart, TimeSeries } from 'smoothie';
-import { ChartService } from '../shared';
 import * as io from 'socket.io-client';
+import { ChartService } from '../shared';
+
 import { Constants } from '../shared/constants';
 
 @Component({
-  moduleId: module.id,
   selector: 'bci-time-series',
   templateUrl: 'time-series.component.html',
   styleUrls: ['time-series.component.css'],

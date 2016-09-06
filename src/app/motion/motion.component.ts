@@ -5,7 +5,6 @@ import { Constants } from '../shared/constants';
 declare var BrainBrowser;
 
 @Component({
-  moduleId: module.id,
   selector: 'bci-motion',
   templateUrl: 'motion.component.html',
   styleUrls: ['motion.component.css'],

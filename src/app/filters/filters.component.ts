@@ -3,7 +3,6 @@ import * as io from 'socket.io-client';
 import { Constants } from '../shared/constants';
 
 @Component({
-  moduleId: module.id,
   selector: 'bci-filters',
   templateUrl: 'filters.component.html',
   styleUrls: ['filters.component.css'],

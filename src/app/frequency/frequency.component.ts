@@ -1,27 +1,24 @@
 import { Component, ElementRef, OnInit, OnDestroy, Input } from '@angular/core';
-import { RouteSegment, ROUTER_PROVIDERS } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as io from 'socket.io-client';
 import { ChartService } from '../shared';
-import { CHART_DIRECTIVES } from '../shared/ng2-charts';
 import { Constants } from '../shared/constants';
 
 @Component({
-  moduleId: module.id,
   selector: 'bci-frequency',
   templateUrl: 'frequency.component.html',
   styleUrls: ['frequency.component.css'],
-  directives: [CHART_DIRECTIVES],
-  providers: [ChartService, Constants, ROUTER_PROVIDERS]
+  providers: [ChartService, Constants]
 })
 
 export class FrequencyComponent implements OnInit {
 
   socket: any;
   constructor(private chartService: ChartService,
-              private segment: RouteSegment,
+              private route: ActivatedRoute,
               private constants: Constants) {
     this.socket = io(constants.socket.url);
-    this.type = segment.getParam('type') || 'line';
+    this.type = this.route.snapshot.params['type'] || 'line';
     
     this.setOptions(this.type);
   }

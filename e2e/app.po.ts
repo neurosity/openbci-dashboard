@@ -1,9 +1,11 @@
-export class ClitestPage {
+import { browser, element, by } from 'protractor/globals';
+
+export class OpenbciDashboardPage {
   navigateTo() {
     return browser.get('/');
   }
 
   getParagraphText() {
-    return element(by.css('clitest-app h1')).getText();
+    return element(by.css('app-root h1')).getText();
   }
 }

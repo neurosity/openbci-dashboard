@@ -1,35 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FiltersComponent } from './filters';
-import { TimeSeriesComponent } from './time-series';
-import { FrequencyComponent } from './frequency';
-import { FrequencyBandsComponent } from './frequency-bands';
-import { TopoComponent } from './topo';
-import { MotionComponent } from './motion';
-import { Routes, Router, ROUTER_PROVIDERS, ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
-  moduleId: module.id,
   selector: 'bci-dashboard',
   templateUrl: 'dashboard.component.html',
   styleUrls: ['dashboard.component.css'],
-  directives: [ROUTER_DIRECTIVES, FiltersComponent],
-  providers: [ROUTER_PROVIDERS]
 })
-
-@Routes([
-  { path: '/', component: TimeSeriesComponent },
-  { path: '/time-series', component: TimeSeriesComponent },
-  { path: '/frequency/line', component: FrequencyComponent },
-  { path: '/frequency/radar', component: FrequencyComponent },
-  { path: '/frequency/bands', component: FrequencyBandsComponent },
-  { path: '/motion', component: MotionComponent },
-  { path: '/topo', component: TopoComponent }
-])
 
 export class DashboardComponent implements OnInit {
   title = 'BCI Dashboard';
   
-  constructor (private router: Router) {
+  constructor () {
   }
   
   ngOnInit () {
