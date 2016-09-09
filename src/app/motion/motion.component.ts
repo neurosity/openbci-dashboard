@@ -17,7 +17,9 @@ export class MotionComponent implements OnInit {
   socket: any;
   viewer: any;
   model: any;
-  constructor(private view: ElementRef, private constants: Constants) {
+  
+  constructor(private view: ElementRef, 
+              private constants: Constants) {
     this.socket = io(constants.socket.url);
   }
   

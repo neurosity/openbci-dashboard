@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import * as io from 'socket.io-client';
-import { Constants } from '../shared/constants';
-import { ChartService } from '../shared';
+import { ChartService, Constants } from '../shared';
 
 declare var chroma: any;
 declare var Plotly: any;
@@ -19,7 +18,9 @@ export class TopoComponent implements OnInit {
   socket: any;
   plotElement: any;
   
-  constructor(private view: ElementRef, private chartService: ChartService, private constants: Constants) {
+  constructor(private view: ElementRef, 
+              private chartService: ChartService, 
+              private constants: Constants) {
     this.socket = io(constants.socket.url);
   }
     
@@ -46,7 +47,9 @@ export class TopoComponent implements OnInit {
   }
   
   ngOnDestroy (): void {
-    this.socket.removeListener(this.constants.socket.events.topo);
+    this.socket.removeListener(
+      this.constants.socket.events.topo
+    );
   }
   
   getGrid (n) {

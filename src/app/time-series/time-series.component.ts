@@ -1,8 +1,8 @@
-import { Component, ElementRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
+import { OnInit, OnDestroy } from '@angular/core';
 import { SmoothieChart, TimeSeries } from 'smoothie';
-import { ChartService } from '../shared';
+import { ChartService, Constants } from '../shared';
 import * as io from 'socket.io-client';
-import { Constants } from '../shared/constants';
 
 @Component({
   moduleId: module.id,
@@ -12,7 +12,7 @@ import { Constants } from '../shared/constants';
   providers: [ChartService, Constants]
 })
 
-export class TimeSeriesComponent implements OnInit {
+export class TimeSeriesComponent implements OnInit, OnDestroy {
 
   socket: any;
   constructor(private view: ElementRef, 
@@ -23,13 +23,12 @@ export class TimeSeriesComponent implements OnInit {
   }
   
   private options = this.chartService.getChartSmoothieDefaults();
-  
+  private channels = this.chartService.getChannels();
+  private colors = this.chartService.getColors();
   private timeSeries = new SmoothieChart(this.options);
   private amplitudes = [];
   private timeline = [];
   private lines = Array(8).fill(0).map(() => new TimeSeries());
-  private channels = this.chartService.getChannels();
-  private colors = this.chartService.getColors();
   
   ngOnInit() {
     this.addTimeSeriesLines();
@@ -42,11 +41,15 @@ export class TimeSeriesComponent implements OnInit {
   }
   
   ngOnDestroy () {
-    this.socket.removeListener(this.constants.socket.events.time);
+    this.socket.removeListener(
+      this.constants.socket.events.time
+    );
   } 
   
   ngAfterViewInit () {
-    this.timeSeries.streamTo(this.view.nativeElement.querySelector('canvas'), 40);
+    this.timeSeries.streamTo(
+      this.view.nativeElement.querySelector('#timeSeries')
+    );
   }
   
   addTimeSeriesLines () {

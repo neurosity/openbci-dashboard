@@ -1,9 +1,8 @@
 import { Component, ElementRef, OnInit, OnDestroy, Input } from '@angular/core';
 import { RouteSegment, ROUTER_PROVIDERS } from '@angular/router';
 import * as io from 'socket.io-client';
-import { ChartService } from '../shared';
+import { ChartService, Constants } from '../shared';
 import { CHART_DIRECTIVES } from '../shared/ng2-charts';
-import { Constants } from '../shared/constants';
 
 @Component({
   moduleId: module.id,
@@ -17,6 +16,7 @@ import { Constants } from '../shared/constants';
 export class FrequencyComponent implements OnInit {
 
   socket: any;
+  
   constructor(private chartService: ChartService,
               private segment: RouteSegment,
               private constants: Constants) {
@@ -28,7 +28,7 @@ export class FrequencyComponent implements OnInit {
   
   @Input() type:string;
   
-  private data:Array<any> = [{ data: [], label: [] }];
+  private data:Array<any> = Array(8).fill(0).map(() => { return { data: [], label: [] } });
   private labels:Array<any> = [];
   private colors:Array<any> = this.chartService.getColors();
   private channels:Array<string> = this.chartService.getChannels();
@@ -60,7 +60,9 @@ export class FrequencyComponent implements OnInit {
   }
   
   ngOnDestroy () {
-    this.socket.removeListener(this.constants.socket.events.fft);
+    this.socket.removeListener(
+      this.constants.socket.events.fft
+    );
   } 
 
 }

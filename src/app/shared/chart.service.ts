@@ -165,7 +165,7 @@ export class ChartService {
     ]; 
   }
   
-  getColorByIndex (index:number): Array<any> {
+  getColorByIndex (index: number): Array<any> {
     return this.getColors().filter((c, i) => index === i);
   }
 

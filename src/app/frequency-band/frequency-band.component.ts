@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import * as io from 'socket.io-client';
-import { ChartService } from '../shared';
+import { ChartService, Constants } from '../shared';
 import { CHART_DIRECTIVES } from '../shared/ng2-charts';
-import { Constants } from '../shared/constants';
 
 @Component({
   moduleId: module.id,
@@ -13,10 +12,12 @@ import { Constants } from '../shared/constants';
   providers: [ChartService, Constants]
 })
 
-export class FrequencyBandComponent implements OnInit {
+export class FrequencyBandComponent implements OnInit, OnDestroy {
 
   socket: any;
-  constructor(private chartService: ChartService, private constants: Constants) {
+
+  constructor(private chartService: ChartService, 
+              private constants: Constants) {
     this.socket = io(constants.socket.url);
   }
   
@@ -25,9 +26,9 @@ export class FrequencyBandComponent implements OnInit {
   @Input() public color:number;
   
   private data:Array<any> = [{ data: [], label: [] }];
-  private colors:Array<any>;
-  private channels:Array<string> = this.chartService.getChannels();
-  private options:any = this.chartService.getChartJSBarDefaults();
+  private colors = this.chartService.getColorByIndex(this.color);
+  private channels = this.chartService.getChannels();
+  private options = this.chartService.getChartJSBarDefaults();
   
   ngOnInit() {
     this.colors = this.chartService.getColorByIndex(this.color);
@@ -42,7 +43,9 @@ export class FrequencyBandComponent implements OnInit {
   }
   
   ngOnDestroy () {
-    this.socket.removeListener(this.constants.socket.events.fft);
+    this.socket.removeListener(
+      this.constants.socket.events.fft
+    );
   } 
 
 }
