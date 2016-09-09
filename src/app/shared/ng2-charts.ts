@@ -56,7 +56,7 @@ export class BaseChartComponent implements OnDestroy, OnChanges, OnInit {
     this.parent = this.element.nativeElement;
     this.initFlag = true;
     if (this.data || this.datasets) {
-      this.refresh();
+      this.create(this.ctx);
     }
   }
 
@@ -73,7 +73,7 @@ export class BaseChartComponent implements OnDestroy, OnChanges, OnInit {
     }
   }
 
-  public getChartBuilder(ctx:any/*, data:Array<any>, options:any*/):any {
+  public create(ctx:any):any {
     let datasets:any = void 0;
 
     // in case if datasets is not provided, but data is present
@@ -106,7 +106,7 @@ export class BaseChartComponent implements OnDestroy, OnChanges, OnInit {
       data or datasets field are required to render char ${this.chartType}`);
     }
 
-    let options:any = Object.assign({}, this.options);
+    const options:any = Object.assign({}, this.options);
     // hock for onHover and onClick events
     options.hover = options.hover || {};
     if (!options.hover.onHover) {
@@ -124,7 +124,7 @@ export class BaseChartComponent implements OnDestroy, OnChanges, OnInit {
       };
     }
 
-    let opts = {
+    const opts = {
       type: this.chartType,
       data: {
         labels: this.labels,
@@ -137,17 +137,15 @@ export class BaseChartComponent implements OnDestroy, OnChanges, OnInit {
       throw new Error('ng2-charts configuration issue: Embedding Chart.js lib is mandatory');
     }
 
-    return new Chart(ctx, opts);
+    this.chart = new Chart(ctx, opts);
   }
 
   private refresh():any {
-    if (this.options && this.options.responsive && this.parent.clientHeight === 0) {
-      return setTimeout(() => this.refresh(), 50);
-    }
-
-    // todo: remove this line, it is producing flickering
-    this.ngOnDestroy();
-    this.chart = this.getChartBuilder(this.ctx/*, data, this.options*/);
+    this.chart.data.labels = [...this.labels];
+    this.chart.data.datasets = [...this.chart.data.datasets.map((set, index) => {
+      return Object.assign(set, this.datasets[index]);
+    })];
+    this.chart.update();
   }
 }
 
