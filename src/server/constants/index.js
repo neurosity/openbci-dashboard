@@ -8,15 +8,15 @@ module.exports = {
         sampleEvent: 'sample'
     },
     signal: {
-        bufferSize: 512,
+        bufferSize: 256,
         sampleRate: 250,
         windowSize: 32 // data has a moving window of 32 samples = 128 milliseconds (250Hz)
     },
     fft: {
-        bins: 512
+        bins: 256
     },
     scale: {
-        global: 1.5,
+        global: 1,
         simulated: 4,
         skipLabels: 4
     },
